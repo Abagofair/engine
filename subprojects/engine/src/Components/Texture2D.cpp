@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Texture2D.hpp>
+#include <Components/Texture2D.hpp>
 
 Texture2D::Texture2D(
     std::string path)
