@@ -7,8 +7,8 @@ project(
 add_project_arguments('-DDLLDIR_EX=true', language : 'cpp')
 
 cpp = meson.get_compiler('cpp')
-sdl2_lib = cpp.find_library('SDL2', dirs: 'C:\\development\\sdl2_2.0.14\\lib\\x64')
-sdl2_include = include_directories('C:\\development\\sdl2_2.0.14\\include')
+sdl2_lib = cpp.find_library('SDL2', dirs: 'C:\\development\\SDL2-2.0.16\\lib\\x64')
+sdl2_include = include_directories('C:\\development\\SDL2-2.0.16\\include')
 
 sdl2_img_lib = cpp.find_library('SDL2_image', dirs: 'C:\\development\\SDL2_image-2.0.5\\lib\\x64')
 sdl2_img_include = include_directories('C:\\development\\SDL2_image-2.0.5\\include')
