@@ -20,7 +20,7 @@ int main(int argc, char* args[])
 	window = std::make_unique<Window>(800, 600, "SHITE");
 
 	bool exit = false;
-
+	
 	while (!exit)
 	{
 		SDL_Event event;

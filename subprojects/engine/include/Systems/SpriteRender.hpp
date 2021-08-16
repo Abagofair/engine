@@ -1,16 +1,20 @@
 #pragma once
 
+#include <cstdint>
+
 #include <glm/glm.hpp>
+
+#include <entt/entt.hpp>
 
 #include <glPortableHeaders.hpp>
 
-#include <Components/Position2D.hpp>
-#include <Components/Rotation2D.hpp>
-#include <Components/Scale2D.hpp>
+#include <Components.hpp>
 #include <Components/Texture2D.hpp>
 #include <Components/SpriteShader.hpp>
 
 #include <Systems/BaseRender.hpp>
+
+#include <Renderer/Quad.hpp>
 
 class SpriteRender : public BaseRender
 {
@@ -21,10 +25,21 @@ class SpriteRender : public BaseRender
         );
         ~SpriteRender();
 
-        void Draw(entt::registry registry);
+        /**
+         * Setup gl buffers for instanced quad rendering
+         * */
+        void SetupBuffers();
+        void Draw(entt::registry &registry);
 
         unsigned int renderWidth;
         unsigned int renderHeight;
 
         glm::mat4 viewMatrix;
+
+    private:
+        uint32_t quadMax;
+
+        uint32_t vbo;
+        uint32_t vao;
+        uint32_t ebo;
 };

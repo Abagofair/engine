@@ -6,8 +6,8 @@ project('game', 'cpp',
 install_path = '@0@/install/bin'.format(meson.source_root())
 
 cpp = meson.get_compiler('cpp')
-sdl2_main_lib = cpp.find_library('SDL2main', dirs: 'C:\\development\\sdl2_2.0.14\\lib\\x64')
-sdl2_include = include_directories('C:\\development\\sdl2_2.0.14\\include')
+sdl2_main_lib = cpp.find_library('SDL2main', dirs: 'C:\\development\\SDL2-2.0.16\\lib\\x64')
+sdl2_include = include_directories('C:\\development\\SDL2-2.0.16\\include')
 sdl2_img_include = include_directories('C:\\development\\SDL2_image-2.0.5\\include')
 sdl2_img_include = include_directories('C:\\development\\SDL2_image-2.0.5\\include')
 
@@ -25,7 +25,7 @@ executable(
     install: true)
 
 configure_file(
-    input : 'C:\\development\\sdl2_2.0.14\\lib\\x64\\SDL2.dll',
+    input : 'C:\\development\\SDL2-2.0.16\\lib\\x64\\SDL2.dll',
     output : 'SDL2.dll',
     copy: true,
     install: true,

@@ -5,5 +5,6 @@
 class BaseRender
 {
 public:
-    virtual void Draw(entt::registry registry) = 0;
+    virtual ~BaseRender() {}
+    virtual void Draw(entt::registry &registry) = 0;
 };

@@ -1,4 +1,4 @@
-#include <SpriteShader.hpp>
+#include <Components/SpriteShader.hpp>
 
 SpriteShader::SpriteShader()
 {

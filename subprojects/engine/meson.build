@@ -30,7 +30,11 @@ engine_include = include_directories('include')
 lib = shared_library(
   'Engine',
   ['src/Window.cpp',
-  'src/glad.cpp'],
+  'src/glad.cpp',
+  'src/Systems/SpriteRender.cpp',
+  'src/Components/SpriteShader.cpp',
+  'src/Components/Texture2D.cpp',
+  'src/Scene.cpp'],
   include_directories : [engine_include, sdl2_include, sdl2_img_include, lua_include],
   dependencies: [sdl2_lib, sdl2_img_lib, lua_lib],
   install : true)
