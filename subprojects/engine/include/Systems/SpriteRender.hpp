@@ -14,7 +14,7 @@
 
 #include <Systems/BaseRender.hpp>
 
-#include <Renderer/Quad.hpp>
+#include <Renderer/Renderable.hpp>
 
 class SpriteRender : public BaseRender
 {
@@ -23,23 +23,16 @@ class SpriteRender : public BaseRender
             unsigned int width,
             unsigned int height
         );
-        ~SpriteRender();
 
         /**
          * Setup gl buffers for instanced quad rendering
          * */
-        void SetupBuffers();
+        void SetupBuffers(uint32_t amount);
         void Draw(entt::registry &registry);
 
         unsigned int renderWidth;
         unsigned int renderHeight;
 
         glm::mat4 viewMatrix;
-
     private:
-        uint32_t quadMax;
-
-        uint32_t vbo;
-        uint32_t vao;
-        uint32_t ebo;
 };
