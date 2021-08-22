@@ -1,10 +1,8 @@
 #pragma once
 
-#include <DLLEXPORT.hpp>
-
 #include <glm/glm.hpp>
 
-class DLLEXPORT RGBA
+class RGBA
 {
 public:
     RGBA(float x, float y, float z, float a)
@@ -15,5 +13,9 @@ public:
         : RgbaVec(rgba)
         {}
 
-    glm::vec4 RgbaVec = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    RGBA()
+        : RgbaVec(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f))
+        {}
+
+    glm::vec4 RgbaVec;
 };

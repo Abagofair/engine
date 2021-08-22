@@ -4,9 +4,9 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/development/luajit_2.0.5/include",
-                "C:/development/SDL2-2.0.16/include",
-                "C:/development/SDL2_image-2.0.5/include"
+                "C:/devlibraries/luajit_2.0.5/include",
+                "C:/devlibraries/SDL2-2.0.16/include",
+                "C:/devlibraries/SDL2_image-2.0.5/include"
             ],
             "defines": [
                 "_DEBUG",

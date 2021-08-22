@@ -1,50 +1,23 @@
-#pragma once
+#include <Renderer/Renderable.hpp>
 
-#include <cstdint>
+using namespace Renderables;
 
-#include <vector>
-
-#include <glm/glm.hpp>
-
-#include <glPortableHeaders.hpp>
-
-float quadVertices[12] = 
+void Renderables::SetupVboEbo(uint32_t &vbo, uint32_t &vao, uint32_t &ebo, float width, float height)
 {
-    -0.05f,  0.05f,  0.0f,
-    0.05f, -0.05f,  0.0f,
-    -0.05f, -0.05f,  0.0f,
-    0.05f,  0.05f,  0.0f
-};
+    float quadVertices[12] = 
+    {
+        width,  height, 0.0f,
+        width, -height, 0.0f,
+        -width, -height, 0.0f,
+        -width,  height, 0.0f,
+    };
 
-float quadIndices[6] =
-{
-    2, 0, 3,
-    3, 1, 2
-};
+    unsigned int quadIndices[6] =
+    {
+        0, 1, 3,
+        1, 2, 3
+    };
 
-struct Renderable
-{
-    uint32_t vbo;
-    uint32_t vao;
-    uint32_t ebo;
-};
-
-struct Static
-{
-    uint32_t vbo;
-    uint32_t vao;
-    uint32_t ebo;
-};
-
-struct Dynamic
-{
-    uint32_t vbo;
-    uint32_t vao;
-    uint32_t ebo;
-};
-
-void SetupVboEbo(uint32_t &vbo, uint32_t &vao, uint32_t &ebo)
-{
     //Setup a fullscreen quad
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -58,23 +31,28 @@ void SetupVboEbo(uint32_t &vbo, uint32_t &vao, uint32_t &ebo)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), &quadIndices[0], GL_DYNAMIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(0));
     glEnableVertexAttribArray(0);
 }
 
-Dynamic SetupDynamic()
+Dynamic Renderables::SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height)
 {
     Dynamic renderable;
+    renderable.shaderId = shaderId;
 
-    SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo);
+    Renderables::SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
+        (float)width, (float)height);
 
     return renderable;
 }
 
-Static SetupStatic(std::vector<glm::mat4> transforms)
+Static Renderables::SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height)
 {
     Static renderable;
-    SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo);
+    Renderables::SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
+        (float)width, (float)height);
+    renderable.shaderId = shaderId;
+    renderable.instances = transforms.size();
     
     unsigned int buffer;
     glGenBuffers(1, &buffer);

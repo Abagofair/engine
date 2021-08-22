@@ -6,7 +6,7 @@ Window::Window(
     std::string title) : _width(width), _height(height)
 {
     //https://bcmpinc.wordpress.com/2015/08/18/creating-an-opengl-4-5-context-using-sdl2-and-glad/
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER );
     IMG_Init(IMG_INIT_PNG);
 
 	SDL_GL_LoadLibrary(NULL);
@@ -14,7 +14,7 @@ Window::Window(
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
     //As stated earlier in the post, we want to sync rendering to our monitor’s refresh rate. This is done using SDL_GL_SetSwapInterval.
@@ -27,7 +27,8 @@ Window::Window(
         title.c_str(),
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        width, height,
+        width, 
+        height,
         SDL_WINDOW_OPENGL
     );
 

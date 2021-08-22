@@ -1,7 +1,5 @@
 #pragma once
 
-#include <DLLEXPORT.hpp>
- 
 #include <RGBA.hpp>
 
 #include <stdlib.h>
@@ -13,7 +11,7 @@
 
 #include <glm/glm.hpp>
 
-class DLLEXPORT Window
+class Window
 {
 public:
     Window(
