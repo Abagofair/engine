@@ -71,6 +71,8 @@
         "filesystem": "cpp",
         "format": "cpp",
         "optional": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "queue": "cpp",
+        "deque": "cpp"
     }
 }

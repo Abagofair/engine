@@ -43,4 +43,26 @@ namespace Components
             : transform(transform)
             {}
     };
+
+    struct PlayerComponent //PlayerInputComponent?
+    {
+        //state variables
+
+        //MoveUp action ?
+
+        //MoveDown action ?
+        //LaunchBall action ?
+
+        PlayerComponent() = default;
+        PlayerComponent(const PlayerComponent&) = default;
+        /*PlayerComponent(const glm::mat4& transform)
+            : transform(transform)
+            {}*/
+
+
+        void MoveUp()
+        {
+            
+        }
+    };
 };
