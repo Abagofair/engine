@@ -4,13 +4,15 @@ using namespace Input;
 
 InputHandler::InputHandler()
 {
-    _callbackByInputCode = std::unordered_map<InputCode, std::function<void(EventArgs)>>();
-    _eventQueue = std::priority_queue<Input, std::vector<Input>, std::greater<Input>>();
+    _callbackByGamepadCode = std::unordered_map<GamepadCode, std::function<void(GamepadEvent)>>();
+    _gamepadEventQueue = std::priority_queue<GamepadEvent, std::vector<GamepadEvent>, std::greater<GamepadEvent>>();
+
+    _callbackByKeyCode = std::unordered_map<KeyCode, std::function<void(KeyEvent)>>();
+    _keyboardEventQueue = std::priority_queue<KeyEvent, std::vector<KeyEvent>, std::greater<KeyEvent>>();
 }
 
 void InputHandler::FeedEventQueue()
 {
-    Input input;
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -18,11 +20,25 @@ void InputHandler::FeedEventQueue()
         {
             case SDL_CONTROLLERAXISMOTION:
                 {
-                    input.priority = 1;
-                    input.inputCode = InputCode::GamepadLeftAxis; //TODO: IS WRONG
-                    input.inputEvent = InputEvent::GamePadAxisMoved;
-                    input.normalizedXDelta = event.caxis.value;
-                    _eventQueue.push(input);
+                    GamepadEvent gamepadEvent;
+                    gamepadEvent.inputEventType = InputEventType::GamePadAxisMoved;
+                    
+                    auto axis = static_cast<SDL_GameControllerAxis>(event.caxis.axis);
+                    if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX ||
+                        axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)
+                    {
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
+                    }
+                    else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX ||
+                        axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY)
+                    {
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
+                    }
+
+                    gamepadEvent.normalizedAxisValue = 1.0f / event.caxis.value;
+
+                    _gamepadEventQueue.push(gamepadEvent);
+
                     break;
                 }
             case SDL_QUIT:
@@ -42,19 +58,41 @@ void InputHandler::FeedEventQueue()
 
 void InputHandler::DispatchEvents()
 {
-    while(!_eventQueue.empty()) {
-        auto input = _eventQueue.top();
-        auto callback = _callbackByInputCode.find(input.inputCode);
-        if (callback != _callbackByInputCode.end())
+    DispatchGamepadEvents();
+    DispatchKeyboardEvents();
+}
+
+void InputHandler::DispatchGamepadEvents()
+{
+    while(!_gamepadEventQueue.empty()) 
+    {
+        GamepadEvent event = _gamepadEventQueue.top();
+        auto callback = _callbackByGamepadCode.find(event.gamepadCode);
+        if (callback != _callbackByGamepadCode.end())
         {
-            EventArgs eventArgs;
-            eventArgs.value = input.normalizedXDelta;
-            callback->second(eventArgs);
+            callback->second(event);
         }
+
+        _gamepadEventQueue.pop();
     }
 }
 
-void InputHandler::OnGameAxisMoved(InputCode gamePadCode, std::function<void(EventArgs)> callback)
+void InputHandler::DispatchKeyboardEvents()
 {
-    _callbackByInputCode[gamePadCode] = callback;
+    while(!_keyboardEventQueue.empty()) 
+    {
+        KeyEvent event = _keyboardEventQueue.top();
+        auto callback = _callbackByKeyCode.find(event.keyCode);
+        if (callback != _callbackByKeyCode.end())
+        {
+            callback->second(event);
+        }
+
+        _keyboardEventQueue.pop();
+    }
+}
+
+void InputHandler::OnGamepadAxisMoved(GamepadCode gamePadCode, std::function<void(GamepadEvent)> callback)
+{
+    _callbackByGamepadCode[gamePadCode] = callback;
 }

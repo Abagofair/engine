@@ -16,11 +16,26 @@ and may not be redistributed without written permission.*/
 
 #include <glPortableHeaders.hpp>
 
+#include <Input/InputHandler.hpp>
 #include <Systems/SpriteRender.hpp>
 #include <Renderer/Renderable.hpp>
 #include <entt/entt.hpp>
 
 std::unique_ptr<Window> window;
+
+void Inputtest(Input::GamepadEvent event)
+{
+	std::cout << "LEFT AXIS" << std::endl;
+	std::cout << event.gamepadCode << std::endl;
+	std::cout << event.normalizedAxisValue << std::endl;
+}
+
+void InputtestRight(Input::GamepadEvent event)
+{
+	std::cout << "RIGHT AXIS" << std::endl;
+	std::cout << event.gamepadCode << std::endl;
+	std::cout << event.normalizedAxisValue << std::endl;
+}
 
 int main(int argc, char* args[])
 {
@@ -69,33 +84,14 @@ int main(int argc, char* args[])
 		}
 	}
 
+	Input::InputHandler inputHandler;
+	inputHandler.OnGamepadAxisMoved(Input::GamepadCode::GamepadLeftAxis, &Inputtest);
+	inputHandler.OnGamepadAxisMoved(Input::GamepadCode::GamepadRightAxis, &InputtestRight);
+
 	while (!exit)
 	{
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-			case SDL_CONTROLLERAXISMOTION:
-				{
-					std::cout << event.caxis.value << std::endl;
-					break;
-				}
-			case SDL_QUIT:
-				{
-					exit = true;
-					break;
-				}
-			case SDL_KEYUP:
-				if (event.key.keysym.sym == SDLK_ESCAPE)
-				{
-					exit = true;
-				}
-				break;
-			default:
-				break;
-			}
-		}
+		inputHandler.FeedEventQueue();
+		inputHandler.DispatchEvents();
 
 		auto dynamicRenderablesView = registry.view<Components::TransformComponent>();
 

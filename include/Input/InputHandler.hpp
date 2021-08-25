@@ -4,6 +4,7 @@
 #include <functional>
 #include <unordered_map>
 #include <queue>
+#include <stdexcept>
 
 #include <SDL.h>
 
@@ -17,30 +18,26 @@ namespace Input
         void FeedEventQueue();
         void DispatchEvents();
 
-        void OnKeyPressed(InputCode keyCode, std::function<void(OnKeyEventArgs)> callback);
-        void OnKeyReleased(InputCode keyCode, std::function<void(OnKeyEventArgs)> callback);
+        void DispatchGamepadEvents();
+        void DispatchKeyboardEvents();
+
+        //Subscribe functions
+        void OnKeyPressed(KeyCode keyCode, std::function<void(KeyEvent)> callback);
+        void OnKeyReleased(KeyCode keyCode, std::function<void(KeyEvent)> callback);
 
         /*void OnMouseButtonDown(KeyCode, Function);
         void OnMouseButtonUp(KeyCode, Function);
         void OnMouseMoved(KeyCode, Function);*/
 
-        void OnGameAxisMoved(InputCode gamePadCode, std::function<void(EventArgs)> callback);
+        void OnGamepadAxisMoved(GamepadCode gamePadCode, std::function<void(GamepadEvent)> callback);
         /*void OnGamePadButtonDown(KeyCode, Function);
         void OnGamePadButtonUp(KeyCode, Function);*/
 
     private:
-        std::unordered_map<InputCode, std::function<void(EventArgs)>> _callbackByInputCode;
-        std::priority_queue<Input, std::vector<Input>, std::greater<Input>> _eventQueue;
+        std::unordered_map<GamepadCode, std::function<void(GamepadEvent)>> _callbackByGamepadCode;
+        std::unordered_map<KeyCode, std::function<void(KeyEvent)>> _callbackByKeyCode;
 
-        /*void HandleKeyPressed(KeyCode, Function);
-        void HandleKeyReleased(KeyCode, Function);*/
-
-        /*void HandleMouseButtonDown(KeyCode, Function);
-        void HandleMouseButtonUp(KeyCode, Function);
-        void HandleMouseMoved(KeyCode, Function);*/
-
-        void HandleGameAxisMoved();
-        /*void HandleGamePadButtonDown(KeyCode, Function);
-        void HandleGamePadButtonUp(KeyCode, Function);*/
+        std::priority_queue<GamepadEvent, std::vector<GamepadEvent>, std::greater<GamepadEvent>> _gamepadEventQueue;
+        std::priority_queue<KeyEvent, std::vector<KeyEvent>, std::greater<KeyEvent>> _keyboardEventQueue;
     };
 };

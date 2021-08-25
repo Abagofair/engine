@@ -4,7 +4,7 @@
 
 namespace Input
 {
-    enum InputEvent
+    enum InputEventType
     {
         KeyPressed = 0,
         KeyReleased,
@@ -18,37 +18,7 @@ namespace Input
         GamePadButtonUp
     };
 
-    struct EventArgs
-    {
-        float value;
-    };
-
-    struct OnKeyEventArgs : public EventArgs
-    {
-
-    };
-
-    struct OnGamePadAxisMovedEventArgs : public EventArgs
-    {
-
-    };
-
-    struct Input
-    {
-        uint32_t priority;
-        InputCode inputCode;
-        InputEvent inputEvent;
-
-        float normalizedXDelta;
-        float normalizedYDelta;
-
-        bool operator >(Input a)
-        {
-            return priority > a.priority;
-        }
-    };
-
-    enum InputCode
+    enum KeyCode
     {
         A = 0,
         B,
@@ -74,8 +44,34 @@ namespace Input
         V,
         X,
         Y,
-        Z,
-        GamepadLeftAxis,
+        Z
+    };
+
+    enum GamepadCode
+    {
+        GamepadLeftAxis = 100,
         GamepadRightAxis
+    };
+
+    struct InputEvent
+    {
+        uint32_t priority;
+        InputEventType inputEventType;
+
+        friend bool operator> (const InputEvent& l, const InputEvent& r)
+        {
+            return l.priority > r.priority;
+        }
+    };
+
+    struct GamepadEvent : public InputEvent
+    {
+        GamepadCode gamepadCode;
+        float normalizedAxisValue;
+    };
+
+    struct KeyEvent : public InputEvent
+    {  
+        KeyCode keyCode;
     };
 };
