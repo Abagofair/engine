@@ -29,7 +29,18 @@ namespace Components
         SpriteComponent(const glm::uvec2& position, 
             const glm::vec2& scale, 
             const float& rotation)
-            : position(position), scale(scale), rotation(rotation), recalculateTransform(true)
+            : position(position), scale(scale), rotation(rotation), recalculateTransform(false)
+            {}
+    };
+
+    struct VelocityComponent
+    {
+        glm::vec2 velocity;
+
+        VelocityComponent() = default;
+        VelocityComponent(const VelocityComponent&) = default;
+        VelocityComponent(const glm::vec2& transform)
+            : velocity(transform)
             {}
     };
 
@@ -44,25 +55,14 @@ namespace Components
             {}
     };
 
-    struct PlayerComponent //PlayerInputComponent?
+    struct PaddleComponent
     {
-        //state variables
+        float speed;
 
-        //MoveUp action ?
-
-        //MoveDown action ?
-        //LaunchBall action ?
-
-        PlayerComponent() = default;
-        PlayerComponent(const PlayerComponent&) = default;
-        /*PlayerComponent(const glm::mat4& transform)
-            : transform(transform)
-            {}*/
-
-
-        void MoveUp()
-        {
-            
-        }
+        PaddleComponent() = default;
+        PaddleComponent(const PaddleComponent&) = default;
+        PaddleComponent(float speed)
+            : speed(speed)
+            {}
     };
 };

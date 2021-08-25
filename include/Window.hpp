@@ -18,6 +18,8 @@ public:
         unsigned short width,
         unsigned short height,
         std::string title);
+    Window() = delete;
+    Window(Window& window) = delete;
     ~Window();
 
     void ClearBuffer(RGBA rgba);
@@ -25,9 +27,6 @@ public:
     void CenterMouseInWindow();
     glm::uvec2 WindowDimensions();
 private:
-    Window();
-    Window(Window& window);// = delete;
-
     unsigned short _width;
     unsigned short _height;
     float _aspectRatio;

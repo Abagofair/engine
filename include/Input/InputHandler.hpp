@@ -15,7 +15,9 @@ namespace Input
     public:
         InputHandler();
 
+        //note: could be a separate system that wraps the SDL_Event queue and feeds the internal queues to this handler
         void FeedEventQueue();
+        
         void DispatchEvents();
 
         void DispatchGamepadEvents();

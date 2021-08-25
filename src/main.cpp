@@ -10,6 +10,8 @@ and may not be redistributed without written permission.*/
 
 #include <filesystem>
 
+#include <functional>
+
 #include <Window.hpp>
 #include <RGBA.hpp>
 #include <Shader.hpp>
@@ -17,25 +19,17 @@ and may not be redistributed without written permission.*/
 #include <glPortableHeaders.hpp>
 
 #include <Input/InputHandler.hpp>
+
 #include <Systems/SpriteRender.hpp>
+#include <Systems/PlayerSystem.hpp>
+#include <Systems/IntegrationSystem.hpp>
+
 #include <Renderer/Renderable.hpp>
 #include <entt/entt.hpp>
 
+#include <Time.hpp>
+
 std::unique_ptr<Window> window;
-
-void Inputtest(Input::GamepadEvent event)
-{
-	std::cout << "LEFT AXIS" << std::endl;
-	std::cout << event.gamepadCode << std::endl;
-	std::cout << event.normalizedAxisValue << std::endl;
-}
-
-void InputtestRight(Input::GamepadEvent event)
-{
-	std::cout << "RIGHT AXIS" << std::endl;
-	std::cout << event.gamepadCode << std::endl;
-	std::cout << event.normalizedAxisValue << std::endl;
-}
 
 int main(int argc, char* args[])
 {
@@ -49,13 +43,20 @@ int main(int argc, char* args[])
 
 	entt::registry registry;
 	auto entity = registry.create();
-	auto& dynamic = registry.emplace<Renderables::Dynamic>(entity);
-	auto& transform = registry.emplace<Components::TransformComponent>(entity);
+	auto& d = registry.emplace<Renderables::Dynamic>(entity);
+	auto& t = registry.emplace<Components::TransformComponent>(entity);
+	auto& p = registry.emplace<Components::PaddleComponent>(entity);
+	p.speed = 100.0f;
+	auto& s = registry.emplace<Components::SpriteComponent>(entity);
+	auto& v = registry.emplace<Components::VelocityComponent>(entity);
+	v.velocity.x = 0.0f;
+	v.velocity.y = 0.0f;
+
 	glm::mat4 trans = glm::mat4(1.0f);
 	trans = glm::translate(trans, glm::vec3(100.0f, 25.0f, 0.0f));
-	transform = trans;
+	t = trans;
 	//trans = glm::scale(trans, glm::vec3(50.0f, 50.0f, 0.0f));
-	dynamic = Renderables::SetupDynamic(dynamicShaderId, 50, 15);
+	d = Renderables::SetupDynamic(dynamicShaderId, 50, 15);
 
 	entity = registry.create();
 	auto& staticEntity = registry.emplace<Renderables::Static>(entity);
@@ -68,6 +69,12 @@ int main(int argc, char* args[])
 	staticEntity = Renderables::SetupStatic(staticShaderId, transforms, 50, 15);
 
 	SpriteRender spriteRender(800, 600, shaderManager);
+
+	PlayerSystem playerSystem(registry);
+	playerSystem.SetPosition(glm::uvec2(100, 300));
+	
+	IntegrationSystem integrationSystem(registry);
+
 	SDL_GameController *controller = NULL;
 	std::cout << SDL_NumJoysticks() << std::endl;
 	std::cout << SDL_GetError() << std::endl;
@@ -85,21 +92,30 @@ int main(int argc, char* args[])
 	}
 
 	Input::InputHandler inputHandler;
-	inputHandler.OnGamepadAxisMoved(Input::GamepadCode::GamepadLeftAxis, &Inputtest);
-	inputHandler.OnGamepadAxisMoved(Input::GamepadCode::GamepadRightAxis, &InputtestRight);
+	inputHandler.OnGamepadAxisMoved(Input::GamepadCode::GamepadLeftAxis, std::bind(&PlayerSystem::Move, &playerSystem, std::placeholders::_1));
+
+	uint32_t initialTime = SDL_GetTicks();
 
 	while (!exit)
 	{
+		InternalTime::Time time;
+		time.MsElapsedTotal = SDL_GetTicks();
+		time.MsElapsedFrame = (time.MsElapsedTotal - initialTime);
+		time.SecElapsedFrame = time.MsElapsedFrame / 1000.0f;
+
 		inputHandler.FeedEventQueue();
 		inputHandler.DispatchEvents();
 
-		auto dynamicRenderablesView = registry.view<Components::TransformComponent>();
+		integrationSystem.Integrate(time);
+
+		auto dynamicRenderablesView = registry.view<Components::TransformComponent, 
+			Components::SpriteComponent>();
 
 		for (auto entity : dynamicRenderablesView)
 		{
+			auto sprite = dynamicRenderablesView.get<Components::SpriteComponent>(entity);
 			auto& transform = dynamicRenderablesView.get<Components::TransformComponent>(entity);
-			transform.transform = glm::translate(transform.transform,
-				glm::vec3(0.1f, 0.0f, 0.0f));
+			transform.transform = glm::translate(transform.transform, glm::vec3(sprite.position, 0.0f));
 		}
 
 		window->ClearBuffer(RGBA(0.1f, 0.7f, 0.95f, 1.0f));

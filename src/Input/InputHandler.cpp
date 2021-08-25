@@ -35,7 +35,7 @@ void InputHandler::FeedEventQueue()
                         gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
                     }
 
-                    gamepadEvent.normalizedAxisValue = 1.0f / event.caxis.value;
+                    gamepadEvent.normalizedAxisValue = 1000.0f / event.caxis.value;
 
                     _gamepadEventQueue.push(gamepadEvent);
 
