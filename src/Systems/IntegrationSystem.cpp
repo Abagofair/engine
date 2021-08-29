@@ -7,23 +7,30 @@ IntegrationSystem::IntegrationSystem(
 
 void IntegrationSystem::Integrate(InternalTime::Time time)
 {
-    auto playerView = registry.view<
+    auto integrateableView = registry.view<
         Components::VelocityComponent,
         Components::SpriteComponent>();
 
-    for (auto entity : playerView)
+    for (auto entity : integrateableView)
     {
-        auto& velocity = playerView.get<Components::VelocityComponent>(entity);
-        auto& sprite = playerView.get<Components::SpriteComponent>(entity);
-
-        velocity.velocity.x = velocity.velocity.x * time.SecElapsedFrame;
+        auto& velocity = integrateableView.get<Components::VelocityComponent>(entity);
+        auto& sprite = integrateableView.get<Components::SpriteComponent>(entity);
         
-        glm::uvec2 prevPosition = sprite.position;
-        sprite.position += velocity.velocity;
+        velocity.velocity *= time.SecElapsedFrame;
 
-        if (prevPosition != sprite.position)
+        glm::vec2 copy = glm::abs(velocity.velocity);
+       /* if (copy.y > 0.0f)
+        {
+            sprite.position = velocity.velocity;
             sprite.recalculateTransform = true;
+        }
         else
+        {
+            //todo: this ruins the deceleration when not applying axis input
+            sprite.position = glm::vec2(0.0f, 0.0f);
             sprite.recalculateTransform = false;
+        }*/
+        sprite.position = velocity.velocity;
+        sprite.recalculateTransform = true;
     }
 }

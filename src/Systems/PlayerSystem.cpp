@@ -20,32 +20,95 @@ void PlayerSystem::SetPosition(const glm::uvec2& position)
     sprite.recalculateTransform = true;
 }
 
-void PlayerSystem::Move(Input::GamepadEvent gamepadEvent)
+void PlayerSystem::MoveLeft(Input::GamepadEvent gamepadEvent)
 {
-    auto playerView = registry.view<
+    auto leftPaddleView = registry.view<
         Components::VelocityComponent,
-        Components::PaddleComponent>();
+        Components::LeftPaddleComponent>();
 
-    auto playerEntity = playerView.front();
+    auto leftPaddle = leftPaddleView.front();
 
-    if (playerEntity == entt::null)
+    auto& v = leftPaddleView.get<Components::VelocityComponent>(leftPaddle);
+    auto& p = leftPaddleView.get<Components::LeftPaddleComponent>(leftPaddle);
+    Move(gamepadEvent, v, p);
+}
+
+void PlayerSystem::MoveRight(Input::GamepadEvent gamepadEvent)
+{
+    auto rightPaddleView = registry.view<
+        Components::VelocityComponent,
+        Components::RightPaddleComponent>();
+
+    auto rightPaddle = rightPaddleView.front();
+
+    auto& v1 = rightPaddleView.get<Components::VelocityComponent>(rightPaddle);
+    auto& p1 = rightPaddleView.get<Components::RightPaddleComponent>(rightPaddle);
+    Move(gamepadEvent, v1, p1);
+}
+
+void PlayerSystem::Move(const Input::GamepadEvent& gamepadEvent, Components::VelocityComponent& velocity, 
+    Components::LeftPaddleComponent& paddle)
+{
+    if (gamepadEvent.normalizedMagnitude < 0)
     {
-        return;
+        paddle.state = Components::PaddleState::UP;
+        paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedMagnitude;
     }
-
-    auto& velocity = playerView.get<Components::VelocityComponent>(playerEntity);
-    auto& paddle = playerView.get<Components::PaddleComponent>(playerEntity);
-
-
-    /*if (gamepadEvent.normalizedAxisValue > 100.0f)
+    else if (gamepadEvent.normalizedMagnitude > 0)
     {
-        velocity.velocity.x -= paddle.speed * gamepadEvent.normalizedAxisValue;
+        paddle.state = Components::PaddleState::DOWN;
+        paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedMagnitude;
     }
-    else */if (gamepadEvent.normalizedAxisValue > -10.0f && 
-        gamepadEvent.normalizedAxisValue < 0.0f)
+    else
     {
-        velocity.velocity.x += paddle.speed * gamepadEvent.normalizedAxisValue;
-        std::cout << "paddle " << velocity.velocity.x << std::endl;
-       // std::cout << "gamepad " << gamepadEvent.normalizedAxisValue << std::endl;
+        paddle.acceleration = glm::vec2(0.0f, 0.0f);
+        paddle.state = Components::PaddleState::STOP;
     }
+}
+
+void PlayerSystem::Update()
+{
+    auto leftPaddleView = registry.view<
+        Components::VelocityComponent,
+        Components::LeftPaddleComponent>();
+
+    auto rightPaddleView = registry.view<
+        Components::VelocityComponent,
+        Components::RightPaddleComponent>();
+
+    auto leftPaddle = leftPaddleView.front();
+    auto rightPaddle = rightPaddleView.front();
+
+    auto& v = leftPaddleView.get<Components::VelocityComponent>(leftPaddle);
+    auto& p = leftPaddleView.get<Components::LeftPaddleComponent>(leftPaddle);
+    UpdatePaddle(v, p);
+
+    auto& v1 = rightPaddleView.get<Components::VelocityComponent>(rightPaddle);
+    auto& p1 = rightPaddleView.get<Components::RightPaddleComponent>(rightPaddle);
+    UpdatePaddle(v1, p1);
+}
+
+void PlayerSystem::UpdatePaddle(Components::VelocityComponent& velocity, Components::LeftPaddleComponent& paddle)
+{
+    if (paddle.state == Components::PaddleState::STOP)
+    {
+        glm::vec2 accel = glm::abs(paddle.acceleration);
+        const float decel = accel.y * 0.0000001f;
+
+        if (paddle.acceleration.y < 0.0f)
+            paddle.acceleration.y += decel;
+        else if (paddle.acceleration.y > 0.0f)
+            paddle.acceleration.y -= decel;
+
+        /*if (accel.y < 0.000005f)
+            paddle.acceleration.y = 0.0f;*/
+    }
+        
+    velocity.velocity += paddle.acceleration;
+    
+    glm::vec2 copy = glm::abs(velocity.velocity);
+    if (copy.x > paddle.velocityCeiling.x)
+        velocity.velocity.x = velocity.velocity.x > 0 ? paddle.velocityCeiling.x : -paddle.velocityCeiling.x;
+    if (copy.y > paddle.velocityCeiling.y)
+        velocity.velocity.y = velocity.velocity.y > 0 ? paddle.velocityCeiling.y : -paddle.velocityCeiling.y;
 }

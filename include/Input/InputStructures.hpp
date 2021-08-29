@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <glm/glm.hpp>
 
 namespace Input
 {
@@ -67,7 +68,8 @@ namespace Input
     struct GamepadEvent : public InputEvent
     {
         GamepadCode gamepadCode;
-        float normalizedAxisValue;
+        glm::vec2 normalizedDirection;
+        float normalizedMagnitude;
     };
 
     struct KeyEvent : public InputEvent

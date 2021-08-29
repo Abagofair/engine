@@ -4,9 +4,9 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/devlibraries/luajit_2.0.5/include",
-                "C:/devlibraries/SDL2-2.0.16/include",
-                "C:/devlibraries/SDL2_image-2.0.5/include"
+                "C:/devlibraries/luajit_2.0.5/**",
+                "C:/devlibraries/SDL2-2.0.16/**",
+                "C:/devlibraries/SDL2_image-2.0.5/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -14,10 +14,13 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/Llvm/x64/bin/clang-cl.exe",
+            //"compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/Llvm/x64/bin/clang-cl.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-clang-x64"
+            "intelliSenseMode": "windows-clang-x64",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false
+            }
         }
     ],
     "version": 4

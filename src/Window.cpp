@@ -6,7 +6,7 @@ Window::Window(
     std::string title) : _width(width), _height(height)
 {
     //https://bcmpinc.wordpress.com/2015/08/18/creating-an-opengl-4-5-context-using-sdl2-and-glad/
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER );
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
     IMG_Init(IMG_INIT_PNG);
 
 	SDL_GL_LoadLibrary(NULL);
@@ -40,6 +40,7 @@ Window::Window(
     //printf("Vendor:   %s\n", glGetString(GL_VENDOR));
     //printf("Renderer: %s\n", glGetString(GL_RENDERER));
     //printf("Version:  %s\n", glGetString(GL_VERSION));
+    //SDL_GL_SetSwapInterval(1);
 }
 
 Window::~Window()

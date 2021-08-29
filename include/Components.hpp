@@ -19,14 +19,14 @@ namespace Components
 
     struct SpriteComponent
     {
-        glm::uvec2 position;
+        glm::vec2 position;
         glm::vec2 scale;
         float rotation;
         bool recalculateTransform;
 
         SpriteComponent() = default;
         SpriteComponent(const SpriteComponent&) = default;
-        SpriteComponent(const glm::uvec2& position, 
+        SpriteComponent(const glm::vec2& position, 
             const glm::vec2& scale, 
             const float& rotation)
             : position(position), scale(scale), rotation(rotation), recalculateTransform(false)
@@ -55,14 +55,34 @@ namespace Components
             {}
     };
 
-    struct PaddleComponent
+    enum PaddleState
     {
-        float speed;
+        UP,
+        DOWN,
+        STOP
+    };
 
-        PaddleComponent() = default;
-        PaddleComponent(const PaddleComponent&) = default;
-        PaddleComponent(float speed)
-            : speed(speed)
+    struct LeftPaddleComponent
+    {
+        glm::vec2 maxAcceleration;
+        glm::vec2 acceleration;
+        glm::vec2 velocityCeiling;
+        PaddleState state;
+        bool isLeft;
+
+        LeftPaddleComponent() = default;
+        LeftPaddleComponent(const LeftPaddleComponent&) = default;
+        LeftPaddleComponent(const glm::vec2& acceleration, const glm::vec2& velocityCeiling)
+            : acceleration(acceleration), velocityCeiling(velocityCeiling)
+            {}
+    };
+
+    struct RightPaddleComponent : public LeftPaddleComponent
+    {
+        RightPaddleComponent() = default;
+        RightPaddleComponent(const RightPaddleComponent&) = default;
+        RightPaddleComponent(const glm::vec2& acceleration, const glm::vec2& velocityCeiling)
+            : LeftPaddleComponent(acceleration, velocityCeiling)
             {}
     };
 };

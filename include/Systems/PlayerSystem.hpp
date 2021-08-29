@@ -16,10 +16,17 @@ public:
 
     void SetPosition(const glm::uvec2& position);
 
-    void Move(Input::GamepadEvent gamepadEvent);
+    void MoveLeft(Input::GamepadEvent gamepadEvent);
+    void MoveRight(Input::GamepadEvent gamepadEvent);
 
     void LaunchBall(Input::GamepadEvent gamepadEvent);
 
+    void Update();
+
 private:
+    void UpdatePaddle(Components::VelocityComponent& velocity, Components::LeftPaddleComponent& paddle);
+    void Move(const Input::GamepadEvent& gamepadEvent, Components::VelocityComponent& velocity, 
+        Components::LeftPaddleComponent& paddle);
+
     entt::registry& registry;
 };

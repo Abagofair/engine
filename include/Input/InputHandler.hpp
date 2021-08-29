@@ -1,11 +1,13 @@
 #pragma once
 
+#include <iostream>
+
 #include <Input/InputStructures.hpp>
 #include <functional>
 #include <unordered_map>
 #include <queue>
 #include <stdexcept>
-
+#include <cmath>
 #include <SDL.h>
 
 namespace Input
@@ -41,5 +43,8 @@ namespace Input
 
         std::priority_queue<GamepadEvent, std::vector<GamepadEvent>, std::greater<GamepadEvent>> _gamepadEventQueue;
         std::priority_queue<KeyEvent, std::vector<KeyEvent>, std::greater<KeyEvent>> _keyboardEventQueue;
+
+        glm::vec2 _leftAxisValues;
+        glm::vec2 _rightAxisValues;
     };
 };
