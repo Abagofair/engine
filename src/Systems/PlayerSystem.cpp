@@ -92,23 +92,14 @@ void PlayerSystem::UpdatePaddle(Components::VelocityComponent& velocity, Compone
 {
     if (paddle.state == Components::PaddleState::STOP)
     {
-        glm::vec2 accel = glm::abs(paddle.acceleration);
-        const float decel = accel.y * 0.0000001f;
+        glm::vec2 accel = glm::abs(velocity.velocity);
+        const float decel = accel.y * 0.05f;
 
-        if (paddle.acceleration.y < 0.0f)
-            paddle.acceleration.y += decel;
-        else if (paddle.acceleration.y > 0.0f)
-            paddle.acceleration.y -= decel;
-
-        /*if (accel.y < 0.000005f)
-            paddle.acceleration.y = 0.0f;*/
+        if (velocity.velocity.y < 0.0f)
+            velocity.velocity.y += decel;
+        else if (velocity.velocity.y > 0.0f)
+            velocity.velocity.y -= decel;
     }
         
     velocity.velocity += paddle.acceleration;
-    
-    glm::vec2 copy = glm::abs(velocity.velocity);
-    if (copy.x > paddle.velocityCeiling.x)
-        velocity.velocity.x = velocity.velocity.x > 0 ? paddle.velocityCeiling.x : -paddle.velocityCeiling.x;
-    if (copy.y > paddle.velocityCeiling.y)
-        velocity.velocity.y = velocity.velocity.y > 0 ? paddle.velocityCeiling.y : -paddle.velocityCeiling.y;
-}
+}   

@@ -23,6 +23,7 @@ and may not be redistributed without written permission.*/
 #include <Systems/SpriteRender.hpp>
 #include <Systems/PlayerSystem.hpp>
 #include <Systems/IntegrationSystem.hpp>
+#include <Systems/CollisionSystem.hpp>
 
 #include <Renderer/Renderable.hpp>
 #include <entt/entt.hpp>
@@ -48,18 +49,21 @@ int main(int argc, char* args[])
 	auto& p = registry.emplace<Components::LeftPaddleComponent>(entity);
 	auto& s = registry.emplace<Components::SpriteComponent>(entity);
 	auto& v = registry.emplace<Components::VelocityComponent>(entity);
+	auto& b = registry.emplace<Components::BoundingBoxComponent>(entity);
 	
-	p.maxAcceleration = glm::vec2(0.0f, 500.5f);
-	p.velocityCeiling = glm::vec2(0.0f, 1000.0f);
+	p.maxAcceleration = glm::vec2(0.0f, 100.5f);
+	p.velocityCeiling = glm::vec2(0.0f, 200.0f);
 	v.velocity.x = 0.0f;
 	v.velocity.y = 0.0f;
 	p.isLeft = true;
+	b.height = 30;
+	b.width = 10;
+	s.position.x = 30.0f;
+	s.position.y = 300.0f;
 
 	glm::mat4 trans = glm::mat4(1.0f);
-	trans = glm::translate(trans, glm::vec3(30.0f, 300.0f, 0.0f));
-	t = trans;
-	//trans = glm::scale(trans, glm::vec3(50.0f, 50.0f, 0.0f));
-	d = Renderables::SetupDynamic(dynamicShaderId, 10, 30);
+	t = glm::translate(trans, glm::vec3(s.position, 0.0f));
+	d = Renderables::SetupDynamic(dynamicShaderId, b.width, b.height);
 
 	auto entity1 = registry.create();
 	auto& d1 = registry.emplace<Renderables::Dynamic>(entity1);
@@ -67,17 +71,21 @@ int main(int argc, char* args[])
 	auto& p1 = registry.emplace<Components::RightPaddleComponent>(entity1);
 	auto& s1 = registry.emplace<Components::SpriteComponent>(entity1);
 	auto& v1 = registry.emplace<Components::VelocityComponent>(entity1);
+	auto& b1 = registry.emplace<Components::BoundingBoxComponent>(entity1);
 	
-	p1.maxAcceleration = glm::vec2(0.0f, 500.5f);
-	p1.velocityCeiling = glm::vec2(0.0f, 1000.0f);
+	p1.maxAcceleration = glm::vec2(0.0f, 100.5f);
+	p1.velocityCeiling = glm::vec2(0.0f, 200.0f);
 	v1.velocity.x = 0.0f;
 	v1.velocity.y = 0.0f;
+	p1.isLeft = true;
+	b1.height = 30;
+	b1.width = 10;
+	s1.position.x = 770.0f;
+	s1.position.y = 300.0f;
 
 	glm::mat4 trans1 = glm::mat4(1.0f);
-	trans1 = glm::translate(trans1, glm::vec3(770.0f, 300.0f, 0.0f));
-	t1 = trans1;
-	//trans = glm::scale(trans, glm::vec3(50.0f, 50.0f, 0.0f));
-	d1 = Renderables::SetupDynamic(dynamicShaderId, 10, 30);
+	t1 = glm::translate(trans1, glm::vec3(s1.position, 0.0f));
+	d1 = Renderables::SetupDynamic(dynamicShaderId, b1.width, b1.height);
 
 	auto entity2 = registry.create();
 	auto& staticEntity = registry.emplace<Renderables::Static>(entity2);
@@ -95,6 +103,7 @@ int main(int argc, char* args[])
 	playerSystem.SetPosition(glm::uvec2(100, 300));
 	
 	IntegrationSystem integrationSystem(registry);
+	CollisionSystem collisionSystem(registry, *window);
 
 	SDL_GameController *controller = NULL;
 	std::cout << SDL_NumJoysticks() << std::endl;
@@ -137,12 +146,14 @@ int main(int argc, char* args[])
 
 		integrationSystem.Integrate(time);
 
+		collisionSystem.ResolveVelocities();
+
 		for (auto entity : dynamicRenderablesView)
 		{
 			auto sprite = dynamicRenderablesView.get<Components::SpriteComponent>(entity);
 			auto& transform = dynamicRenderablesView.get<Components::TransformComponent>(entity);
 			if (sprite.recalculateTransform)
-				transform.transform = glm::translate(transform.transform, glm::vec3(sprite.position, 0.0f));
+				transform.transform = glm::translate(glm::mat4(1.0f), glm::vec3(sprite.position, 0.0f));
 		}
 
 		window->ClearBuffer(RGBA(0.1f, 0.7f, 0.95f, 1.0f));

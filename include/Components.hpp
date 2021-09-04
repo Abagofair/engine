@@ -85,4 +85,9 @@ namespace Components
             : LeftPaddleComponent(acceleration, velocityCeiling)
             {}
     };
+
+    struct BoundingBoxComponent {
+        uint32_t width;
+        uint32_t height;
+    };
 };
