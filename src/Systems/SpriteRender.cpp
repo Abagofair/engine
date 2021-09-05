@@ -39,6 +39,15 @@ void SpriteRender::Draw(entt::registry &registry)
         glBindVertexArray(0);
     }
     
+    unsigned int data[512];
+	for (int i = 0; i < 512; ++i)
+	{
+		if (i % 2 == 0)
+			data[i] = 1;
+		else
+			data[i] = 0;
+	}
+
     for (auto entity : staticRenderablesView)
     {
         auto staticRenderable = staticRenderablesView.get<const Renderables::Static>(entity);
@@ -46,6 +55,7 @@ void SpriteRender::Draw(entt::registry &registry)
         auto& shader = _shaderManager.GetShader(staticRenderable.shaderId);
         shader.Use();
         shader.SetUniformMat4(viewMatrix, "view");
+        shader.SetUniformBoolArray(data, 512, "asd");
         glBindVertexArray(staticRenderable.vao);
         glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, staticRenderable.instances);
         glBindVertexArray(0);

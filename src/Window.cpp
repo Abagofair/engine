@@ -39,7 +39,7 @@ Window::Window(
 
     // Check OpenGL properties
     //printf("OpenGL loaded\n");
-    gladLoadGLLoader(SDL_GL_GetProcAddress);
+    gladLoaderLoadGL();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //printf("Vendor:   %s\n", glGetString(GL_VENDOR));
@@ -56,8 +56,7 @@ Window::~Window()
 
 void Window::ClearBuffer(RGBA rgba)
 {
-    glClearColor(rgba.RgbaVec.x, 
-        rgba.RgbaVec.y, rgba.RgbaVec.z, rgba.RgbaVec.w);
+    glClearColor(rgba.RgbaVec.x, rgba.RgbaVec.y, rgba.RgbaVec.z, rgba.RgbaVec.w);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

@@ -60,6 +60,7 @@ Static Renderables::SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transf
     glBufferData(GL_ARRAY_BUFFER, transforms.size() * sizeof(glm::mat4), &transforms[0], GL_STATIC_DRAW);
 
     glBindVertexArray(renderable.vao);
+
     // set attribute pointers for matrix (4 times vec4)
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);

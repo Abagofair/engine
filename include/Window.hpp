@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string>
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 #include <SDL.h>
 #include <SDL_image.h>
 

@@ -21,6 +21,9 @@ void main()
 
 #shader fragment
 #version 430 core
+
+uniform uint asd[512];
+
 out vec4 FragColor;
 
 in flat int instanceID;
@@ -31,9 +34,9 @@ in flat int instanceID;
 
 void main()
 {
-    if (instanceID > 10)
+    if (asd[instanceID] == 1)
     {
-	    FragColor = vec4((1.0/(instanceID * 0.001)), 0.0, 0.0, 0.0);
+	    FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
     else
     {

@@ -24,6 +24,7 @@ public:
     uint32_t ShaderId() const;
     void Use() const;
     void SetUniformMat4(const glm::mat4& transform, const std::string& name);
+    void SetUniformBoolArray(const unsigned int* array, int size, const std::string& name);
 
 private:
     Shader(const Shader&) = delete;

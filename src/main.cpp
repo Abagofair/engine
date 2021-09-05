@@ -31,6 +31,9 @@ and may not be redistributed without written permission.*/
 
 #include <Time.hpp>
 
+#include <cstdlib>
+#include <ctime>
+
 std::unique_ptr<Window> window;
 
 int main(int argc, char* args[])
@@ -121,12 +124,15 @@ int main(int argc, char* args[])
 	float yOff = 20.0f;
 	bool isYOff = false;
 
+	std::srand(std::time(nullptr));
+
 	for (int i = 1; i <= 245; ++i)
 	{
 		auto blockEntity = registry.create();
 		auto& boundingBox = registry.emplace<Components::BoundingBoxComponent>(blockEntity);
-		startX += 5 + 17.5f;
-		startY += isYOff ? -yOff : yOff;
+		startX += 5 + 17.5f + 1 + std::rand()/((RAND_MAX + 1u)/6);
+		int t = 1 + std::rand()/((RAND_MAX + 1u)/10);
+		startY += isYOff ? -yOff + -1*t : yOff + t;
 		isYOff = !isYOff;
 		if (i % 45 == 0)
 		{

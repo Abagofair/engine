@@ -119,3 +119,9 @@ void Shader::SetUniformMat4(const glm::mat4& transform, const std::string& name)
     unsigned int uniformLocation = glGetUniformLocation(*_glShaderProgramId, name.c_str());
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(transform));
 }
+
+void Shader::SetUniformBoolArray(const unsigned int* array, int size, const std::string& name)
+{
+    unsigned int uniformLocation = glGetUniformLocation(*_glShaderProgramId, name.c_str());
+    glUniform1uiv(uniformLocation, size, array);
+}

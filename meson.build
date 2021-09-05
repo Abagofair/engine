@@ -30,7 +30,7 @@ base_include = include_directories('include')
 executable(
     'Game',
     ['src/Window.cpp',
-  'src/glad.cpp',
+  'src/gl.cpp',
   'src/Systems/SpriteRender.cpp',
   'src/Shader.cpp',
   'src/Scene.cpp',
