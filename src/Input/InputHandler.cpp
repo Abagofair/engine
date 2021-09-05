@@ -15,8 +15,8 @@ void InputHandler::FeedEventQueue()
 {
     bool asd = false;
     SDL_Event event;
-    GamepadEvent leftGamePadEvent;
-    GamepadEvent rightGamePadEvent;
+
+    std::vector<GamepadEvent> gamepadEvents;
 
     _gamepadEventQueue.empty();
     _keyboardEventQueue.empty();
@@ -28,33 +28,45 @@ void InputHandler::FeedEventQueue()
             case SDL_CONTROLLERAXISMOTION:
                 {
                     asd = true;
-                    leftGamePadEvent.inputEventType = InputEventType::GamePadAxisMoved;
-                    rightGamePadEvent.inputEventType = InputEventType::GamePadAxisMoved;
+                    GamepadEvent gamepadEvent;
+                    gamepadEvent.inputEventType = InputEventType::GamePadAxisMoved;
                     
                     auto axis = static_cast<SDL_GameControllerAxis>(event.caxis.axis);
                     if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)
                     {
-                        leftGamePadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
                         _leftAxisValues.x = event.caxis.value;
                     }
                     else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)
                     {
-                        leftGamePadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
                         _leftAxisValues.y = event.caxis.value;
                     }
                     else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX)
                     {
-                        rightGamePadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
                         _rightAxisValues.x = event.caxis.value;
                     }
                     else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY)
                     {
-                        rightGamePadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
                         _rightAxisValues.y = event.caxis.value;
                     }
-//                    _gamepadEventQueue.push(gamepadEvent);
 
+                    gamepadEvents.push_back(gamepadEvent);
                     break;
+                }
+            case SDL_CONTROLLERBUTTONDOWN:
+                {
+                    GamepadEvent gamepadEvent;
+
+                    gamepadEvent.inputEventType = InputEventType::GamePadButtonDown;
+                    if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A)
+                    {
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadButton1;
+                    }
+
+                    gamepadEvents.push_back(gamepadEvent);
                 }
             case SDL_QUIT:
                 {
@@ -70,85 +82,87 @@ void InputHandler::FeedEventQueue()
         }
     }
 
-    //TODO: mmm duplication
-    if (leftGamePadEvent.gamepadCode == GamepadCode::GamepadLeftAxis)
+    for (GamepadEvent ge : gamepadEvents)
     {
-        //https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput
-        //determine how far the controller is pushed
-        float magnitude = sqrt(_leftAxisValues.x * _leftAxisValues.x
-             + _leftAxisValues.y * _leftAxisValues.y);
+        float magnitude = 0.0f;
+        float normalizedLX = 0.0f;
+        float normalizedLY = 0.0f;
+        float normalizedMagnitude = 0.0f;
 
-        //determine the direction the controller is pushed
-        float normalizedLX = _leftAxisValues.x / magnitude;
-        float normalizedLY = _leftAxisValues.y / magnitude;
-
-        float normalizedMagnitude = 0;
-
-        if (magnitude > 7849)
+        //TODO: mmm duplication
+        if (ge.gamepadCode == GamepadCode::GamepadLeftAxis)
         {
-            //clip the magnitude at its expected maximum value
-            if (magnitude > 32767) magnitude = 32767;
+            //https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput
+            //determine how far the controller is pushed
+            magnitude = sqrt(_leftAxisValues.x * _leftAxisValues.x
+                + _leftAxisValues.y * _leftAxisValues.y);
 
-            //adjust magnitude relative to the end of the dead zone
-            magnitude -= 7849;
+            //determine the direction the controller is pushed
+            normalizedLX = _leftAxisValues.x / magnitude;
+            normalizedLY = _leftAxisValues.y / magnitude;
 
-            //optionally normalize the magnitude with respect to its expected range
-            //giving a magnitude value of 0.0 to 1.0
-            normalizedMagnitude = magnitude / (32767 - 7849);
+            normalizedMagnitude = 0;
+
+            if (magnitude > 7849)
+            {
+                //clip the magnitude at its expected maximum value
+                if (magnitude > 32767) magnitude = 32767;
+
+                //adjust magnitude relative to the end of the dead zone
+                magnitude -= 7849;
+
+                //optionally normalize the magnitude with respect to its expected range
+                //giving a magnitude value of 0.0 to 1.0
+                normalizedMagnitude = magnitude / (32767 - 7849);
+            }
+            else //if the controller is in the deadzone zero out the magnitude
+            {
+                magnitude = 0.0;
+                normalizedMagnitude = 0.0;
+            }
+
+            if (normalizedLY < 0)
+                normalizedMagnitude *= -1;
         }
-        else //if the controller is in the deadzone zero out the magnitude
+        else if (ge.gamepadCode == GamepadCode::GamepadRightAxis)
         {
-            magnitude = 0.0;
-            normalizedMagnitude = 0.0;
+            //https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput
+            //determine how far the controller is pushed
+            magnitude = sqrt(_rightAxisValues.x * _rightAxisValues.x
+                + _rightAxisValues.y * _rightAxisValues.y);
+
+            //determine the direction the controller is pushed
+            normalizedLX = _rightAxisValues.x / magnitude;
+            normalizedLY = _rightAxisValues.y / magnitude;
+
+            normalizedMagnitude = 0;
+
+            if (magnitude > 8689)
+            {
+                //clip the magnitude at its expected maximum value
+                if (magnitude > 32767) magnitude = 32767;
+
+                //adjust magnitude relative to the end of the dead zone
+                magnitude -= 8689;
+
+                //optionally normalize the magnitude with respect to its expected range
+                //giving a magnitude value of 0.0 to 1.0
+                normalizedMagnitude = magnitude / (32767 - 8689);
+            }
+            else //if the controller is in the deadzone zero out the magnitude
+            {
+                magnitude = 0.0;
+                normalizedMagnitude = 0.0;
+            }
+
+            if (normalizedLY < 0)
+                normalizedMagnitude *= -1;
         }
 
-        if (normalizedLY < 0)
-            normalizedMagnitude *= -1;
+        ge.normalizedMagnitude = normalizedMagnitude;
+        ge.normalizedDirection = glm::vec2(normalizedLX, normalizedLY);
 
-        leftGamePadEvent.normalizedMagnitude = normalizedMagnitude;
-        leftGamePadEvent.normalizedDirection = glm::vec2(normalizedLX, normalizedLY);
-
-        _gamepadEventQueue.push(leftGamePadEvent);
-    }
-
-    if (rightGamePadEvent.gamepadCode == GamepadCode::GamepadRightAxis)
-    {
-        //https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput
-        //determine how far the controller is pushed
-        float magnitude = sqrt(_rightAxisValues.x * _rightAxisValues.x
-             + _rightAxisValues.y * _rightAxisValues.y);
-
-        //determine the direction the controller is pushed
-        float normalizedLX = _rightAxisValues.x / magnitude;
-        float normalizedLY = _rightAxisValues.y / magnitude;
-
-        float normalizedMagnitude = 0;
-
-        if (magnitude > 8689)
-        {
-            //clip the magnitude at its expected maximum value
-            if (magnitude > 32767) magnitude = 32767;
-
-            //adjust magnitude relative to the end of the dead zone
-            magnitude -= 8689;
-
-            //optionally normalize the magnitude with respect to its expected range
-            //giving a magnitude value of 0.0 to 1.0
-            normalizedMagnitude = magnitude / (32767 - 8689);
-        }
-        else //if the controller is in the deadzone zero out the magnitude
-        {
-            magnitude = 0.0;
-            normalizedMagnitude = 0.0;
-        }
-
-        if (normalizedLY < 0)
-            normalizedMagnitude *= -1;
-
-        rightGamePadEvent.normalizedMagnitude = normalizedMagnitude;
-        rightGamePadEvent.normalizedDirection = glm::vec2(normalizedLX, normalizedLY);
-
-        _gamepadEventQueue.push(rightGamePadEvent);
+        _gamepadEventQueue.push(ge);
     }
 }
 
@@ -189,7 +203,7 @@ void InputHandler::DispatchKeyboardEvents()
     }
 }
 
-void InputHandler::OnGamepadAxisMoved(GamepadCode gamePadCode, std::function<void(GamepadEvent)> callback)
+void InputHandler::OnGamepadEvent(GamepadCode gamePadCode, std::function<void(GamepadEvent)> callback)
 {
     _callbackByGamepadCode[gamePadCode] = callback;
 }

@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <cmath>
 #include <SDL.h>
+#include <vector>
 
 namespace Input
 {
@@ -33,7 +34,7 @@ namespace Input
         void OnMouseButtonUp(KeyCode, Function);
         void OnMouseMoved(KeyCode, Function);*/
 
-        void OnGamepadAxisMoved(GamepadCode gamePadCode, std::function<void(GamepadEvent)> callback);
+        void OnGamepadEvent(GamepadCode gamePadCode, std::function<void(GamepadEvent)> callback);
         /*void OnGamePadButtonDown(KeyCode, Function);
         void OnGamePadButtonUp(KeyCode, Function);*/
 

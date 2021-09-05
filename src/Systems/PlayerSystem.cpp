@@ -66,6 +66,27 @@ void PlayerSystem::Move(const Input::GamepadEvent& gamepadEvent, Components::Vel
     }
 }
 
+void PlayerSystem::LaunchBall(Input::GamepadEvent gamepadEvent)
+{
+    auto leftPaddleView = registry.view<
+        Components::VelocityComponent,
+        Components::LeftPaddleComponent>();
+
+    auto leftPaddle = leftPaddleView.front();
+    auto& p = leftPaddleView.get<Components::LeftPaddleComponent>(leftPaddle);
+
+    if (p.attached == entt::null) return;
+
+    auto& vBall = registry.get<Components::BallComponent>(p.attached);
+
+    if (gamepadEvent.inputEventType == Input::InputEventType::GamePadButtonDown &&
+        vBall.ballState == Components::BallState::Attached)
+    {
+        vBall.ballState = Components::BallState::Launch;
+        p.attached = entt::null;
+    }
+}
+
 void PlayerSystem::Update()
 {
     auto leftPaddleView = registry.view<
@@ -86,6 +107,18 @@ void PlayerSystem::Update()
     auto& v1 = rightPaddleView.get<Components::VelocityComponent>(rightPaddle);
     auto& p1 = rightPaddleView.get<Components::RightPaddleComponent>(rightPaddle);
     UpdatePaddle(v1, p1);
+
+    if (p.attached != entt::null)
+    {
+        auto& vBall = registry.get<Components::VelocityComponent>(p.attached);
+        vBall.velocity = v.velocity;
+    }
+
+    if (p1.attached != entt::null)
+    {
+        auto& vBall = registry.get<Components::VelocityComponent>(p.attached);
+        vBall.velocity = v.velocity;
+    }
 }
 
 void PlayerSystem::UpdatePaddle(Components::VelocityComponent& velocity, Components::LeftPaddleComponent& paddle)
@@ -93,13 +126,13 @@ void PlayerSystem::UpdatePaddle(Components::VelocityComponent& velocity, Compone
     if (paddle.state == Components::PaddleState::STOP)
     {
         glm::vec2 accel = glm::abs(velocity.velocity);
-        const float decel = accel.y * 0.05f;
+        const float decel = accel.y * 0.005f;
 
         if (velocity.velocity.y < 0.0f)
             velocity.velocity.y += decel;
         else if (velocity.velocity.y > 0.0f)
             velocity.velocity.y -= decel;
     }
-        
+    
     velocity.velocity += paddle.acceleration;
-}   
+}

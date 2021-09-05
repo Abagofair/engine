@@ -51,7 +51,8 @@ namespace Input
     enum GamepadCode
     {
         GamepadLeftAxis = 100,
-        GamepadRightAxis
+        GamepadRightAxis,
+        GamepadButton1
     };
 
     struct InputEvent

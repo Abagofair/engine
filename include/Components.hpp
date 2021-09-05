@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-
+#include <entt/entt.hpp>
 #include <glm/glm.hpp>
 
 namespace Components
@@ -68,12 +68,13 @@ namespace Components
         glm::vec2 acceleration;
         glm::vec2 velocityCeiling;
         PaddleState state;
-        bool isLeft;
+        entt::entity attached;
 
         LeftPaddleComponent() = default;
         LeftPaddleComponent(const LeftPaddleComponent&) = default;
-        LeftPaddleComponent(const glm::vec2& acceleration, const glm::vec2& velocityCeiling)
-            : acceleration(acceleration), velocityCeiling(velocityCeiling)
+        LeftPaddleComponent(const glm::vec2& acceleration, const glm::vec2& velocityCeiling,
+            entt::entity attached)
+            : acceleration(acceleration), velocityCeiling(velocityCeiling), attached(attached)
             {}
     };
 
@@ -81,13 +82,36 @@ namespace Components
     {
         RightPaddleComponent() = default;
         RightPaddleComponent(const RightPaddleComponent&) = default;
-        RightPaddleComponent(const glm::vec2& acceleration, const glm::vec2& velocityCeiling)
-            : LeftPaddleComponent(acceleration, velocityCeiling)
+        RightPaddleComponent(const glm::vec2& acceleration, const glm::vec2& velocityCeiling,
+            entt::entity attached)
+            : LeftPaddleComponent(acceleration, velocityCeiling, attached)
             {}
     };
 
     struct BoundingBoxComponent {
-        uint32_t width;
-        uint32_t height;
+        float width;
+        float height;
+
+        BoundingBoxComponent() = default;
+        BoundingBoxComponent(const BoundingBoxComponent&) = default;
+        BoundingBoxComponent(float width, float height)
+            : width(width), height(height)
+            {}
+    };
+
+    enum BallState {
+        Active,
+        Launch,
+        Attached
+    };
+
+    struct BallComponent {
+        BallState ballState;
+
+        BallComponent() = default;
+        BallComponent(const BallComponent&) = default;
+        BallComponent(BallState ballState)
+            : ballState(ballState)
+            {}
     };
 };
