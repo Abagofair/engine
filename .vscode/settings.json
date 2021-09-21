@@ -73,7 +73,8 @@
         "optional": "cpp",
         "ratio": "cpp",
         "queue": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "bitset": "cpp"
     },
     "cmake.configureOnOpen": false
 }

@@ -22,6 +22,7 @@ void IntegrationSystem::Integrate(InternalTime::Time time)
         if (copy.y != 0.0f)
         {
             sprite.position += integratedVelocity;
+            
             sprite.recalculateTransform = true;
         }
         else

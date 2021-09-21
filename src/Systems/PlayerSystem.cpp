@@ -87,6 +87,32 @@ void PlayerSystem::LaunchBall(Input::GamepadEvent gamepadEvent)
     }
 }
 
+void PlayerSystem::DebugAttachBall(Input::GamepadEvent gamepadEvent)
+{
+    auto leftPaddleView = registry.view<
+        Components::LeftPaddleComponent,
+        Components::SpriteComponent>();
+
+    auto leftPaddle = leftPaddleView.front();
+    auto& p = leftPaddleView.get<Components::LeftPaddleComponent>(leftPaddle);
+    auto& playerSprite = leftPaddleView.get<Components::SpriteComponent>(leftPaddle);
+
+    auto ballView = registry.view<
+        Components::BallComponent,
+        Components::VelocityComponent,
+        Components::SpriteComponent>();
+    auto ball = ballView.front();
+
+    auto& ballComp = ballView.get<Components::BallComponent>(ball);
+    auto& ballVelocity = ballView.get<Components::VelocityComponent>(ball);
+    auto& ballSprite = ballView.get<Components::SpriteComponent>(ball);
+
+    ballSprite.position = glm::vec2(playerSprite.position.x + 20.0f, playerSprite.position.y);
+    ballVelocity.velocity = glm::vec2(0.0f, 0.0f);
+    ballComp.ballState = Components::BallState::Attached;
+    p.attached = ball;
+}
+
 void PlayerSystem::Update()
 {
     auto leftPaddleView = registry.view<

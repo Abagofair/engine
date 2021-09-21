@@ -22,3 +22,19 @@ void BallSystem::Update()
         }
     }
 }
+
+void BallSystem::OnBlockCollision(CollisionInfo collisionInfo)
+{
+    std::cout << "COLLIDED" << std::endl;
+
+    auto ballView = _registry.view<
+        Components::VelocityComponent,
+        Components::LeftPaddleComponent>();
+
+    auto ball = ballView.front();
+
+    auto& v = ballView.get<Components::VelocityComponent>(ball);
+    auto& p = ballView.get<Components::LeftPaddleComponent>(ball);
+
+    v.velocity = glm::reflect(v.velocity, glm::normalize(glm::vec2(v.velocity.x*-1.0f, 0.0f)));
+}

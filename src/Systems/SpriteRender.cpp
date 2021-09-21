@@ -6,7 +6,7 @@ SpriteRender::SpriteRender(
     ShaderManager& shaderManager
 ) : renderWidth(width), renderHeight(height), _shaderManager(shaderManager)
 {
-    viewMatrix = glm::ortho<float>(0, (float)width, (float)height, 0, -1.0f, 1.0f);
+    viewMatrix = glm::ortho<float>(0.0f, (float)width, (float)height, 0.0f, 0.0f, 1.0f);
 }
 
 
@@ -42,10 +42,7 @@ void SpriteRender::Draw(entt::registry &registry)
     unsigned int data[512];
 	for (int i = 0; i < 512; ++i)
 	{
-		if (i % 2 == 0)
-			data[i] = 1;
-		else
-			data[i] = 0;
+		data[i] = 1;
 	}
 
     for (auto entity : staticRenderablesView)
@@ -55,9 +52,38 @@ void SpriteRender::Draw(entt::registry &registry)
         auto& shader = _shaderManager.GetShader(staticRenderable.shaderId);
         shader.Use();
         shader.SetUniformMat4(viewMatrix, "view");
-        shader.SetUniformBoolArray(data, 512, "asd");
+        shader.SetUniformBoolArray(data, 512, "staticBlocks");
         glBindVertexArray(staticRenderable.vao);
         glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, staticRenderable.instances);
+        glBindVertexArray(0);
+    }
+
+    //debug view
+    auto boundingBoxView = registry.view<
+        Components::BoundingBoxComponent,
+        Components::SpriteComponent,
+        Renderables::Dynamic>();
+
+    for (auto boundingBox : boundingBoxView)
+    {
+        auto& boundingBoxComponent = boundingBoxView.get<Components::BoundingBoxComponent>(boundingBox);
+        auto& positionComponent = boundingBoxView.get<Components::SpriteComponent>(boundingBox);
+        auto& renderable = boundingBoxView.get<Renderables::Dynamic>(boundingBox);
+
+		glm::mat4 t = glm::translate(glm::mat4(1.0f), glm::vec3(positionComponent.position, 0.0f));
+
+        float minX = positionComponent.position.x;
+        float minY = positionComponent.position.y;
+        float maxX = boundingBoxComponent.width + minX;
+        float maxY = boundingBoxComponent.height + minY;
+        
+        auto& shader = _shaderManager.GetShader(renderable.shaderId);
+        shader.Use();
+        shader.SetUniformMat4(t, "model");
+        shader.SetUniformMat4(viewMatrix, "view");
+        
+        glBindVertexArray(renderable.vao);
+        glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 }

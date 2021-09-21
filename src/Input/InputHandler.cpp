@@ -63,7 +63,11 @@ void InputHandler::FeedEventQueue()
                     gamepadEvent.inputEventType = InputEventType::GamePadButtonDown;
                     if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A)
                     {
-                        gamepadEvent.gamepadCode = GamepadCode::GamepadButton1;
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadButtonA;
+                    }
+                    else if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B)
+                    {
+                        gamepadEvent.gamepadCode = GamepadCode::GamepadButtonB;
                     }
 
                     gamepadEvents.push_back(gamepadEvent);

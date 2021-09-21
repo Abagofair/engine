@@ -55,6 +55,26 @@ namespace Components
             {}
     };
 
+    enum EntityType 
+    {
+        Player,
+        LeftPaddle,
+        RightPaddle,
+        Block,
+        Ball        
+    };
+
+    struct BaseComponent
+    {
+        EntityType entityType;
+
+        BaseComponent() = default;
+        BaseComponent(const BaseComponent&) = default;
+        BaseComponent(EntityType entityType)
+            : entityType(entityType)
+            {}
+    };
+
     enum PaddleState
     {
         UP,
@@ -112,6 +132,16 @@ namespace Components
         BallComponent(const BallComponent&) = default;
         BallComponent(BallState ballState)
             : ballState(ballState)
+            {}
+    };
+
+    struct PositionComponent {
+        glm::vec2 position;
+
+        PositionComponent() = default;
+        PositionComponent(const PositionComponent&) = default;
+        PositionComponent(glm::vec2& position)
+            : position(position)
             {}
     };
 };

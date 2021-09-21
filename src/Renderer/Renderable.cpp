@@ -4,12 +4,21 @@ using namespace Renderables;
 
 void Renderables::SetupVboEbo(uint32_t &vbo, uint32_t &vao, uint32_t &ebo, float width, float height)
 {
-    float quadVertices[12] = 
+    /*float quadVertices[12] = 
     {
         width,  height, 0.0f,
         width, -height, 0.0f,
         -width, -height, 0.0f,
         -width,  height, 0.0f,
+    };*/
+
+    //TOP LEFT ORIGIN
+    float quadVertices[12] = 
+    {
+        0.0f,  0.0f, 0.0f,
+        width, 0.0f, 0.0f,
+        width, height, 0.0f,
+        0.0f,  height, 0.0f,
     };
 
     unsigned int quadIndices[6] =

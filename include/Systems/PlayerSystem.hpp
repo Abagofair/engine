@@ -3,9 +3,12 @@
 #include <iostream>
 
 #include <entt/entt.hpp>
+
 #include <Input/InputHandler.hpp>
 #include <Input/InputStructures.hpp>
 #include <Components.hpp>
+
+#include <Systems/CollisionSystem.hpp>
 
 #include <glm/glm.hpp>
 
@@ -20,6 +23,7 @@ public:
     void MoveRight(Input::GamepadEvent gamepadEvent);
 
     void LaunchBall(Input::GamepadEvent gamepadEvent);
+    void DebugAttachBall(Input::GamepadEvent gamepadEvent);
 
     void Update();
 

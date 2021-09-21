@@ -52,7 +52,8 @@ namespace Input
     {
         GamepadLeftAxis = 100,
         GamepadRightAxis,
-        GamepadButton1
+        GamepadButtonA,
+        GamepadButtonB
     };
 
     struct InputEvent
