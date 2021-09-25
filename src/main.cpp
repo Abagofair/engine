@@ -12,49 +12,58 @@ and may not be redistributed without written permission.*/
 
 #include <functional>
 
-#include <Window.hpp>
-#include <RGBA.hpp>
-#include <Shader.hpp>
+#include <External/entt/entt.hpp>
 
-#include <glPortableHeaders.hpp>
+#include <Engine/Global/Utilities/RGBA.hpp>
+#include <Engine/Global/Time/Time.hpp>
+#include <Engine/Global/glPortableHeaders.hpp>
+#include <Engine/Input/InputHandler.hpp>
+#include <Engine/Windowing/Window.hpp>
+#include <Engine/Rendering/Renderable.hpp>
+#include <Engine/Rendering/SpriteRender.hpp>
+#include <Engine/Rendering/Shader.hpp>
+#include <Engine/Physics/IntegrationSystem.hpp>
+#include <Engine/Collision/CollisionSystem.hpp>
 
-#include <Input/InputHandler.hpp>
-
-#include <Systems/SpriteRender.hpp>
-#include <Systems/PlayerSystem.hpp>
-#include <Systems/BallSystem.hpp>
-#include <Systems/IntegrationSystem.hpp>
-#include <Systems/CollisionSystem.hpp>
-
-#include <Renderer/Renderable.hpp>
-#include <entt/entt.hpp>
-
-#include <Time.hpp>
+#include <Game/Ball.hpp>
+#include <Game/Paddle.hpp>
 
 #include <cstdlib>
 #include <ctime>
 
-std::unique_ptr<Window> window;
+std::unique_ptr<Engine::Windowing::Window> window;
 
 int main(int argc, char* args[])
 {
-	window = std::make_unique<Window>(1920, 1080, "SHITE");
+	window = std::make_unique<Engine::Windowing::Window>(1920, 1080, "SHITE");
 
 	bool exit = false;
 
-	ShaderManager shaderManager;
+	Engine::Rendering::ShaderManager shaderManager;
 	uint32_t dynamicShaderId = shaderManager.LoadShader("dynamicSprite.glsl");
 	uint32_t staticShaderId = shaderManager.LoadShader("staticSprite.glsl");
 	uint32_t debugShaderId = shaderManager.LoadShader("debug.glsl");
 
 	entt::registry registry;
+	auto viewportEntity = registry.create();
+	auto& viewportBase = registry.emplace<Engine::Global::Components::BaseComponent>(viewportEntity);
+	auto& viewportBB = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(viewportEntity);
+	auto& viewportTran = registry.emplace<Engine::Global::Components::TransformComponent>(viewportEntity);
+
+	viewportBase.entityType = Engine::Global::Generated::EntityType::ViewportContainer;
+	viewportBB.contains = true;
+	viewportBB.width = 1920;
+	viewportBB.height = 1080;
+
+	viewportTran.position = glm::vec3(0.0);
+	viewportTran.transform = glm::mat4(1.0f);
+
 	auto entity = registry.create();
-	auto& d = registry.emplace<Renderables::Dynamic>(entity);
-	auto& t = registry.emplace<Components::TransformComponent>(entity);
-	auto& p = registry.emplace<Components::LeftPaddleComponent>(entity);
-	auto& s = registry.emplace<Components::SpriteComponent>(entity);
-	auto& v = registry.emplace<Components::VelocityComponent>(entity);
-	auto& b = registry.emplace<Components::BoundingBoxComponent>(entity);
+	auto& d = registry.emplace<Engine::Rendering::Renderable::Dynamic>(entity);
+	auto& p = registry.emplace<Game::Components::LeftPaddleComponent>(entity);
+	auto& s = registry.emplace<Engine::Global::Components::TransformComponent>(entity);
+	auto& v = registry.emplace<Engine::Physics::Components::VelocityComponent>(entity);
+	auto& b = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(entity);
 	
 	p.maxAcceleration = glm::vec2(0.0f, 50.0f);
 	p.velocityCeiling = glm::vec2(0.0f, 100.0f);
@@ -67,17 +76,16 @@ int main(int argc, char* args[])
 	s.recalculateTransform = false;
 
 	glm::mat4 trans = glm::mat4(1.0f);
-	t.transform = glm::translate(glm::mat4(1.0f), glm::vec3(s.position, 0.0f));
-	t.transform = glm::scale(t.transform, glm::vec3(10.0f, 60.0f, 0.0f));
-	d = Renderables::SetupDynamic(dynamicShaderId, b.width, b.height);
+	s.transform = glm::translate(glm::mat4(1.0f), glm::vec3(s.position, 0.0f));
+	s.transform = glm::scale(s.transform, glm::vec3(10.0f, 60.0f, 0.0f));
+	d = Engine::Rendering::Renderable::SetupDynamic(dynamicShaderId, b.width, b.height);
 
 	auto entity1 = registry.create();
-	auto& d1 = registry.emplace<Renderables::Dynamic>(entity1);
-	auto& t1 = registry.emplace<Components::TransformComponent>(entity1);
-	auto& p1 = registry.emplace<Components::RightPaddleComponent>(entity1);
-	auto& s1 = registry.emplace<Components::SpriteComponent>(entity1);
-	auto& v1 = registry.emplace<Components::VelocityComponent>(entity1);
-	auto& b1 = registry.emplace<Components::BoundingBoxComponent>(entity1);
+	auto& d1 = registry.emplace<Engine::Rendering::Renderable::Dynamic>(entity1);
+	auto& s1 = registry.emplace<Engine::Global::Components::TransformComponent>(entity1);
+	auto& p1 = registry.emplace<Game::Components::RightPaddleComponent>(entity1);
+	auto& v1 = registry.emplace<Engine::Physics::Components::VelocityComponent>(entity1);
+	auto& b1 = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(entity1);
 	
 	p1.attached = entt::null;
 	p1.maxAcceleration = glm::vec2(0.0f, 50.0f);
@@ -91,23 +99,22 @@ int main(int argc, char* args[])
 
 	glm::mat4 trans1 = glm::translate(glm::mat4(1.0f), glm::vec3(s1.position, 0.0f));
 	
-	t1 = glm::translate(trans1, glm::vec3(s1.position, 0.0f));
-	d1 = Renderables::SetupDynamic(dynamicShaderId, b1.width, b1.height);
+	s1.transform = glm::translate(trans1, glm::vec3(s1.position, 0.0f));
+	d1 = Engine::Rendering::Renderable::SetupDynamic(dynamicShaderId, b1.width, b1.height);
 
 	auto entity3 = registry.create();
 	
 	p.attached = entity3;
 
-	auto& d2 = registry.emplace<Renderables::Dynamic>(entity3);
-	auto& t2 = registry.emplace<Components::TransformComponent>(entity3);
-	auto& s2 = registry.emplace<Components::SpriteComponent>(entity3);
-	auto& v2 = registry.emplace<Components::VelocityComponent>(entity3);
-	auto& b2 = registry.emplace<Components::BoundingBoxComponent>(entity3);
-	auto& ball2 = registry.emplace<Components::BallComponent>(entity3);
-	auto& ballbase = registry.emplace<Components::BaseComponent>(entity3);
-	ballbase.entityType = Components::EntityType::Ball;
+	auto& d2 = registry.emplace<Engine::Rendering::Renderable::Dynamic>(entity3);
+	auto& s2 = registry.emplace<Engine::Global::Components::TransformComponent>(entity3);
+	auto& v2 = registry.emplace<Engine::Physics::Components::VelocityComponent>(entity3);
+	auto& b2 = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(entity3);
+	auto& ball2 = registry.emplace<Game::Components::BallComponent>(entity3);
+	auto& ballbase = registry.emplace<Engine::Global::Components::BaseComponent>(entity3);
+	ballbase.entityType = Engine::Global::Generated::EntityType::Ball;
 	
-	ball2.ballState = Components::BallState::Attached;
+	ball2.ballState = Game::Components::BallState::Attached;
 	v2.velocity.x = 0.0f;
 	v2.velocity.y = 0.0f;
 	b2.height = 6.0f;
@@ -116,12 +123,12 @@ int main(int argc, char* args[])
 	s2.position.y = s.position.y;
 
 	glm::mat4 trans2 = glm::mat4(1.0f);
-	t2 = glm::translate(trans2, glm::vec3(s2.position, 0.0f));
-	d2 = Renderables::SetupDynamic(dynamicShaderId, b2.width, b2.height);
+	s2.transform = glm::translate(trans2, glm::vec3(s2.position, 0.0f));
+	d2 = Engine::Rendering::Renderable::SetupDynamic(dynamicShaderId, b2.width, b2.height);
 
 	//render entity for static quads
 	auto entity2 = registry.create();
-	auto& staticEntity = registry.emplace<Renderables::Static>(entity2);
+	auto& staticEntity = registry.emplace<Engine::Rendering::Renderable::Static>(entity2);
 	std::vector<glm::mat4> translations;
 
 	float startX = 375.0f;
@@ -131,15 +138,15 @@ int main(int argc, char* args[])
 	bool isYOff = false;
 
 	std::srand(std::time(nullptr));
-
+	
 	for (int i = 1; i <= 245; ++i)
 	{
 		auto blockEntity = registry.create();
-		auto& dynDebug = registry.emplace<Renderables::Dynamic>(blockEntity);
-		auto& base = registry.emplace<Components::BaseComponent>(blockEntity);
-		base.entityType = Components::EntityType::Block;
-		dynDebug = Renderables::SetupDynamic(debugShaderId, 5, 50);
-		auto& boundingBox = registry.emplace<Components::BoundingBoxComponent>(blockEntity);
+		auto& dynDebug = registry.emplace<Engine::Rendering::Renderable::Dynamic>(blockEntity);
+		auto& base = registry.emplace<Engine::Global::Components::BaseComponent>(blockEntity);
+		base.entityType = Engine::Global::Generated::EntityType::Block;
+		dynDebug = Engine::Rendering::Renderable::SetupDynamic(debugShaderId, 5, 50);
+		auto& boundingBox = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(blockEntity);
 		boundingBox.width = b1.width;
 		boundingBox.height = b1.height;
 		startX += 5 + 17.5f + 1 + std::rand()/((RAND_MAX + 1u)/6);
@@ -151,26 +158,29 @@ int main(int argc, char* args[])
 			startY += 150.0f + 10;
 			startX = 375.0f;
 		}
-		auto& pos = registry.emplace<Components::SpriteComponent>(blockEntity);
+		auto& pos = registry.emplace<Engine::Global::Components::TransformComponent>(blockEntity);
 		pos.position = glm::vec2(startX, startY);
 		translations.push_back(glm::translate(trans, glm::vec3(startX, startY, 0.0f))); 
 	}
 
-	staticEntity = Renderables::SetupStatic(staticShaderId, translations, 5, 50);
+	staticEntity = Engine::Rendering::Renderable::SetupStatic(staticShaderId, translations, 5, 50);
 
-	SpriteRender spriteRender(1920, 1080, shaderManager);
+	Engine::Rendering::SpriteRender spriteRender(1920, 1080, shaderManager);
 
-	PlayerSystem playerSystem(registry);
+	Game::Paddle playerSystem(registry);
 	//playerSystem.SetPosition(glm::uvec2(100, 300));
-	BallSystem ballSystem(registry);
+	Game::Ball ballSystem(registry);
 	
-	IntegrationSystem integrationSystem(registry);
-	CollisionSystem collisionSystem(registry, *window);
+	Engine::Physics::IntegrationSystem integrationSystem(registry);
+	Engine::Collision::CollisionSystem collisionSystem(registry);
 
 	//for entity ball on collision with block do velocity reflection as defined by some handler
 	collisionSystem.AddCollisionHandler(entity3,
-			Components::EntityType::Block,
-			std::bind(&BallSystem::OnBlockCollision, &ballSystem, std::placeholders::_1));
+			Engine::Global::Generated::EntityType::Block,
+			std::bind(&Game::Ball::OnBlockCollision, &ballSystem, std::placeholders::_1));
+	collisionSystem.AddCollisionHandler(entity3,
+			Engine::Global::Generated::EntityType::ViewportContainer,
+			std::bind(&Game::Ball::OnViewportCollision, &ballSystem, std::placeholders::_1));
 
 	SDL_GameController *controller = NULL;
 	std::cout << SDL_NumJoysticks() << std::endl;
@@ -188,21 +198,20 @@ int main(int argc, char* args[])
 		}
 	}
 
-	Input::InputHandler inputHandler;
-	inputHandler.OnGamepadEvent(Input::GamepadCode::GamepadLeftAxis, std::bind(&PlayerSystem::MoveLeft, &playerSystem, std::placeholders::_1));
-	inputHandler.OnGamepadEvent(Input::GamepadCode::GamepadRightAxis, std::bind(&PlayerSystem::MoveRight, &playerSystem, std::placeholders::_1));
-	inputHandler.OnGamepadEvent(Input::GamepadCode::GamepadButtonA, std::bind(&PlayerSystem::LaunchBall, &playerSystem, std::placeholders::_1));
-	inputHandler.OnGamepadEvent(Input::GamepadCode::GamepadButtonB, std::bind(&PlayerSystem::DebugAttachBall, &playerSystem, std::placeholders::_1));
+	Engine::Input::InputHandler inputHandler;
+	inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftAxis, std::bind(&Game::Paddle::MoveLeft, &playerSystem, std::placeholders::_1));
+	inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightAxis, std::bind(&Game::Paddle::MoveRight, &playerSystem, std::placeholders::_1));
+	inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonA, std::bind(&Game::Paddle::LaunchBall, &playerSystem, std::placeholders::_1));
+	inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonB, std::bind(&Game::Paddle::DebugAttachBall, &playerSystem, std::placeholders::_1));
 
 	uint32_t previousTime = SDL_GetTicks();
 
 	while (!exit)
 	{
 		auto dynamicRenderablesView = registry.view<
-			Components::TransformComponent, 
-			Components::SpriteComponent>();
+			Engine::Global::Components::TransformComponent>();
 
-		InternalTime::Time time;
+		Engine::Global::Time::Time time;
 		time.MsElapsedTotal = SDL_GetTicks();
 		time.MsElapsedFrame = time.MsElapsedTotal - previousTime;
 		previousTime = time.MsElapsedTotal;
@@ -213,18 +222,17 @@ int main(int argc, char* args[])
 		playerSystem.Update();
 		ballSystem.Update();
 		integrationSystem.Integrate(time);
-		collisionSystem.HandleViewport();
+		collisionSystem.Handle();
 
 		for (auto entity : dynamicRenderablesView)
 		{
-			auto sprite = dynamicRenderablesView.get<Components::SpriteComponent>(entity);
-			auto& transform = dynamicRenderablesView.get<Components::TransformComponent>(entity);
+			auto& transform = dynamicRenderablesView.get<Engine::Global::Components::TransformComponent>(entity);
 			//if (sprite.recalculateTransform)
-			transform.transform = glm::translate(glm::mat4(1.0f), glm::vec3(sprite.position, 0.0f));
+			transform.transform = glm::translate(glm::mat4(1.0f), glm::vec3(transform.position, 0.0f));
 			//transform.transform = glm::scale(transform.transform, glm::vec3(10.0f, 60.0f, 0.0f));
 		}
 
-		window->ClearBuffer(RGBA(0.1f, 0.7f, 0.95f, 1.0f));
+		window->ClearBuffer(Engine::Global::Utilities::RGBA(0.1f, 0.7f, 0.95f, 1.0f));
 		spriteRender.Draw(registry);
 		window->SwapBuffers();
 	}
