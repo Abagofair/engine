@@ -10,6 +10,7 @@
 #include <Engine/Physics/PhysicsComponents.hpp>
 
 #include <Game/GameComponents.hpp>
+#include <Game/Generated/EntityType.hpp>
 
 namespace Game
 {

@@ -44,10 +44,11 @@ namespace Engine::Rendering::Renderable
         glEnableVertexAttribArray(0);
     }
 
-    Dynamic SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height)
+    Rendering::Components::RenderableComponent SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height)
     {
-        Dynamic renderable;
+        Rendering::Components::RenderableComponent renderable;
         renderable.shaderId = shaderId;
+        renderable.primitive = Rendering::Components::Primitive::Quad;
 
         SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
             (float)width, (float)height);

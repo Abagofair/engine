@@ -28,7 +28,7 @@ namespace Engine::Windowing
         void ClearBuffer(Global::Utilities::RGBA rgba);
         void SwapBuffers();
         void CenterMouseInWindow();
-        glm::uvec2 WindowDimensions();
+        glm::uvec2 WindowDimensions() const;
     private:
         unsigned short _width;
         unsigned short _height;

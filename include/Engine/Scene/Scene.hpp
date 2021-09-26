@@ -10,12 +10,10 @@ namespace Engine::Scene
         Scene();
         ~Scene();
 
-        entt::registry registry;
-
         void Initialize();
         void Update();
         void Draw();
-    private:
+    protected:
         //WorldSystems
         //  AISystem
         //  PhysicSystem

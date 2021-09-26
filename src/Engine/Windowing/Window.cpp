@@ -72,7 +72,7 @@ namespace Engine::Windowing
         SDL_WarpMouseInWindow(_window, _width / 2, _height / 2);
     }
 
-    glm::uvec2 Window::WindowDimensions()
+    glm::uvec2 Window::WindowDimensions() const
     {
         return glm::uvec2(_width, _height);
     }

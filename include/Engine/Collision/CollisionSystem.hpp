@@ -26,9 +26,7 @@ namespace Engine::Collision
         CollisionSystem(
             entt::registry& registry)
             : _registry(registry)
-        {
-            _entityCollisionCallbacks = std::unordered_map<entt::entity, std::unordered_map<T, std::function<void(CollisionInfo)>>>();
-        }
+        {}
 
         void BroadPhase()
         {

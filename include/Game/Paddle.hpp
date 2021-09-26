@@ -29,7 +29,6 @@ namespace Game
 
         void Update();
 
-        
         void OnViewportCollision(Engine::Collision::CollisionInfo collisionInfo);
     private:
         void UpdatePaddle(

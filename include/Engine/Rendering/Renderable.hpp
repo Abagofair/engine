@@ -7,6 +7,7 @@
 #include <External/glm/glm.hpp>
 
 #include <Engine/Global/glPortableHeaders.hpp>
+#include <Engine/Rendering/RenderingComponents.hpp>
 
 namespace Engine::Rendering::Renderable
 {
@@ -35,6 +36,6 @@ namespace Engine::Rendering::Renderable
     };
 
     void SetupVboEbo(uint32_t &vbo, uint32_t &vao, uint32_t &ebo, float width, float height);
-    Dynamic SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height);
+    Rendering::Components::RenderableComponent SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height);
     Static SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height);
 };

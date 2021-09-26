@@ -36,4 +36,15 @@ namespace Engine::Global::Components
             : entityType(entityType)
             {}
     };
+
+    struct EntityStateComponent
+    {
+        bool active;
+
+        EntityStateComponent() = default;
+        EntityStateComponent(const EntityStateComponent&) = default;
+        EntityStateComponent(bool active)
+            : active(active)
+            {}
+    };
 };

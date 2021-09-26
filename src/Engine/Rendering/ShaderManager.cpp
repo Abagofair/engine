@@ -3,24 +3,25 @@
 namespace Engine::Rendering
 {
 	ShaderManager::ShaderManager()
-	{
-	}
+	{}
 
-	uint32_t ShaderManager::LoadShader(std::string filePath)
+	const Shader& ShaderManager::LoadShader(
+		std::string filePath,
+		std::string name)
 	{
 		Shader* shader = new Shader(filePath);
-		_shadersById.try_emplace(shader->ShaderId(), shader);
-		return shader->ShaderId();
+		_shadersById.try_emplace(name, shader);
+		return *shader;
 	}
 
-	Shader& ShaderManager::GetShader(uint32_t shaderId) const
+	Shader& ShaderManager::GetShader(std::string name) const
 	{
-		const auto& iter = _shadersById.find(shaderId);
+		const auto& iter = _shadersById.find(name);
 		if (iter != _shadersById.end())
 		{
 			return *iter->second;
 		}
 
-		throw std::invalid_argument("shaderId does not exist");
+		throw std::invalid_argument("shader name does not exist");
 	}
 };

@@ -30,7 +30,20 @@ namespace Game
         auto& collidedSprite = _registry.get<
             Engine::Global::Components::TransformComponent>(collisionInfo.target);
         auto& collidedBoundingBox = _registry.get<
-            Engine::Collision::Components::BoundingBoxComponent>(collisionInfo.target); 
+            Engine::Collision::Components::BoundingBoxComponent>(collisionInfo.target);
+        
+        auto& collidedBase = _registry.get<
+            Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(collisionInfo.target);
+
+        auto& collidedState = _registry.get<
+            Engine::Global::Components::EntityStateComponent>(collisionInfo.target);
+
+        //todo: signal something something scene state instead so we can handle multiple things separately
+        if (collidedBase.entityType == Game::Generated::Block)
+        {
+            //GameManager.SetEntityState(entt::entity entity)
+            collidedState.active = false;
+        }
 
         auto ballView = _registry.view<
             Engine::Physics::Components::VelocityComponent,

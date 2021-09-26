@@ -9,16 +9,20 @@
 
 namespace Engine::Rendering
 {
+    const char * DYNAMIC_SHADER_NAME = "dynamic";
+    const char * STATIC_SHADER_NAME = "static";
+    const char * DEBUG_SHADER_NAME = "debug";
+
     class ShaderManager
     {
     public:
         ShaderManager();
 
-        uint32_t LoadShader(std::string filePath);
-        Shader& GetShader(uint32_t shaderId) const;
+        const Shader& LoadShader(std::string filePath, std::string name);
+        Shader& GetShader(std::string name) const;
 
     //TODO: Handle deletion
     private:
-        std::unordered_map<uint32_t, Shader*> _shadersById;
+        std::unordered_map<std::string, Shader*> _shadersById;
     };
 };
