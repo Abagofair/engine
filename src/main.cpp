@@ -181,18 +181,21 @@ int main(int argc, char* args[])
 
 	//for entity ball on collision with block do velocity reflection as defined by some handler
 	collisionSystem.AddCollisionCallback(entity3,
-			Game::Generated::EntityType::Block,
-			std::bind(&Game::Ball::OnBlockCollision, &ballSystem, std::placeholders::_1));
+		Game::Generated::EntityType::Block,
+		std::bind(&Game::Ball::OnBlockCollision, &ballSystem, std::placeholders::_1));
 	collisionSystem.AddCollisionCallback(entity3,
-			Game::Generated::EntityType::ViewportContainer,
-			std::bind(&Game::Ball::OnViewportCollision, &ballSystem, std::placeholders::_1));
+		Game::Generated::EntityType::Paddle,
+		std::bind(&Game::Ball::OnBlockCollision, &ballSystem, std::placeholders::_1));
+	collisionSystem.AddCollisionCallback(entity3,
+		Game::Generated::EntityType::ViewportContainer,
+		std::bind(&Game::Ball::OnViewportCollision, &ballSystem, std::placeholders::_1));
 
 	collisionSystem.AddCollisionCallback(leftPaddleEntity,
-			Game::Generated::EntityType::ViewportContainer,
-			std::bind(&Game::Paddle::OnViewportCollision, &playerSystem, std::placeholders::_1));
+		Game::Generated::EntityType::ViewportContainer,
+		std::bind(&Game::Paddle::OnViewportCollision, &playerSystem, std::placeholders::_1));
 	collisionSystem.AddCollisionCallback(rightPaddleEntity,
-			Game::Generated::EntityType::ViewportContainer,
-			std::bind(&Game::Paddle::OnViewportCollision, &playerSystem, std::placeholders::_1));
+		Game::Generated::EntityType::ViewportContainer,
+		std::bind(&Game::Paddle::OnViewportCollision, &playerSystem, std::placeholders::_1));
 
 	SDL_GameController *controller = NULL;
 	std::cout << SDL_NumJoysticks() << std::endl;
