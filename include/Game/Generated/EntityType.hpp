@@ -5,8 +5,7 @@ namespace Game::Generated
     enum EntityType
     {
         Player,
-        LeftPaddle,
-        RightPaddle,
+        Paddle,
         Block,
         Ball,
         ViewportContainer

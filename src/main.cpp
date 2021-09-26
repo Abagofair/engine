@@ -59,13 +59,15 @@ int main(int argc, char* args[])
 	viewportTran.position = glm::vec3(0.0);
 	viewportTran.transform = glm::mat4(1.0f);
 
-	auto entity = registry.create();
-	auto& d = registry.emplace<Engine::Rendering::Renderable::Dynamic>(entity);
-	auto& p = registry.emplace<Game::Components::LeftPaddleComponent>(entity);
-	auto& s = registry.emplace<Engine::Global::Components::TransformComponent>(entity);
-	auto& v = registry.emplace<Engine::Physics::Components::VelocityComponent>(entity);
-	auto& b = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(entity);
-	
+	auto leftPaddleEntity = registry.create();
+	auto& d = registry.emplace<Engine::Rendering::Renderable::Dynamic>(leftPaddleEntity);
+	auto& p = registry.emplace<Game::Components::LeftPaddleComponent>(leftPaddleEntity);
+	auto& s = registry.emplace<Engine::Global::Components::TransformComponent>(leftPaddleEntity);
+	auto& v = registry.emplace<Engine::Physics::Components::VelocityComponent>(leftPaddleEntity);
+	auto& b = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(leftPaddleEntity);
+	auto& leftPaddleBase = registry.emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(leftPaddleEntity);
+	leftPaddleBase.entityType = Game::Generated::EntityType::Paddle;
+
 	p.maxAcceleration = glm::vec2(0.0f, 50.0f);
 	p.velocityCeiling = glm::vec2(0.0f, 100.0f);
 	v.velocity.x = 0.0f;
@@ -81,13 +83,15 @@ int main(int argc, char* args[])
 	s.transform = glm::scale(s.transform, glm::vec3(10.0f, 60.0f, 0.0f));
 	d = Engine::Rendering::Renderable::SetupDynamic(dynamicShaderId, b.width, b.height);
 
-	auto entity1 = registry.create();
-	auto& d1 = registry.emplace<Engine::Rendering::Renderable::Dynamic>(entity1);
-	auto& s1 = registry.emplace<Engine::Global::Components::TransformComponent>(entity1);
-	auto& p1 = registry.emplace<Game::Components::RightPaddleComponent>(entity1);
-	auto& v1 = registry.emplace<Engine::Physics::Components::VelocityComponent>(entity1);
-	auto& b1 = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(entity1);
-	
+	auto rightPaddleEntity = registry.create();
+	auto& d1 = registry.emplace<Engine::Rendering::Renderable::Dynamic>(rightPaddleEntity);
+	auto& s1 = registry.emplace<Engine::Global::Components::TransformComponent>(rightPaddleEntity);
+	auto& p1 = registry.emplace<Game::Components::RightPaddleComponent>(rightPaddleEntity);
+	auto& v1 = registry.emplace<Engine::Physics::Components::VelocityComponent>(rightPaddleEntity);
+	auto& b1 = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(rightPaddleEntity);
+	auto& rightPaddleBase = registry.emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(rightPaddleEntity);
+	rightPaddleBase.entityType = Game::Generated::EntityType::Paddle;
+
 	p1.attached = entt::null;
 	p1.maxAcceleration = glm::vec2(0.0f, 50.0f);
 	p1.velocityCeiling = glm::vec2(0.0f, 100.0f);
@@ -182,6 +186,13 @@ int main(int argc, char* args[])
 	collisionSystem.AddCollisionCallback(entity3,
 			Game::Generated::EntityType::ViewportContainer,
 			std::bind(&Game::Ball::OnViewportCollision, &ballSystem, std::placeholders::_1));
+
+	collisionSystem.AddCollisionCallback(leftPaddleEntity,
+			Game::Generated::EntityType::ViewportContainer,
+			std::bind(&Game::Paddle::OnViewportCollision, &playerSystem, std::placeholders::_1));
+	collisionSystem.AddCollisionCallback(rightPaddleEntity,
+			Game::Generated::EntityType::ViewportContainer,
+			std::bind(&Game::Paddle::OnViewportCollision, &playerSystem, std::placeholders::_1));
 
 	SDL_GameController *controller = NULL;
 	std::cout << SDL_NumJoysticks() << std::endl;

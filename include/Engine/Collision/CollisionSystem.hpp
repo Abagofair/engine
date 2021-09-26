@@ -57,11 +57,7 @@ namespace Engine::Collision
                     if (velocityEntity == targetEntity)
                         continue;
 
-                    if (!targetBoundingBox.contains && TestAABB(velocityBoundingBox, velocityTransform, targetBoundingBox, targetTransform))
-                    {
-                        CollisionCallback(velocityEntity, targetEntity, targetBase);
-                    }
-                    else if (targetBoundingBox.contains && TestAABB(velocityBoundingBox, velocityTransform, targetBoundingBox, targetTransform))
+                    if (TestAABB(velocityBoundingBox, velocityTransform, targetBoundingBox, targetTransform))
                     {
                         CollisionCallback(velocityEntity, targetEntity, targetBase);
                     }

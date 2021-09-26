@@ -167,4 +167,24 @@ namespace Game
         
         velocity.velocity += paddle.acceleration;
     }
+
+    void Paddle::OnViewportCollision(Engine::Collision::CollisionInfo collisionInfo)
+    {
+        auto& boundingBox = _registry.get<Engine::Collision::Components::BoundingBoxComponent>(collisionInfo.target);
+
+        auto& transform = _registry.get<Engine::Global::Components::TransformComponent>(collisionInfo.source);
+        auto& sourceBoundingBox = _registry.get<Engine::Collision::Components::BoundingBoxComponent>(collisionInfo.source);
+        auto& velocity = _registry.get<Engine::Physics::Components::VelocityComponent>(collisionInfo.source);
+
+        if (transform.position.y < 0.0f)
+        {
+            velocity.velocity.y *= -1;
+            transform.position.y = 0.0f;
+        }
+        else if (transform.position.y > (boundingBox.height - sourceBoundingBox.height))
+        {
+            velocity.velocity.y *= -1;
+            transform.position.y = boundingBox.height - sourceBoundingBox.height;
+        }
+    }
 };
