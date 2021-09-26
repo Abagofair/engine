@@ -30,8 +30,11 @@ namespace Game
         void Update();
 
     private:
-        void UpdatePaddle(Engine::Physics::Components::VelocityComponent& velocity, Components::LeftPaddleComponent& paddle);
-        void Move(const Engine::Input::GamepadEvent& gamepadEvent, Engine::Physics::Components::VelocityComponent& velocity, 
+        void UpdatePaddle(
+            Engine::Physics::Components::VelocityComponent& velocity, 
+            Components::LeftPaddleComponent& paddle);
+        void Move(
+            const Engine::Input::GamepadEvent& gamepadEvent, 
             Components::LeftPaddleComponent& paddle);
 
         entt::registry& _registry;

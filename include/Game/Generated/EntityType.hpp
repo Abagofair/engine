@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Engine::Global::Generated
+namespace Game::Generated
 {
     enum EntityType
     {
@@ -11,4 +11,4 @@ namespace Engine::Global::Generated
         Ball,
         ViewportContainer
     };
-}
+};

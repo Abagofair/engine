@@ -5,8 +5,6 @@
 #include <External/entt/entt.hpp>
 #include <External/glm/glm.hpp>
 
-#include <Engine/Global/Generated/Types.hpp>
-
 namespace Engine::Global::Components
 {
     struct TransformComponent
@@ -27,13 +25,14 @@ namespace Engine::Global::Components
             {}
     };
 
+    template<typename T>
     struct BaseComponent
     {
-        Generated::EntityType entityType;
+        T entityType;
 
         BaseComponent() = default;
         BaseComponent(const BaseComponent&) = default;
-        BaseComponent(Generated::EntityType entityType)
+        BaseComponent(T entityType)
             : entityType(entityType)
             {}
     };

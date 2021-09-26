@@ -25,6 +25,7 @@ and may not be redistributed without written permission.*/
 #include <Engine/Physics/IntegrationSystem.hpp>
 #include <Engine/Collision/CollisionSystem.hpp>
 
+#include <Game/Generated/EntityType.hpp>
 #include <Game/Ball.hpp>
 #include <Game/Paddle.hpp>
 
@@ -46,11 +47,11 @@ int main(int argc, char* args[])
 
 	entt::registry registry;
 	auto viewportEntity = registry.create();
-	auto& viewportBase = registry.emplace<Engine::Global::Components::BaseComponent>(viewportEntity);
+	auto& viewportBase = registry.emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(viewportEntity);
 	auto& viewportBB = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(viewportEntity);
 	auto& viewportTran = registry.emplace<Engine::Global::Components::TransformComponent>(viewportEntity);
 
-	viewportBase.entityType = Engine::Global::Generated::EntityType::ViewportContainer;
+	viewportBase.entityType = Game::Generated::EntityType::ViewportContainer;
 	viewportBB.contains = true;
 	viewportBB.width = 1920;
 	viewportBB.height = 1080;
@@ -111,8 +112,8 @@ int main(int argc, char* args[])
 	auto& v2 = registry.emplace<Engine::Physics::Components::VelocityComponent>(entity3);
 	auto& b2 = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(entity3);
 	auto& ball2 = registry.emplace<Game::Components::BallComponent>(entity3);
-	auto& ballbase = registry.emplace<Engine::Global::Components::BaseComponent>(entity3);
-	ballbase.entityType = Engine::Global::Generated::EntityType::Ball;
+	auto& ballbase = registry.emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(entity3);
+	ballbase.entityType = Game::Generated::EntityType::Ball;
 	
 	ball2.ballState = Game::Components::BallState::Attached;
 	v2.velocity.x = 0.0f;
@@ -143,8 +144,8 @@ int main(int argc, char* args[])
 	{
 		auto blockEntity = registry.create();
 		auto& dynDebug = registry.emplace<Engine::Rendering::Renderable::Dynamic>(blockEntity);
-		auto& base = registry.emplace<Engine::Global::Components::BaseComponent>(blockEntity);
-		base.entityType = Engine::Global::Generated::EntityType::Block;
+		auto& base = registry.emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(blockEntity);
+		base.entityType = Game::Generated::EntityType::Block;
 		dynDebug = Engine::Rendering::Renderable::SetupDynamic(debugShaderId, 5, 50);
 		auto& boundingBox = registry.emplace<Engine::Collision::Components::BoundingBoxComponent>(blockEntity);
 		boundingBox.width = b1.width;
@@ -172,14 +173,14 @@ int main(int argc, char* args[])
 	Game::Ball ballSystem(registry);
 	
 	Engine::Physics::IntegrationSystem integrationSystem(registry);
-	Engine::Collision::CollisionSystem collisionSystem(registry);
+	Engine::Collision::CollisionSystem<Game::Generated::EntityType> collisionSystem(registry);
 
 	//for entity ball on collision with block do velocity reflection as defined by some handler
-	collisionSystem.AddCollisionHandler(entity3,
-			Engine::Global::Generated::EntityType::Block,
+	collisionSystem.AddCollisionCallback(entity3,
+			Game::Generated::EntityType::Block,
 			std::bind(&Game::Ball::OnBlockCollision, &ballSystem, std::placeholders::_1));
-	collisionSystem.AddCollisionHandler(entity3,
-			Engine::Global::Generated::EntityType::ViewportContainer,
+	collisionSystem.AddCollisionCallback(entity3,
+			Game::Generated::EntityType::ViewportContainer,
 			std::bind(&Game::Ball::OnViewportCollision, &ballSystem, std::placeholders::_1));
 
 	SDL_GameController *controller = NULL;
@@ -222,7 +223,7 @@ int main(int argc, char* args[])
 		playerSystem.Update();
 		ballSystem.Update();
 		integrationSystem.Integrate(time);
-		collisionSystem.Handle();
+		collisionSystem.BroadPhase();
 
 		for (auto entity : dynamicRenderablesView)
 		{

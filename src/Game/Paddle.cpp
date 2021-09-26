@@ -30,9 +30,9 @@ namespace Game
 
         auto leftPaddle = leftPaddleView.front();
 
-        auto& v = leftPaddleView.get<Engine::Physics::Components::VelocityComponent>(leftPaddle);
         auto& p = leftPaddleView.get<Components::LeftPaddleComponent>(leftPaddle);
-        Move(gamepadEvent, v, p);
+
+        Move(gamepadEvent, p);
     }
 
     void Paddle::MoveRight(Engine::Input::GamepadEvent gamepadEvent)
@@ -43,14 +43,13 @@ namespace Game
 
         auto rightPaddle = rightPaddleView.front();
 
-        auto& v1 = rightPaddleView.get<Engine::Physics::Components::VelocityComponent>(rightPaddle);
         auto& p1 = rightPaddleView.get<Components::RightPaddleComponent>(rightPaddle);
-        Move(gamepadEvent, v1, p1);
+        
+        Move(gamepadEvent, p1);
     }
 
     void Paddle::Move(
-        const Engine::Input::GamepadEvent& gamepadEvent, 
-        Engine::Physics::Components::VelocityComponent& velocity, 
+        const Engine::Input::GamepadEvent& gamepadEvent,
         Components::LeftPaddleComponent& paddle)
     {
         if (gamepadEvent.normalizedMagnitude < 0)

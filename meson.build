@@ -40,7 +40,6 @@ executable(
   'src/Engine/Rendering/Renderable.cpp',
   'src/Engine/Input/InputHandler.cpp',
   'src/Engine/Physics/IntegrationSystem.cpp',
-  'src/Engine/Collision/CollisionSystem.cpp',
   'src/Game/Paddle.cpp',
   'src/Game/Ball.cpp',
   'src/main.cpp'
