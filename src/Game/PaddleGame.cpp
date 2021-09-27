@@ -9,7 +9,7 @@ namespace Game
 
     void PaddleGame::Initialize()
     {
-        _currentScene = TestScene(*this);
+        //_currentScene = TestScene(*this);
     }
 
     void PaddleGame::Run()

@@ -67,7 +67,7 @@ int main(int argc, char* args[])
 		Game::Generated::EntityType::ViewportContainer,
 		std::bind(&Game::Paddle::OnViewportCollision, &playerSystem, std::placeholders::_1));*/
 
-	SDL_GameController *controller = NULL;
+	SDL_GameController *controller = nullptr;
 	std::cout << SDL_NumJoysticks() << std::endl;
 	std::cout << SDL_GetError() << std::endl;
 	for (int i = 0; i < SDL_NumJoysticks(); ++i) {

@@ -33,25 +33,24 @@ namespace Engine::Global::Game
             uint32_t width,
             uint32_t height
         )
-        {
-            _window = std::make_unique<Engine::Windowing::Window>(width, height, "SHITE");
-            _integrationSystem = Physics::IntegrationSystem(_registry);
-            _collisionSystem = Collision::CollisionSystem(_registry);
-            _render = Rendering::SpriteRender(_registry, _shaderManager, width, height);
-        }
+            : _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE")),
+                _integrationSystem(Physics::IntegrationSystem(_registry)),
+                _collisionSystem(Collision::CollisionSystem<T>(_registry)),
+                _render(Rendering::SpriteRender(_registry, _shaderManager, width, height))
+        {}
 
         virtual void Initialize() = 0;
         virtual void Run() = 0;
 
-        const Windowing::Window& GetWindow() const { return _window; }
+        const Windowing::Window& GetWindow() const { return *_window; }
         const Rendering::ShaderManager& GetShaderManager() const { return _shaderManager; }
         const Input::InputHandler& GetInputHandler() const { return _inputHandler; }
         const Physics::IntegrationSystem& GetIntegrationSystem() const { return _integrationSystem; }
         const Collision::CollisionSystem<T>& GetCollisionSystem() const { return _collisionSystem; }
 
-        entt::registry& GetRegistry() const { return _registry };
+        const entt::registry& GetRegistry() { return _registry; }
     protected:
-        entt::registry& _registry;
+        entt::registry _registry;
 
         Rendering::SpriteRender _render;
         Input::InputHandler _inputHandler;
