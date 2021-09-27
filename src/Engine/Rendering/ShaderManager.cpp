@@ -1,20 +1,21 @@
 #include <Engine/Rendering/ShaderManager.hpp>
+#include <utility>
 
 namespace Engine::Rendering
 {
 	ShaderManager::ShaderManager()
-	{}
+	    = default;
 
 	const Shader& ShaderManager::LoadShader(
 		std::string filePath,
-		std::string name)
+		const std::string& name)
 	{
-		Shader* shader = new Shader(filePath);
+		auto* shader = new Shader(std::move(filePath));
 		_shadersById.try_emplace(name, shader);
 		return *shader;
 	}
 
-	Shader& ShaderManager::GetShader(std::string name) const
+	Shader& ShaderManager::GetShader(const std::string& name) const
 	{
 		const auto& iter = _shadersById.find(name);
 		if (iter != _shadersById.end())

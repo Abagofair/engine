@@ -42,6 +42,7 @@ executable(
   'src/Engine/Physics/IntegrationSystem.cpp',
   'src/Game/Paddle.cpp',
   'src/Game/Ball.cpp',
+  'src/Game/PaddleGame.cpp',
   'src/main.cpp'
   ],
     include_directories: [base_include, sdl2_include, sdl2_img_include, lua_include],

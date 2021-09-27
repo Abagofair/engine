@@ -42,9 +42,9 @@ int main(int argc, char* args[])
 	bool exit = false;
 
 	Engine::Rendering::ShaderManager shaderManager;
-	shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::DYNAMIC_SHADER_NAME);
-	shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::STATIC_SHADER_NAME);
-	shaderManager.LoadShader("debug.glsl", Engine::Rendering::DEBUG_SHADER_NAME);
+	shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
+	shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
+	shaderManager.LoadShader("debug.glsl", Engine::Rendering::ShaderManager::DEBUG_SHADER_NAME);
 
 	Game::PaddleGame paddleGame(1920, 1080);
 	paddleGame.Initialize();

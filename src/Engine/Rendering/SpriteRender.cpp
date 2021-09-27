@@ -23,11 +23,10 @@ namespace Engine::Rendering
             const Global::Components::TransformComponent>();
 
         //include multiple textures at shader initialization to the shader so all we have to do is pass in the textureid
-        //
 
         //spriteShader.UseWithOrtho(viewMatrix);
         //glUseProgram(shaderId);
-        auto& dynamicShader = _shaderManager.GetShader(Rendering::DYNAMIC_SHADER_NAME);
+        auto& dynamicShader = _shaderManager.GetShader(Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
         for (auto entity : dynamicRenderablesView)
         {
@@ -94,7 +93,7 @@ namespace Engine::Rendering
             }
         }
 
-        auto& shader = _shaderManager.GetShader(Rendering::STATIC_SHADER_NAME);
+        auto& shader = _shaderManager.GetShader(Rendering::ShaderManager::STATIC_SHADER_NAME);
         //todo: loop?
         for (auto entity : staticRenderablesView)
         {

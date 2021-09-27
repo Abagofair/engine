@@ -9,17 +9,17 @@
 
 namespace Engine::Rendering
 {
-    const char * DYNAMIC_SHADER_NAME = "dynamic";
-    const char * STATIC_SHADER_NAME = "static";
-    const char * DEBUG_SHADER_NAME = "debug";
-
     class ShaderManager
     {
     public:
         ShaderManager();
 
-        const Shader& LoadShader(std::string filePath, std::string name);
-        Shader& GetShader(std::string name) const;
+        const Shader& LoadShader(std::string filePath, const std::string& name);
+        Shader& GetShader(const std::string& name) const;
+
+        static inline std::string const DYNAMIC_SHADER_NAME = "dynamic";
+        static inline std::string const STATIC_SHADER_NAME = "static";
+        static inline std::string const DEBUG_SHADER_NAME = "debug";
 
     //TODO: Handle deletion
     private:
