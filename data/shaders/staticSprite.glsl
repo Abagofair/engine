@@ -34,7 +34,7 @@ in flat int instanceID;
 
 void main()
 {
-    if (staticBlocks[instanceID] == 1)
+    if (staticBlocks[instanceID] == 0)
     {
 	    FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }

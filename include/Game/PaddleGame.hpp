@@ -1,8 +1,13 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+#include <memory>
+
+#include <External/entt/entt.hpp>
 
 #include <Engine/Global/Game.hpp>
+#include <Engine/Global/Components.hpp>
 
 #include <Game/Ball.hpp>
 #include <Game/Paddle.hpp>
@@ -16,8 +21,10 @@ namespace Game
     public:
         PaddleGame(uint32_t width, uint32_t height);
 
-        void Initialize();
-        void Run();
+        std::vector<entt::entity> FindEntities(Generated::EntityType entityType) override;
+
+        void Initialize() override;
+        void Run() override;
     private:
         Paddle _paddles;
         Ball _ball;

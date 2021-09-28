@@ -44,6 +44,9 @@ namespace Game
         auto& leftPaddleBase = _game.GetRegistry().emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(leftPaddleEntity);
         leftPaddleBase.entityType = Game::Generated::EntityType::Paddle;
 
+        auto& state = _game.GetRegistry().emplace<Engine::Global::Components::EntityStateComponent>(leftPaddleEntity);
+        state.active = true;
+
         p.maxAcceleration = glm::vec2(0.0f, 30.0f);
         p.velocityCeiling = glm::vec2(0.0f, 75.0f);
         v.velocity.x = 0.0f;
@@ -58,7 +61,7 @@ namespace Game
         s.transform = glm::translate(glm::mat4(1.0f), glm::vec3(s.position, 0.0f));
         s.transform = glm::scale(s.transform, glm::vec3(10.0f, 60.0f, 0.0f));
 
-        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::DYNAMIC_SHADER_NAME);
+        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
         d = Engine::Rendering::Renderable::SetupDynamic(shader.ShaderId(), b.width, b.height);
     }
@@ -88,7 +91,7 @@ namespace Game
         
         s1.transform = glm::translate(trans1, glm::vec3(s1.position, 0.0f));
         
-        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::DYNAMIC_SHADER_NAME);
+        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
         d1 = Engine::Rendering::Renderable::SetupDynamic(shader.ShaderId(), b1.width, b1.height);
     }
@@ -114,21 +117,21 @@ namespace Game
         glm::mat4 trans2 = glm::mat4(1.0f);
         s2.transform = glm::translate(trans2, glm::vec3(s2.position, 0.0f));
 
-        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::DYNAMIC_SHADER_NAME);
+        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
         d2 = Engine::Rendering::Renderable::SetupDynamic(shader.ShaderId(), b2.width, b2.height);
     }
 
     void TestScene::CreateBlocks()
     {
-        auto& staticShader  = _game.GetShaderManager().GetShader(Engine::Rendering::STATIC_SHADER_NAME);
-        auto& dynamicShader  = _game.GetShaderManager().GetShader(Engine::Rendering::DYNAMIC_SHADER_NAME);
+        auto& staticShader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
+        auto& debugShader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DEBUG_SHADER_NAME);
 
         int width = 5;
         int height = 50;
 
         //render entity for static quads
         auto entity2 = _game.GetRegistry().create();
-        auto& staticEntity = _game.GetRegistry().emplace<Engine::Rendering::Renderable::Static>(entity2);
+        auto& staticEntity = _game.GetRegistry().emplace<Engine::Rendering::Components::StaticRenderableComponent>(entity2);
         std::vector<glm::mat4> translations;
 
         float startX = 375.0f;
@@ -142,11 +145,14 @@ namespace Game
         for (int i = 1; i <= 245; ++i)
         {
             auto blockEntity = _game.GetRegistry().create();
-            auto& dynDebug = _game.GetRegistry().emplace<Engine::Rendering::Components::RenderableComponent>(blockEntity);
-            dynDebug = Engine::Rendering::Renderable::SetupDynamic(dynamicShader.ShaderId(), width, height);
+            auto& dynDebug = _game.GetRegistry().emplace<Engine::Rendering::Components::DebugRenderableComponent>(blockEntity);
+            dynDebug = Engine::Rendering::Renderable::SetupDebug(debugShader.ShaderId(), width, height);
 
             auto& staticQuad = _game.GetRegistry().emplace<Engine::Rendering::Components::InstancedQuadComponent>(blockEntity);
             staticQuad.ignore = false;
+
+            auto& state = _game.GetRegistry().emplace<Engine::Global::Components::EntityStateComponent>(blockEntity);
+            state.active = true;
 
             auto& base = _game.GetRegistry().emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(blockEntity);
             base.entityType = Game::Generated::EntityType::Block;

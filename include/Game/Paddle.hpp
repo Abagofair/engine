@@ -11,6 +11,7 @@
 #include <Engine/Global/Components.hpp>
 
 #include <Game/GameComponents.hpp>
+#include <Game/Generated/EntityType.hpp>
 
 namespace Game
 {
@@ -39,5 +40,6 @@ namespace Game
             Components::LeftPaddleComponent& paddle);
 
         entt::registry& _registry;
+        Game::Generated::EntityType _entityType;
     };
 };

@@ -3,7 +3,8 @@
 namespace Game
 {
     Paddle::Paddle(entt::registry& registry)
-        : _registry(registry)
+        : _registry(registry),
+          _entityType(Game::Generated::EntityType::Paddle)
     {}
 
     void Paddle::SetPosition(const glm::uvec2& position)

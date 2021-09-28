@@ -6,6 +6,8 @@ namespace Game::Generated
     {
         Player,
         Paddle,
+        LeftPaddle,
+        RightPaddle,
         Block,
         Ball,
         ViewportContainer

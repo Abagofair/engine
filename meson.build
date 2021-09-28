@@ -34,7 +34,6 @@ executable(
   'src/Engine/Windowing/Window.cpp',
   'src/Engine/Rendering/SpriteRender.cpp',
   'src/Engine/Rendering/Shader.cpp',
-  'src/Engine/Scene/Scene.cpp',
   'src/Engine/Windowing/Window.cpp',
   'src/Engine/Rendering/ShaderManager.cpp',
   'src/Engine/Rendering/Renderable.cpp',
@@ -43,6 +42,7 @@ executable(
   'src/Game/Paddle.cpp',
   'src/Game/Ball.cpp',
   'src/Game/PaddleGame.cpp',
+  'src/Game/TestScene.cpp',
   'src/main.cpp'
   ],
     include_directories: [base_include, sdl2_include, sdl2_img_include, lua_include],

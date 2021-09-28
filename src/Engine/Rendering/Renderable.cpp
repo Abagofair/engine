@@ -56,9 +56,21 @@ namespace Engine::Rendering::Renderable
         return renderable;
     }
 
-    Static SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height)
+    Rendering::Components::DebugRenderableComponent SetupDebug(uint32_t shaderId, uint32_t width, uint32_t height)
     {
-        Static renderable;
+        Rendering::Components::DebugRenderableComponent renderable;
+        renderable.shaderId = shaderId;
+        renderable.primitive = Rendering::Components::Primitive::Quad;
+
+        SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
+                    (float)width, (float)height);
+
+        return renderable;
+    }
+
+    Rendering::Components::StaticRenderableComponent SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height)
+    {
+        Rendering::Components::StaticRenderableComponent renderable;
         SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
             (float)width, (float)height);
         renderable.shaderId = shaderId;

@@ -19,7 +19,7 @@ namespace Engine::Rendering
     void SpriteRender::Draw()
     {
         auto dynamicRenderablesView = _registry.view<
-            const Renderable::Dynamic,
+            const Engine::Rendering::Components::RenderableComponent,
             const Global::Components::TransformComponent>();
 
         //include multiple textures at shader initialization to the shader so all we have to do is pass in the textureid
@@ -30,7 +30,7 @@ namespace Engine::Rendering
 
         for (auto entity : dynamicRenderablesView)
         {
-            auto renderable = dynamicRenderablesView.get<const Renderable::Dynamic>(entity);
+            auto renderable = dynamicRenderablesView.get<const Engine::Rendering::Components::RenderableComponent>(entity);
             auto transform = dynamicRenderablesView.get<const Global::Components::TransformComponent>(entity);
 
             dynamicShader.Use();
@@ -45,13 +45,15 @@ namespace Engine::Rendering
         auto boundingBoxView = _registry.view<
             Collision::Components::BoundingBoxComponent,
             Global::Components::TransformComponent,
-            Renderable::Dynamic>();
+            Engine::Rendering::Components::DebugRenderableComponent>();
+
+        auto& debugShader = _shaderManager.GetShader(Rendering::ShaderManager::DEBUG_SHADER_NAME);
 
         for (auto boundingBox : boundingBoxView)
         {
             auto& boundingBoxComponent = boundingBoxView.get<Collision::Components::BoundingBoxComponent>(boundingBox);
             auto& positionComponent = boundingBoxView.get<Global::Components::TransformComponent>(boundingBox);
-            auto& renderable = boundingBoxView.get<Renderable::Dynamic>(boundingBox);
+            auto& renderable = boundingBoxView.get<Engine::Rendering::Components::DebugRenderableComponent>(boundingBox);
 
             glm::mat4 t = glm::translate(glm::mat4(1.0f), glm::vec3(positionComponent.position, 0.0f));
 
@@ -59,10 +61,10 @@ namespace Engine::Rendering
             float minY = positionComponent.position.y;
             float maxX = boundingBoxComponent.width + minX;
             float maxY = boundingBoxComponent.height + minY;
-            
-            dynamicShader.Use();
-            dynamicShader.SetUniformMat4(t, "model");
-            dynamicShader.SetUniformMat4(viewMatrix, "view");
+
+            debugShader.Use();
+            debugShader.SetUniformMat4(t, "model");
+            debugShader.SetUniformMat4(viewMatrix, "view");
             
             glBindVertexArray(renderable.vao);
             glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0);
@@ -74,7 +76,7 @@ namespace Engine::Rendering
     {
         //i dont want to be reliant on EntityType from Game - must be an engine type
         auto staticRenderablesView = _registry.view<
-            const Renderable::Static>();
+            const Engine::Rendering::Components::StaticRenderableComponent>();
 
         auto instancedQuadView = _registry.view<
             const Rendering::Components::InstancedQuadComponent>();
@@ -97,11 +99,11 @@ namespace Engine::Rendering
         //todo: loop?
         for (auto entity : staticRenderablesView)
         {
-            auto staticRenderable = staticRenderablesView.get<const Renderable::Static>(entity);
+            auto staticRenderable = staticRenderablesView.get<const Engine::Rendering::Components::StaticRenderableComponent>(entity);
 
             shader.Use();
             shader.SetUniformMat4(viewMatrix, "view");
-            shader.SetUniformBoolArray(&ignoredInstances[0], 512, "staticBlocks");
+            shader.SetUniformBoolArray(&ignoredInstances[0], ignoredInstances.size(), "staticBlocks");
             glBindVertexArray(staticRenderable.vao);
             glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, staticRenderable.instances);
             glBindVertexArray(0);

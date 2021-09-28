@@ -45,4 +45,13 @@ namespace Engine::Rendering::Components
             : RenderableComponent(vbo, vao, ebo, shaderId, primitive), instances(instances)
             {}
     };
+
+    struct DebugRenderableComponent : public RenderableComponent
+    {
+        DebugRenderableComponent() = default;
+        DebugRenderableComponent(const DebugRenderableComponent&) = default;
+        DebugRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive)
+        : RenderableComponent(vbo, vao, ebo, shaderId, primitive)
+                {}
+    };
 };

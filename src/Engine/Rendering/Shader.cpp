@@ -43,8 +43,8 @@ namespace Engine::Rendering
             }
         }
 
-        std::string vertexShaderStr = vertexShaderStream.str().c_str();
-        std::string fragmentShaderStr = fragmentShaderStream.str().c_str();
+        std::string vertexShaderStr = vertexShaderStream.str();
+        std::string fragmentShaderStr = fragmentShaderStream.str();
 
         std::cout << vertexShaderStr << std::endl;
         std::cout << fragmentShaderStr << std::endl;
@@ -54,7 +54,7 @@ namespace Engine::Rendering
 
         unsigned int vertexShader;
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &cstr_vertexShader, NULL);
+        glShaderSource(vertexShader, 1, &cstr_vertexShader, nullptr);
         glCompileShader(vertexShader);
 
         int success;
@@ -62,18 +62,18 @@ namespace Engine::Rendering
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+            glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
             std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
         }
 
         unsigned int fragmentShader;
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &cstr_fragmentShader, NULL);
+        glShaderSource(fragmentShader, 1, &cstr_fragmentShader, nullptr);
         glCompileShader(fragmentShader);
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+            glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
             std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
         }
 

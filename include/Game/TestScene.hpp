@@ -23,7 +23,9 @@ namespace Game
         TestScene(
             Engine::Global::Game::Game<Game::Generated::EntityType>& game);
 
-        void Initialize();
+        ~TestScene() override = default;
+
+        void Initialize() override;
     private:
         Engine::Global::Game::Game<Game::Generated::EntityType>& _game;
 
