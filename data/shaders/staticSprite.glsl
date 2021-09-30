@@ -8,7 +8,7 @@ layout (location = 3) in mat4 instanceMatrix;
 
 in int gl_InstanceID;
 
-out flat int instanceID;
+out flat uint instanceID;
 
 uniform mat4 view;
 
@@ -26,7 +26,7 @@ uniform uint staticBlocks[512];
 
 out vec4 FragColor;
 
-in flat int instanceID;
+in flat uint instanceID;
 
 //in vec2 TexCoords;
 
@@ -34,7 +34,7 @@ in flat int instanceID;
 
 void main()
 {
-    if (staticBlocks[instanceID] == 0)
+    if (staticBlocks[instanceID] == 1)
     {
 	    FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }

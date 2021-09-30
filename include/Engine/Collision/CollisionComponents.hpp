@@ -7,11 +7,12 @@ namespace Engine::Collision::Components
         float width;
         float height;
         bool contains; //todo: should be result of method?
+        bool ignoreCollisions;
 
         BoundingBoxComponent() = default;
         BoundingBoxComponent(const BoundingBoxComponent&) = default;
-        BoundingBoxComponent(float width, float height, bool contains)
-            : width(width), height(height), contains(contains)
+        BoundingBoxComponent(float width, float height, bool contains, bool ignoreCollisions)
+            : width(width), height(height), contains(contains), ignoreCollisions(ignoreCollisions)
             {}
     };
 };

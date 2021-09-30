@@ -74,25 +74,26 @@ namespace Engine::Rendering
 
     void SpriteRender::DrawStaticQuads()
     {
-        //i dont want to be reliant on EntityType from Game - must be an engine type
         auto staticRenderablesView = _registry.view<
             const Engine::Rendering::Components::StaticRenderableComponent>();
 
         auto instancedQuadView = _registry.view<
             const Rendering::Components::InstancedQuadComponent>();
 
-        std::vector<uint32_t> ignoredInstances = std::vector<uint32_t>(instancedQuadView.size());
+        std::vector<unsigned int> ignoredInstances = std::vector<unsigned int>(instancedQuadView.size());
+        int count = instancedQuadView.size() - 1;
         for (auto instancedQuadEntity : instancedQuadView)
         {
             auto instancedQuad = instancedQuadView.get<const Rendering::Components::InstancedQuadComponent>(instancedQuadEntity);
             if (instancedQuad.ignore)
             {
-                ignoredInstances.push_back(1);
+                ignoredInstances[count] = 0;
             }
             else
             {
-                ignoredInstances.push_back(0);
+                ignoredInstances[count] = 1;
             }
+            count -= 1;
         }
 
         auto& shader = _shaderManager.GetShader(Rendering::ShaderManager::STATIC_SHADER_NAME);
@@ -103,9 +104,9 @@ namespace Engine::Rendering
 
             shader.Use();
             shader.SetUniformMat4(viewMatrix, "view");
-            shader.SetUniformBoolArray(&ignoredInstances[0], ignoredInstances.size(), "staticBlocks");
+            shader.SetUniformBoolArray(ignoredInstances.data(), ignoredInstances.size(), "staticBlocks");
             glBindVertexArray(staticRenderable.vao);
-            glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, staticRenderable.instances);
+            glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr, staticRenderable.instances);
             glBindVertexArray(0);
         }
     }

@@ -8,6 +8,7 @@
 #include <Engine/Global/Components.hpp>
 #include <Engine/Collision/CollisionSystem.hpp>
 #include <Engine/Physics/PhysicsComponents.hpp>
+#include <Engine/Rendering/RenderingComponents.hpp>
 
 #include <Game/GameComponents.hpp>
 #include <Game/Generated/EntityType.hpp>

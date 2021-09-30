@@ -27,11 +27,12 @@ namespace Engine::Rendering::Components
         uint32_t ebo;
         uint32_t shaderId;
         Primitive primitive;
+        bool ignore;
 
         RenderableComponent() = default;
         RenderableComponent(const RenderableComponent&) = default;
-        RenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive)
-            : vbo(vbo), vao(vao), ebo(ebo), shaderId(shaderId), primitive(primitive)
+        RenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, bool ignore)
+            : vbo(vbo), vao(vao), ebo(ebo), shaderId(shaderId), primitive(primitive), ignore(ignore)
             {}
     };
 
@@ -41,8 +42,8 @@ namespace Engine::Rendering::Components
 
         StaticRenderableComponent() = default;
         StaticRenderableComponent(const StaticRenderableComponent&) = default;
-        StaticRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, uint32_t instances)
-            : RenderableComponent(vbo, vao, ebo, shaderId, primitive), instances(instances)
+        StaticRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, uint32_t instances, bool ignore)
+            : RenderableComponent(vbo, vao, ebo, shaderId, primitive, ignore), instances(instances)
             {}
     };
 
@@ -50,8 +51,8 @@ namespace Engine::Rendering::Components
     {
         DebugRenderableComponent() = default;
         DebugRenderableComponent(const DebugRenderableComponent&) = default;
-        DebugRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive)
-        : RenderableComponent(vbo, vao, ebo, shaderId, primitive)
+        DebugRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, bool ignore)
+        : RenderableComponent(vbo, vao, ebo, shaderId, primitive, ignore)
                 {}
     };
 };

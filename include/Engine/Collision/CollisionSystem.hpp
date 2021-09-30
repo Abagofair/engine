@@ -45,6 +45,7 @@ namespace Engine::Collision
             {
                 auto& velocityTransform = velocityView.template get<Global::Components::TransformComponent>(velocityEntity);
                 auto& velocityBoundingBox = velocityView.template get<Collision::Components::BoundingBoxComponent>(velocityEntity);
+                auto& velocityBase = velocityView.template get<Global::Components::BaseComponent<T>>(velocityEntity);
 
                 for (auto targetEntity : boundingBoxView)
                 {
@@ -52,12 +53,14 @@ namespace Engine::Collision
                     auto& targetTransform = boundingBoxView.template get<Global::Components::TransformComponent>(targetEntity);
                     auto& targetBase = boundingBoxView.template get<Global::Components::BaseComponent<T>>(targetEntity);
 
-                    if (velocityEntity == targetEntity)
+                    //todo: consider removing entity to decrease amount of entities to check for collision
+                    if (velocityEntity == targetEntity || targetBoundingBox.ignoreCollisions)
                         continue;
 
                     if (TestAABB(velocityBoundingBox, velocityTransform, targetBoundingBox, targetTransform))
                     {
                         CollisionCallback(velocityEntity, targetEntity, targetBase);
+                        CollisionCallback(targetEntity, velocityEntity, velocityBase);
                     }
                 }
             }

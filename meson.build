@@ -43,6 +43,7 @@ executable(
   'src/Game/Ball.cpp',
   'src/Game/PaddleGame.cpp',
   'src/Game/TestScene.cpp',
+  'src/Game/Block.cpp',
   'src/main.cpp'
   ],
     include_directories: [base_include, sdl2_include, sdl2_img_include, lua_include],

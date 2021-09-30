@@ -9,6 +9,7 @@
 #include <Engine/Global/Game.hpp>
 #include <Engine/Global/Components.hpp>
 
+#include <Game/Block.hpp>
 #include <Game/Ball.hpp>
 #include <Game/Paddle.hpp>
 #include <Game/Generated/EntityType.hpp>
@@ -27,6 +28,7 @@ namespace Game
         void Run() override;
     private:
         Paddle _paddles;
+        Block _block;
         Ball _ball;
     };
 };
