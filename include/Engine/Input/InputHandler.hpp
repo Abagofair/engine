@@ -56,6 +56,9 @@ namespace Engine::Input
         glm::vec2 NormalizeCurrentAxisDirection(GamepadCode gamepadCode, float magnitude) const;
         uint32_t AxisThreshold(GamepadCode gamepadCode) const;
 
+        void ControllerAxisMotion(SDL_Event event);
+        void ControllerButtonDown(SDL_Event event);
+
         static inline uint32_t const LEFT_AXIS_THRESHOLD = 7849;
         static inline uint32_t const RIGHT_AXIS_THRESHOLD = 8689;
         static inline uint32_t const MAXIMUM_AXIS_VALUE = 32767;

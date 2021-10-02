@@ -15,6 +15,7 @@ namespace Engine::Input
     {
         SDL_Event event;
 
+        //todo: should log if this fails
         _gamepadEventQueue.empty();
         _keyboardEventQueue.empty();
 
@@ -24,50 +25,13 @@ namespace Engine::Input
             {
                 case SDL_CONTROLLERAXISMOTION:
                     {
-                        GamepadEvent gamepadEvent {};
-
-                        auto axis = static_cast<SDL_GameControllerAxis>(event.caxis.axis);
-                        if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)
-                        {
-                            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
-                            _currentLeftAxisValues.x = event.caxis.value;
-                        }
-                        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)
-                        {
-                            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
-                            _currentLeftAxisValues.y = event.caxis.value;
-                        }
-                        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX)
-                        {
-                            gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
-                            _currentRightAxisValues.x = event.caxis.value;
-                        }
-                        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY)
-                        {
-                            gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
-                            _currentRightAxisValues.y = event.caxis.value;
-                        }
-
-                        MapControllerAxisMovement(gamepadEvent);
-                        _gamepadEventQueue.push(gamepadEvent);
-
+                        ControllerAxisMotion(event);
                         break;
                     }
                 case SDL_CONTROLLERBUTTONDOWN:
                     {
-                        GamepadEvent gamepadEvent {};
-
-                        gamepadEvent.inputEventType = InputEventType::GamePadButtonDown;
-                        if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A)
-                        {
-                            gamepadEvent.gamepadCode = GamepadCode::GamepadButtonA;
-                        }
-                        else if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B)
-                        {
-                            gamepadEvent.gamepadCode = GamepadCode::GamepadButtonB;
-                        }
-
-                        _gamepadEventQueue.push(gamepadEvent);
+                        ControllerButtonDown(event);
+                        break;
                     }
                 case SDL_QUIT:
                     {
@@ -82,6 +46,53 @@ namespace Engine::Input
                     break;
             }
         }
+    }
+
+    void InputHandler::ControllerButtonDown(SDL_Event event)
+    {
+        GamepadEvent gamepadEvent {};
+
+        gamepadEvent.inputEventType = InputEventType::GamePadButtonDown;
+        if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadButtonA;
+        }
+        else if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadButtonB;
+        }
+
+        _gamepadEventQueue.push(gamepadEvent);
+    }
+
+    void InputHandler::ControllerAxisMotion(SDL_Event event)
+    {
+        GamepadEvent gamepadEvent {};
+
+        auto axis = static_cast<SDL_GameControllerAxis>(event.caxis.axis);
+        if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
+            _currentLeftAxisValues.x = event.caxis.value;
+        }
+        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
+            _currentLeftAxisValues.y = event.caxis.value;
+        }
+        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
+            _currentRightAxisValues.x = event.caxis.value;
+        }
+        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
+            _currentRightAxisValues.y = event.caxis.value;
+        }
+
+        MapControllerAxisMovement(gamepadEvent);
+        _gamepadEventQueue.push(gamepadEvent);
     }
 
     GamepadEvent InputHandler::MapControllerAxisMovement(GamepadEvent& gamepadEvent) const
