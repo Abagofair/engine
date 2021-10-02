@@ -53,15 +53,15 @@ namespace Game
         const Engine::Input::GamepadEvent& gamepadEvent,
         Components::LeftPaddleComponent& paddle)
     {
-        if (gamepadEvent.normalizedMagnitude < 0)
+        if (gamepadEvent.normalizedAnalogMagnitude < 0)
         {
             paddle.state = Components::PaddleState::UP;
-            paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedMagnitude;
+            paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedAnalogMagnitude;
         }
-        else if (gamepadEvent.normalizedMagnitude > 0)
+        else if (gamepadEvent.normalizedAnalogMagnitude > 0)
         {
             paddle.state = Components::PaddleState::DOWN;
-            paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedMagnitude;
+            paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedAnalogMagnitude;
         }
         else
         {

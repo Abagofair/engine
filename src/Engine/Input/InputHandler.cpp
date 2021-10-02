@@ -24,19 +24,19 @@ namespace Engine::Input
             switch (event.type)
             {
                 case SDL_CONTROLLERAXISMOTION:
-                    {
-                        ControllerAxisMotion(event);
-                        break;
-                    }
+                {
+                    ControllerAxisMotion(event);
+                    break;
+                }
                 case SDL_CONTROLLERBUTTONDOWN:
-                    {
-                        ControllerButtonDown(event);
-                        break;
-                    }
+                {
+                    ControllerButtonDown(event);
+                    break;
+                }
                 case SDL_QUIT:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case SDL_KEYUP:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
@@ -50,7 +50,7 @@ namespace Engine::Input
 
     void InputHandler::ControllerButtonDown(SDL_Event event)
     {
-        GamepadEvent gamepadEvent {};
+        GamepadEvent gamepadEvent{};
 
         gamepadEvent.inputEventType = InputEventType::GamePadButtonDown;
         if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A)
@@ -67,52 +67,68 @@ namespace Engine::Input
 
     void InputHandler::ControllerAxisMotion(SDL_Event event)
     {
-        GamepadEvent gamepadEvent {};
+        GamepadEvent gamepadEvent{};
 
         auto axis = static_cast<SDL_GameControllerAxis>(event.caxis.axis);
         if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)
         {
             gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
-            _currentLeftAxisValues.x = event.caxis.value;
+            _currentLeftAxisValue.x = event.caxis.value;
+            MapControllerAnalogMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)
         {
             gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
-            _currentLeftAxisValues.y = event.caxis.value;
+            _currentLeftAxisValue.y = event.caxis.value;
+            MapControllerAnalogMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX)
         {
             gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
-            _currentRightAxisValues.x = event.caxis.value;
+            _currentRightAxisValue.x = event.caxis.value;
+            MapControllerAnalogMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY)
         {
             gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
-            _currentRightAxisValues.y = event.caxis.value;
+            _currentRightAxisValue.y = event.caxis.value;
+            MapControllerAnalogMovement(gamepadEvent);
+        }
+        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERLEFT)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftTrigger;
+            _currentLeftTriggerValue = event.caxis.value;
+            MapControllerTriggerMovement(gamepadEvent);
+        }
+        else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERRIGHT)
+        {
+            gamepadEvent.gamepadCode = GamepadCode::GamepadRightTrigger;
+            _currentRightTriggerValue = event.caxis.value;
+            MapControllerTriggerMovement(gamepadEvent);
         }
 
-        MapControllerAxisMovement(gamepadEvent);
         _gamepadEventQueue.push(gamepadEvent);
     }
 
-    GamepadEvent InputHandler::MapControllerAxisMovement(GamepadEvent& gamepadEvent) const
+    GamepadEvent InputHandler::MapControllerAnalogMovement(GamepadEvent &gamepadEvent) const
     {
         float magnitude;
         float normalizedMagnitude;
 
         //https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput
         //determine how far the controller is pushed
-        magnitude = MagnitudeOfCurrentAxis(gamepadEvent.gamepadCode);
+        magnitude = MagnitudeOfCurrentAnalog(gamepadEvent.gamepadCode);
 
         //determine the direction the controller is pushed
-        gamepadEvent.normalizedDirection = NormalizeCurrentAxisDirection(gamepadEvent.gamepadCode, magnitude);
+        gamepadEvent.normalizedAnalogDirection = NormalizeCurrentAnalogDirection(gamepadEvent.gamepadCode, magnitude);
 
         uint32_t axisThreshold = AxisThreshold(gamepadEvent.gamepadCode);
 
         if (magnitude > axisThreshold)
         {
             //clip the magnitude at its expected maximum value
-            if (magnitude > MAXIMUM_AXIS_VALUE) magnitude = MAXIMUM_AXIS_VALUE;
+            if (magnitude > MAXIMUM_AXIS_VALUE)
+                magnitude = MAXIMUM_AXIS_VALUE;
 
             //adjust magnitude relative to the end of the dead zone
             magnitude -= axisThreshold;
@@ -126,10 +142,38 @@ namespace Engine::Input
             normalizedMagnitude = 0.0;
         }
 
-        if (gamepadEvent.normalizedDirection.y < 0)
+        if (gamepadEvent.normalizedAnalogDirection.y < 0)
             normalizedMagnitude *= -1;
 
-        gamepadEvent.normalizedMagnitude = normalizedMagnitude;
+        gamepadEvent.normalizedAnalogMagnitude = normalizedMagnitude;
+
+        return gamepadEvent;
+    }
+
+    GamepadEvent InputHandler::MapControllerTriggerMovement(GamepadEvent &gamepadEvent) const
+    {
+        float magnitude = gamepadEvent.gamepadCode == GamepadLeftTrigger
+                ? _currentLeftTriggerValue
+                : _currentRightTriggerValue;
+
+        float normalizedMagnitude = 0.0f;
+
+        if (magnitude > TRIGGER_DEADZONE)
+        {
+            if (magnitude > MAXIMUM_AXIS_VALUE)
+                magnitude = static_cast<float>(MAXIMUM_AXIS_VALUE);
+
+            normalizedMagnitude = magnitude / (MAXIMUM_AXIS_VALUE - TRIGGER_DEADZONE);
+        }
+        else
+        {
+            normalizedMagnitude = 0.0f;
+        }
+
+        if (gamepadEvent.gamepadCode == GamepadLeftTrigger)
+            gamepadEvent.normalizedLeftTriggerMagnitude = normalizedMagnitude;
+        else
+            gamepadEvent.normalizedRightTriggerMagnitude = normalizedMagnitude;
 
         return gamepadEvent;
     }
@@ -137,40 +181,40 @@ namespace Engine::Input
     uint32_t InputHandler::AxisThreshold(GamepadCode gamepadCode) const
     {
         return gamepadCode == GamepadCode::GamepadLeftAxis
-            ? LEFT_AXIS_THRESHOLD
-            : RIGHT_AXIS_THRESHOLD;
+               ? LEFT_ANALOG_AXIS_DEADZONE
+               : RIGHT_ANALOG_AXIS_DEADZONE;
     }
 
-    glm::vec2 InputHandler::NormalizeCurrentAxisDirection(GamepadCode gamepadCode, float magnitude) const
+    glm::vec2 InputHandler::NormalizeCurrentAnalogDirection(GamepadCode gamepadCode, float magnitude) const
     {
         if (gamepadCode == GamepadCode::GamepadLeftAxis)
         {
             return
-            {
-                _currentLeftAxisValues.x / magnitude,
-                _currentLeftAxisValues.y / magnitude
-            };
+                    {
+                            _currentLeftAxisValue.x / magnitude,
+                            _currentLeftAxisValue.y / magnitude
+                    };
         }
 
         return
-        {
-            _currentRightAxisValues.x / magnitude,
-            _currentRightAxisValues.y / magnitude
-        };
+                {
+                        _currentRightAxisValue.x / magnitude,
+                        _currentRightAxisValue.y / magnitude
+                };
     }
 
-    float InputHandler::MagnitudeOfCurrentAxis(GamepadCode gamepadCode) const
+    float InputHandler::MagnitudeOfCurrentAnalog(GamepadCode gamepadCode) const
     {
         if (gamepadCode == GamepadCode::GamepadLeftAxis)
         {
             return sqrt(
-                    _currentLeftAxisValues.x * _currentLeftAxisValues.x
-                    + _currentLeftAxisValues.y * _currentLeftAxisValues.y);
+                    _currentLeftAxisValue.x * _currentLeftAxisValue.x
+                    + _currentLeftAxisValue.y * _currentLeftAxisValue.y);
         }
 
         return sqrt(
-                _currentRightAxisValues.x * _currentRightAxisValues.x
-                    + _currentRightAxisValues.y * _currentRightAxisValues.y);
+                _currentRightAxisValue.x * _currentRightAxisValue.x
+                + _currentRightAxisValue.y * _currentRightAxisValue.y);
     }
 
     void InputHandler::DispatchEvents()
@@ -181,7 +225,7 @@ namespace Engine::Input
 
     void InputHandler::DispatchGamepadEvents()
     {
-        while(!_gamepadEventQueue.empty())
+        while (!_gamepadEventQueue.empty())
         {
             GamepadEvent event = _gamepadEventQueue.top();
 
@@ -197,7 +241,7 @@ namespace Engine::Input
 
     void InputHandler::DispatchKeyboardEvents()
     {
-        while(!_keyboardEventQueue.empty())
+        while (!_keyboardEventQueue.empty())
         {
             KeyEvent event = _keyboardEventQueue.top();
             auto callback = _callbackByKeyCode.find(event.keyCode);

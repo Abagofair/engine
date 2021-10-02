@@ -54,7 +54,9 @@ namespace Engine::Input
         GamepadLeftAxis = 100,
         GamepadRightAxis,
         GamepadButtonA,
-        GamepadButtonB
+        GamepadButtonB,
+        GamepadLeftTrigger,
+        GamepadRightTrigger
     };
 
     struct InputEvent
@@ -71,8 +73,10 @@ namespace Engine::Input
     struct GamepadEvent : public InputEvent
     {
         GamepadCode gamepadCode;
-        glm::vec2 normalizedDirection;
-        float normalizedMagnitude;
+        glm::vec2 normalizedAnalogDirection;
+        float normalizedAnalogMagnitude;
+        float normalizedLeftTriggerMagnitude;
+        float normalizedRightTriggerMagnitude;
     };
 
     struct KeyEvent : public InputEvent
