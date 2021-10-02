@@ -23,6 +23,38 @@ namespace Game
         sprite.recalculateTransform = true;
     }
 
+    void Paddle::BrakeLeft(Engine::Input::GamepadEvent gamepadEvent)
+    {
+        auto leftPaddleView = _registry.view<Components::LeftPaddleComponent>();
+        auto leftPaddle = leftPaddleView.front();
+        auto& p = leftPaddleView.get<Components::LeftPaddleComponent>(leftPaddle);
+
+        if (gamepadEvent.normalizedLeftTriggerMagnitude > 0.0f)
+        {
+            p.brakeMagnitude = gamepadEvent.normalizedLeftTriggerMagnitude * 25.0f;
+        }
+        else
+        {
+            p.brakeMagnitude = 0.0f;
+        }
+    }
+
+    void Paddle::BrakeRight(Engine::Input::GamepadEvent gamepadEvent)
+    {
+        auto rightPaddleView = _registry.view<Components::RightPaddleComponent>();
+        auto rightPaddle = rightPaddleView.front();
+        auto& p = rightPaddleView.get<Components::RightPaddleComponent>(rightPaddle);
+
+        if (gamepadEvent.normalizedRightTriggerMagnitude > 0.0f)
+        {
+            p.brakeMagnitude = gamepadEvent.normalizedRightTriggerMagnitude * 25.0f;
+        }
+        else
+        {
+            p.brakeMagnitude = 0.0f;
+        }
+    }
+
     void Paddle::MoveLeft(Engine::Input::GamepadEvent gamepadEvent)
     {
         auto leftPaddleView = _registry.view<
@@ -53,20 +85,15 @@ namespace Game
         const Engine::Input::GamepadEvent& gamepadEvent,
         Components::LeftPaddleComponent& paddle)
     {
-        if (gamepadEvent.normalizedAnalogMagnitude < 0)
+        if (gamepadEvent.normalizedAnalogMagnitude < 0 || gamepadEvent.normalizedAnalogMagnitude > 0)
         {
-            paddle.state = Components::PaddleState::UP;
-            paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedAnalogMagnitude;
-        }
-        else if (gamepadEvent.normalizedAnalogMagnitude > 0)
-        {
-            paddle.state = Components::PaddleState::DOWN;
+            paddle.state = Components::PaddleState::Moving;
             paddle.acceleration = paddle.maxAcceleration * gamepadEvent.normalizedAnalogMagnitude;
         }
         else
         {
             paddle.acceleration = glm::vec2(0.0f, 0.0f);
-            paddle.state = Components::PaddleState::STOP;
+            paddle.state = Components::PaddleState::Stop;
         }
     }
 
@@ -155,10 +182,10 @@ namespace Game
         Engine::Physics::Components::VelocityComponent& velocity, 
         Components::LeftPaddleComponent& paddle)
     {
-        if (paddle.state == Components::PaddleState::STOP)
+        if (paddle.state == Components::PaddleState::Stop)
         {
             glm::vec2 accel = glm::abs(velocity.velocity);
-            const float decel = accel.y * 0.005f;
+            const float decel = (accel.y * 0.005f) + paddle.brakeMagnitude;
 
             if (velocity.velocity.y < 0.0f)
                 velocity.velocity.y += decel;

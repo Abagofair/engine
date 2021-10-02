@@ -64,10 +64,19 @@ namespace Game
 
         _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftAxis,
                                      std::bind(&Paddle::MoveLeft, &_paddles, std::placeholders::_1));
+
         _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightAxis,
                                      std::bind(&Paddle::MoveRight, &_paddles, std::placeholders::_1));
+
+        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftTrigger,
+                                     std::bind(&Paddle::BrakeLeft, &_paddles, std::placeholders::_1));
+
+        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightTrigger,
+                                     std::bind(&Paddle::BrakeRight, &_paddles, std::placeholders::_1));
+
         _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonA,
                                      std::bind(&Paddle::LaunchBall, &_paddles, std::placeholders::_1));
+
         _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonB,
                                      std::bind(&Paddle::DebugAttachBall, &_paddles, std::placeholders::_1));
     }

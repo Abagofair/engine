@@ -22,6 +22,8 @@ namespace Game
 
         void SetPosition(const glm::uvec2& position);
 
+        void BrakeLeft(Engine::Input::GamepadEvent gamepadEvent);
+        void BrakeRight(Engine::Input::GamepadEvent gamepadEvent);
         void MoveLeft(Engine::Input::GamepadEvent gamepadEvent);
         void MoveRight(Engine::Input::GamepadEvent gamepadEvent);
 

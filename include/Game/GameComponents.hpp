@@ -7,9 +7,11 @@ namespace Game::Components
 {
     enum PaddleState
     {
-        UP,
-        DOWN,
-        STOP
+        Up,
+        Down,
+        Stop,
+        Braking,
+        Moving
     };
 
     enum BallState 
@@ -24,6 +26,7 @@ namespace Game::Components
         glm::vec2 maxAcceleration;
         glm::vec2 acceleration;
         glm::vec2 velocityCeiling;
+        float brakeMagnitude;
         PaddleState state;
         entt::entity attached;
 
