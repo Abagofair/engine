@@ -46,9 +46,6 @@ namespace Engine::Rendering
         std::string vertexShaderStr = vertexShaderStream.str();
         std::string fragmentShaderStr = fragmentShaderStream.str();
 
-        std::cout << vertexShaderStr << std::endl;
-        std::cout << fragmentShaderStr << std::endl;
-
         const char* cstr_fragmentShader = fragmentShaderStr.c_str();
         const char* cstr_vertexShader = vertexShaderStr.c_str();
 

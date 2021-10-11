@@ -31,11 +31,11 @@ namespace Game
 
         if (gamepadEvent.normalizedLeftTriggerMagnitude > 0.0f)
         {
-            p.brakeMagnitude = gamepadEvent.normalizedLeftTriggerMagnitude * 25.0f;
+            p.brakeForce = gamepadEvent.normalizedLeftTriggerMagnitude * 25.0f;
         }
         else
         {
-            p.brakeMagnitude = 0.0f;
+            p.brakeForce = 0.0f;
         }
     }
 
@@ -47,11 +47,11 @@ namespace Game
 
         if (gamepadEvent.normalizedRightTriggerMagnitude > 0.0f)
         {
-            p.brakeMagnitude = gamepadEvent.normalizedRightTriggerMagnitude * 25.0f;
+            p.brakeForce = gamepadEvent.normalizedRightTriggerMagnitude * 25.0f;
         }
         else
         {
-            p.brakeMagnitude = 0.0f;
+            p.brakeForce = 0.0f;
         }
     }
 
@@ -185,7 +185,7 @@ namespace Game
         if (paddle.state == Components::PaddleState::Stop)
         {
             glm::vec2 accel = glm::abs(velocity.velocity);
-            const float decel = (accel.y * 0.005f) + paddle.brakeMagnitude;
+            const float decel = (accel.y * 0.005f) + paddle.brakeForce;
 
             if (velocity.velocity.y < 0.0f)
                 velocity.velocity.y += decel;
@@ -207,11 +207,13 @@ namespace Game
         if (transform.position.y < 0.0f)
         {
             velocity.velocity.y *= -1;
+            velocity.velocity.y = 5.0f;
             transform.position.y = 0.0f;
         }
         else if (transform.position.y > (boundingBox.height - sourceBoundingBox.height))
         {
             velocity.velocity.y *= -1;
+            velocity.velocity.y = -5.0f;
             transform.position.y = boundingBox.height - sourceBoundingBox.height;
         }
     }

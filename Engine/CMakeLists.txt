@@ -16,6 +16,8 @@ add_library(
         src/Rendering/ShaderManager.cpp
         src/Rendering/SpriteRender.cpp
         src/Windowing/Window.cpp
+        src/GUI/SystemInterface.cpp
+        src/GUI/RenderInterface.cpp
 
         ${HEADER_LIST})
 
@@ -24,4 +26,5 @@ target_include_directories(Engine PUBLIC ${HEADER_LIST})
 
 target_link_libraries(Engine PUBLIC SDL2::SDL2)
 target_link_libraries(Engine PUBLIC SDL2::SDL2_image)
+target_link_libraries(Engine PUBLIC RmlCore RmlDebugger)
 target_link_libraries(Engine PUBLIC External)

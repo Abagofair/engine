@@ -29,6 +29,7 @@ namespace Engine::Windowing
         void SwapBuffers();
         void CenterMouseInWindow();
         glm::uvec2 WindowDimensions() const;
+
     private:
         unsigned short _width;
         unsigned short _height;

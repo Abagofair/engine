@@ -17,6 +17,24 @@ namespace Game
         CreateBlocks();
     }
 
+    void TestScene::CheckSceneState()
+    {
+        auto blockStateView = _game.GetRegistry().view<
+                Game::Components::BlockComponent>();
+
+        for (auto entity : blockStateView)
+        {
+            auto& blockState = blockStateView.get<Game::Components::BlockComponent>(entity);
+
+            if (blockState.blockState == Components::BlockState::Live)
+                return;
+        }
+
+        //all blocks are dead here
+        //signal game that the scene goal has been reached
+        _game.SceneIsComplete();
+    }
+
     void TestScene::CreateViewportBoundingBox()
     {
         auto viewportEntity = _game.GetRegistry().create();
@@ -47,8 +65,8 @@ namespace Game
         auto& state = _game.GetRegistry().emplace<Engine::Global::Components::EntityStateComponent>(leftPaddleEntity);
         state.active = true;
 
-        p.maxAcceleration = glm::vec2(0.0f, 30.0f);
-        p.velocityCeiling = glm::vec2(0.0f, 75.0f);
+        p.maxAcceleration = glm::vec2(0.0f, 50.0f);
+        p.velocityCeiling = glm::vec2(0.0f, 50.0f);
         v.velocity.x = 0.0f;
         v.velocity.y = 0.0f;
         b.height = 60;
@@ -79,7 +97,7 @@ namespace Game
 
         p1.attached = entt::null;
         p1.maxAcceleration = glm::vec2(0.0f, 50.0f);
-        p1.velocityCeiling = glm::vec2(0.0f, 100.0f);
+        p1.velocityCeiling = glm::vec2(0.0f, 50.0f);
         v1.velocity.x = 0.0f;
         v1.velocity.y = 0.0f;
         b1.height = 60;
@@ -111,8 +129,8 @@ namespace Game
         ball2.ballState = Game::Components::BallState::Attached;
         v2.velocity.x = 0.0f;
         v2.velocity.y = 0.0f;
-        b2.height = 6.0f;
-        b2.width = 6.0f;
+        b2.height = 8.0f;
+        b2.width = 8.0f;
 
         glm::mat4 trans2 = glm::mat4(1.0f);
         s2.transform = glm::translate(trans2, glm::vec3(s2.position, 0.0f));
@@ -142,7 +160,7 @@ namespace Game
 
         std::srand(std::time(nullptr));
         
-        for (int i = 1; i <= 245; ++i)
+        for (int i = 1; i <= 100; ++i)
         {
             auto blockEntity = _game.GetRegistry().create();
             auto& dynDebug = _game.GetRegistry().emplace<Engine::Rendering::Components::DebugRenderableComponent>(blockEntity);
@@ -167,12 +185,15 @@ namespace Game
             isYOff = !isYOff;
             if (i % 45 == 0)
             {
-                startY += 150.0f + 10;
+                startY += 200.0f + 10;
                 startX = 375.0f;
             }
             auto& pos = _game.GetRegistry().emplace<Engine::Global::Components::TransformComponent>(blockEntity);
             pos.position = glm::vec2(startX, startY);
             translations.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(startX, startY, 0.0f)));
+
+            auto& block = _game.GetRegistry().emplace<Game::Components::BlockComponent>(blockEntity);
+            block.blockState = Components::BlockState::Live;
         }
 
         staticEntity = Engine::Rendering::Renderable::SetupStatic(staticShader.ShaderId(), translations, 5, 50);

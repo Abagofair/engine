@@ -7,6 +7,7 @@
 #include "Engine/include/Global/Components.hpp"
 
 #include "Generated/EntityType.hpp"
+#include "GameComponents.hpp"
 
 namespace Game
 {

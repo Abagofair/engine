@@ -42,12 +42,14 @@ namespace Engine::Global::Game
         virtual std::vector<entt::entity> FindEntities(T) = 0;
         virtual void Initialize() = 0;
         virtual void Run() = 0;
+        virtual void SceneIsComplete() = 0;
 
         const Windowing::Window& GetWindow() const { return *_window; }
         const Rendering::ShaderManager& GetShaderManager() const { return _shaderManager; }
         const Input::InputHandler& GetInputHandler() const { return _inputHandler; }
         const Physics::IntegrationSystem& GetIntegrationSystem() const { return _integrationSystem; }
         const Collision::CollisionSystem<T>& GetCollisionSystem() const { return _collisionSystem; }
+        const Rendering::SpriteRender& GetRenderSystem() const { return _render; }
 
         entt::registry& GetRegistry() { return _registry; }
     protected:

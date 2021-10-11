@@ -6,7 +6,8 @@ namespace Game
             : Game(width, height),
               _paddles(_registry),
               _ball(_registry),
-              _block(_registry)
+              _block(_registry),
+              _renderInterface(_window.get(), _shaderManager, GetRenderSystem().viewMatrix)
     {}
 
     std::vector<entt::entity> PaddleGame::FindEntities(Generated::EntityType entityType)
@@ -27,6 +28,31 @@ namespace Game
 
     void PaddleGame::Initialize()
     {
+        Rml::SetRenderInterface(&_renderInterface);
+        Rml::SetSystemInterface(&_systemInterface);
+        Rml::Initialise();
+
+        // Create a context next.
+        _context = Rml::CreateContext("main", Rml::Vector2i(_window->WindowDimensions().x,
+                                                                         _window->WindowDimensions().y));
+        if (!_context)
+        {
+            std::cout << "Rml::Context failed" << std::endl;
+            Rml::Shutdown();
+        }
+
+        //OpenSans-Light.ttf
+        Rml::LoadFontFace("LatoLatin-Regular.ttf");
+        // Now we are ready to load our document.
+        Rml::ElementDocument* document = _context->LoadDocument("hello_world.rml");
+        if (!document)
+        {
+            std::cout << "Rml::ElementDocument failed" << std::endl;
+            Rml::Shutdown();
+        }
+
+        document->Show();
+
         _shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
         _shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
         _shaderManager.LoadShader("debug.glsl", Engine::Rendering::ShaderManager::DEBUG_SHADER_NAME);
@@ -103,8 +129,13 @@ namespace Game
             _inputHandler.DispatchEvents();
             _paddles.Update();
             _ball.Update();
+
+            _context->Update();
+
             _integrationSystem.Integrate(time);
             _collisionSystem.BroadPhase();
+
+            _currentScene->CheckSceneState();
 
             for (auto entity: dynamicRenderablesView)
             {
@@ -117,7 +148,15 @@ namespace Game
             _window->ClearBuffer(Engine::Global::Utilities::RGBA(0.1f, 0.7f, 0.95f, 1.0f));
             _render.DrawStaticQuads();
             _render.Draw();
+
+            _context->Render();
+
             _window->SwapBuffers();
         }
+    }
+
+    void PaddleGame::SceneIsComplete()
+    {
+        std::cout << "SCENE IS COMPLETE" << std::endl;
     }
 };

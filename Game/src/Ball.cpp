@@ -19,7 +19,7 @@ namespace Game
 
             if (ball.ballState == Components::BallState::Launch)
             {
-                vel.velocity = glm::vec2(500.0f, -250.f);
+                vel.velocity = glm::vec2(700.0f, -250.f);
                 ball.ballState = Components::BallState::Active;
             }
         }

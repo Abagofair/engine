@@ -15,6 +15,9 @@ namespace Game
         auto& instancedQuadComponent = _registry.get<
                 Engine::Rendering::Components::InstancedQuadComponent>(collisionInfo.source);
 
+        auto& block = _registry.get<Game::Components::BlockComponent>(collisionInfo.source);
+
+        block.blockState = Components::BlockState::Dead;
         collidedBB.ignoreCollisions = true;
         instancedQuadComponent.ignore = true;
     }

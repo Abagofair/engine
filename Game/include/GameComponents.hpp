@@ -5,7 +5,7 @@
 
 namespace Game::Components
 {
-    enum PaddleState
+    enum class PaddleState
     {
         Up,
         Down,
@@ -14,11 +14,17 @@ namespace Game::Components
         Moving
     };
 
-    enum BallState 
+    enum class BallState
     {
         Active,
         Launch,
         Attached
+    };
+
+    enum class BlockState
+    {
+        Live,
+        Dead
     };
 
     struct LeftPaddleComponent
@@ -26,7 +32,7 @@ namespace Game::Components
         glm::vec2 maxAcceleration;
         glm::vec2 acceleration;
         glm::vec2 velocityCeiling;
-        float brakeMagnitude;
+        float brakeForce;
         PaddleState state;
         entt::entity attached;
 
@@ -56,5 +62,15 @@ namespace Game::Components
         BallComponent(BallState ballState)
             : ballState(ballState)
             {}
+    };
+
+    struct BlockComponent {
+        BlockState blockState;
+
+        BlockComponent() = default;
+        BlockComponent(const BlockComponent&) = default;
+        BlockComponent(BlockState blockState)
+        : blockState(blockState)
+                {}
     };
 };

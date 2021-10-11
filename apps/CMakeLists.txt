@@ -1,6 +1,3 @@
-set(    HEADER_LIST
-        "${engine_SOURCE_DIR}/External/include/KHR/khrplatform.h")
-
 add_executable(Paddle main.cpp)
 
 target_compile_features(Paddle PRIVATE cxx_std_17)

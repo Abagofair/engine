@@ -13,12 +13,12 @@ namespace Engine::Rendering::Renderable
         };*/
 
         //TOP LEFT ORIGIN
-        float quadVertices[12] = 
+        float quadVertices[28] =
         {
-            0.0f,  0.0f, 0.0f,
-            width, 0.0f, 0.0f,
-            width, height, 0.0f,
-            0.0f,  height, 0.0f,
+            0.0f,  0.0f, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f,
+            width, 0.0f, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f,
+            width, height, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f,
+            0.0f,  height, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f
         };
 
         unsigned int quadIndices[6] =
@@ -40,8 +40,10 @@ namespace Engine::Rendering::Renderable
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), &quadIndices[0], GL_DYNAMIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(0));
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(0));
         glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(GL_FLOAT)));
+        glEnableVertexAttribArray(1);
     }
 
     Rendering::Components::RenderableComponent SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height)

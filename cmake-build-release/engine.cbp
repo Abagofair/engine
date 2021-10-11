@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="engine"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="clang"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\dev\;CMake Files\..\..\dev\vcpkg\;CMake Files\..\..\dev\vcpkg\scripts\;CMake Files\..\..\dev\vcpkg\scripts\buildsystems\;CMake Files\..\..\dev\vcpkg\installed\;CMake Files\..\..\dev\vcpkg\installed\x64-windows\;CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\;CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2\;CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2-image\;CMake Files\Engine\;CMake Files\External\;CMake Files\Game\;CMake Files\apps\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/repos/engine/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 all"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/repos/engine/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 edit_cache"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/repos/engine/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Engine">
+				<Option output="C:/repos/engine/cmake-build-release/Engine/Engine.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/Engine"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Components.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Game.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/GameEventBus.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time/Time.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities/RGBA.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/glPortableHeaders.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputHandler.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputStructures.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/IntegrationSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/PhysicsComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/BaseRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Renderable.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/RenderingComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Shader.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/ShaderManager.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/SpriteRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene/Scene.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing/Window.hpp"/>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 Engine"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Engine/fast">
+				<Option output="C:/repos/engine/cmake-build-release/Engine/Engine.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/Engine"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Components.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Game.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/GameEventBus.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time/Time.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities/RGBA.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/glPortableHeaders.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputHandler.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputStructures.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/IntegrationSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/PhysicsComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/BaseRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Renderable.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/RenderingComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Shader.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/ShaderManager.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/SpriteRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene/Scene.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing/Window.hpp"/>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 Engine/fast"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Engine\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="External">
+				<Option output="C:/repos/engine/cmake-build-release/External/External.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/External"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 External"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="External/fast">
+				<Option output="C:/repos/engine/cmake-build-release/External/External.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/External"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 External/fast"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\External\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Game">
+				<Option output="C:/repos/engine/cmake-build-release/Game/Game.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/Game"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine"/>
+					<Add directory="C:/repos/engine/Game/include/Ball.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Block.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/GameComponents.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Generated"/>
+					<Add directory="C:/repos/engine/Game/include/Generated/EntityType.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Paddle.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/PaddleGame.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/TestScene.hpp"/>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Components.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Game.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/GameEventBus.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time/Time.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities/RGBA.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/glPortableHeaders.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputHandler.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputStructures.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/IntegrationSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/PhysicsComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/BaseRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Renderable.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/RenderingComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Shader.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/ShaderManager.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/SpriteRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene/Scene.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing/Window.hpp"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 Game"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Game/fast">
+				<Option output="C:/repos/engine/cmake-build-release/Game/Game.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/Game"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine"/>
+					<Add directory="C:/repos/engine/Game/include/Ball.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Block.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/GameComponents.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Generated"/>
+					<Add directory="C:/repos/engine/Game/include/Generated/EntityType.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Paddle.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/PaddleGame.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/TestScene.hpp"/>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Components.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Game.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/GameEventBus.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time/Time.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities/RGBA.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/glPortableHeaders.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputHandler.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputStructures.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/IntegrationSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/PhysicsComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/BaseRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Renderable.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/RenderingComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Shader.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/ShaderManager.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/SpriteRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene/Scene.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing/Window.hpp"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 Game/fast"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\Game\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Paddle">
+				<Option output="C:/repos/engine/cmake-build-release/apps/Paddle.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/apps"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine/Game/include"/>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+					<Add directory="C:/repos/engine"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Components.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Game.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/GameEventBus.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time/Time.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities/RGBA.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/glPortableHeaders.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputHandler.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputStructures.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/IntegrationSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/PhysicsComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/BaseRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Renderable.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/RenderingComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Shader.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/ShaderManager.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/SpriteRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene/Scene.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing/Window.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Ball.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Block.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/GameComponents.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Generated"/>
+					<Add directory="C:/repos/engine/Game/include/Generated/EntityType.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Paddle.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/PaddleGame.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/TestScene.hpp"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 Paddle"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Paddle/fast">
+				<Option output="C:/repos/engine/cmake-build-release/apps/Paddle.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/repos/engine/cmake-build-release/apps"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="C:/repos/engine/Game/include"/>
+					<Add directory="C:/repos/engine/External/include/KHR/khrplatform.h"/>
+					<Add directory="C:/repos/engine/External/include/glad/gl.h"/>
+					<Add directory="C:/repos/engine"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Collision/CollisionSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Components.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Game.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/GameEventBus.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Time/Time.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/Utilities/RGBA.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Global/glPortableHeaders.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputHandler.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Input/InputStructures.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/IntegrationSystem.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Physics/PhysicsComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/BaseRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Renderable.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/RenderingComponents.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/Shader.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/ShaderManager.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Rendering/SpriteRender.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene"/>
+					<Add directory="C:/repos/engine/Engine/include/Scene/Scene.hpp"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing"/>
+					<Add directory="C:/repos/engine/Engine/include/Windowing/Window.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Ball.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Block.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/GameComponents.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Generated"/>
+					<Add directory="C:/repos/engine/Game/include/Generated/EntityType.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/Paddle.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/PaddleGame.hpp"/>
+					<Add directory="C:/repos/engine/Game/include/TestScene.hpp"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include"/>
+					<Add directory="C:/dev/vcpkg/installed/x64-windows/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 Paddle/fast"/>
+					<CompileFile command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\repos\engine\cmake-build-release\apps\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/repos/engine/Engine/include/Collision">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Collision/CollisionComponents.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Collision/CollisionSystem.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/Components.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/Game.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/GameEventBus.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/Time">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/Time/Time.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/Utilities">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/Utilities/RGBA.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Global/glPortableHeaders.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Input">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Input/InputHandler.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Input/InputStructures.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Physics">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Physics/IntegrationSystem.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Physics/PhysicsComponents.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Rendering">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Rendering/BaseRender.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Rendering/Renderable.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Rendering/RenderingComponents.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Rendering/Shader.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Rendering/ShaderManager.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Rendering/SpriteRender.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Scene">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Scene/Scene.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Windowing">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/include/Windowing/Window.hpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/src/Input/InputHandler.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/src/Physics/IntegrationSystem.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/src/Rendering/Renderable.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/src/Rendering/Shader.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/src/Rendering/ShaderManager.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/src/Rendering/SpriteRender.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/src/Windowing/Window.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/External/include/KHR/khrplatform.h">
+			<Option target="External"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/External/include/glad/gl.h">
+			<Option target="External"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/External/src/gl.cpp">
+			<Option target="External"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/Ball.hpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/Block.hpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/GameComponents.hpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/Generated">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/Generated/EntityType.hpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/Paddle.hpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/PaddleGame.hpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/include/TestScene.hpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/src/Ball.cpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/src/Block.cpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/src/Paddle.cpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/src/PaddleGame.cpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/src/TestScene.cpp">
+			<Option target="Game"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/apps/main.cpp">
+			<Option target="Paddle"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/scripts/buildsystems/vcpkg.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\scripts\buildsystems\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2/SDL2Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2/SDL2ConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2/SDL2Targets-debug.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2/SDL2Targets-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2/SDL2Targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2-image/sdl2-image-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2-image\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2-image/sdl2-image-targets-debug.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2-image\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2-image/sdl2-image-targets-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2-image\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/../../dev/vcpkg/installed/x64-windows/share/sdl2-image/sdl2-image-targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\dev\vcpkg\installed\x64-windows\share\sdl2-image\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Engine/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Engine\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/External/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\External\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/Game/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Game\"/>
+		</Unit>
+		<Unit filename="C:/repos/engine/apps/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\apps\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
