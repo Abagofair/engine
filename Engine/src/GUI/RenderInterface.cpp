@@ -5,7 +5,7 @@ namespace Engine::GUI
     RenderInterface::RenderInterface(Windowing::Window* window,
         Rendering::ShaderManager& shaderManager,
         glm::mat4 viewMatrix)
-        : _window(window), _shaderManager(shaderManager), _viewMatrix(viewMatrix), _bufferElements(100)
+        : _window(window), _shaderManager(shaderManager), _viewMatrix(viewMatrix), _bufferElements(20)
     {
         GLHelper::CreateEmptyPosColorTex(
                 sizeof(Rml::Vertex) * _bufferElements,

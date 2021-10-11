@@ -15,10 +15,10 @@ namespace Engine::Rendering::Renderable
         //TOP LEFT ORIGIN
         float quadVertices[28] =
         {
-            0.0f,  0.0f, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f,
-            width, 0.0f, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f,
-            width, height, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f,
-            0.0f,  height, 0.0f, 1.0f, 0.5f, 0.1f, 1.0f
+            0.0f,  0.0f, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f,
+            width, 0.0f, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f,
+            width, height, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f,
+            0.0f,  height, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f
         };
 
         unsigned int quadIndices[6] =

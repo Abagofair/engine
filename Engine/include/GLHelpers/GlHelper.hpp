@@ -34,15 +34,16 @@ namespace Engine::GLHelper
          * OFFSET FOR EACH ATTRIBUTE RELATIVE TO FIRST COMPONENT
          * *
          */
-        uint32_t componentOffset = positions + colors + uvs;
+        uint32_t componentOffset = ((positions + uvs) * sizeof(float)) + (colors * sizeof(unsigned char));
+
         //positions / vertices
-        glVertexAttribPointer(0, positions, GL_FLOAT, GL_FALSE, componentOffset * sizeof(float), (void*)(0));
+        glVertexAttribPointer(0, positions, GL_FLOAT, GL_FALSE, componentOffset, (void*)(0));
         glEnableVertexAttribArray(0);
         //colors (RGB) / (RGBA) / (BGRA) etc..
-        glVertexAttribPointer(1, colors, GL_FLOAT, GL_FALSE, componentOffset * sizeof(float), (void*)(positions * sizeof(GL_FLOAT)));
+        glVertexAttribPointer(1, colors, GL_UNSIGNED_BYTE, GL_TRUE, componentOffset, (void*)(positions * sizeof(GL_FLOAT)));
         glEnableVertexAttribArray(1);
         //uv coordinates
-        glVertexAttribPointer(2, uvs, GL_FLOAT, GL_FALSE, componentOffset * sizeof(float), (void*)((positions + colors) * sizeof(GL_FLOAT)));
+        glVertexAttribPointer(2, uvs, GL_FLOAT, GL_FALSE, componentOffset, (void*)((positions * sizeof(GL_FLOAT)) + (colors * sizeof(GL_UNSIGNED_BYTE))));
         glEnableVertexAttribArray(2);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -66,9 +67,13 @@ namespace Engine::GLHelper
 
     inline void DrawVaoWithTexture(uint32_t vao, uint32_t texture, uint32_t count, uint32_t* indices)
     {
-        glBindVertexArray(vao);
         if (texture > 0)
+        {
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
+        }
+
+        glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, indices);
     }
 
@@ -82,7 +87,7 @@ namespace Engine::GLHelper
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 };
