@@ -1,49 +1,43 @@
 #include "Renderable.hpp"
 
-namespace Engine::Rendering::Renderable
+namespace Engine::Rendering
 {
-    void SetupVboEbo(uint32_t &vbo, uint32_t &vao, uint32_t &ebo, float width, float height)
+    std::array<Rendering::Structures::Vertex, 4> CreateVertices(uint32_t width, uint32_t height, std::array<Rendering::Structures::RGBA, 4> colors)
     {
-        /*float quadVertices[12] = 
+        Rendering::Structures::Vertex quad1
         {
-            width,  height, 0.0f,
-            width, -height, 0.0f,
-            -width, -height, 0.0f,
-            -width,  height, 0.0f,
-        };*/
-
-        //TOP LEFT ORIGIN
-        float quadVertices[28] =
-        {
-            0.0f,  0.0f, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f,
-            width, 0.0f, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f,
-            width, height, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f,
-            0.0f,  height, 0.0f, 0.0f, 0.5f, 0.1f, 1.0f
+            .vertex = glm::vec3(0.0f, 0.0f, 0.0f),
+            .color = colors[0],
+            .uv = glm::vec2(0.0f, 0.0f)
         };
 
-        unsigned int quadIndices[6] =
+        Rendering::Structures::Vertex quad2
         {
-            0, 1, 3,
-            1, 2, 3
+            .vertex = glm::vec3((float)width, 0.0f, 0.0f),
+            .color = colors[1],
+            .uv = glm::vec2(1.0f, 0.0f)
         };
 
-        //Setup a fullscreen quad
-        glGenVertexArrays(1, &vao);
-        glGenBuffers(1, &vbo);
-        glGenBuffers(1, &ebo);
+        Rendering::Structures::Vertex quad3
+        {
+            .vertex = glm::vec3((float)width, (float)height, 0.0f),
+            .color = colors[2],
+            .uv = glm::vec2(1.0f, 1.0f),
+        };
 
-        glBindVertexArray(vao);
+        Rendering::Structures::Vertex quad4
+        {
+            .vertex = glm::vec3(0.0f, (float)height, 0.0f),
+            .color = colors[3],
+            .uv = glm::vec2(0.0f, 1.0f)
+        };
 
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices[0], GL_DYNAMIC_DRAW);
+        std::array<Rendering::Structures::Vertex, 4> vertices
+        {
+            quad1, quad2, quad3, quad4
+        };
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), &quadIndices[0], GL_DYNAMIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(0));
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(GL_FLOAT)));
-        glEnableVertexAttribArray(1);
+        return vertices;
     }
 
     Rendering::Components::RenderableComponent SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height)
@@ -52,8 +46,33 @@ namespace Engine::Rendering::Renderable
         renderable.shaderId = shaderId;
         renderable.primitive = Rendering::Components::Primitive::Quad;
 
-        SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
-            (float)width, (float)height);
+        std::array<Rendering::Structures::RGBA, 4> colors =
+         {
+             Rendering::Structures::RGBA(126, 126, 126, 255),
+             Rendering::Structures::RGBA(126, 126, 126, 255),
+             Rendering::Structures::RGBA(126, 126, 126, 255),
+             Rendering::Structures::RGBA(126, 126, 126, 255),
+         };
+
+        std::array<Rendering::Structures::Vertex, 4> vertices = CreateVertices(width, height, colors);
+
+        constexpr uint32_t indexCount = 6;
+        uint32_t quadIndices[indexCount] =
+        {
+            0, 1, 3,
+            1, 2, 3
+        };
+
+        GLHelper::VboVaoEboPosColorTex(
+                vertices,
+                indexCount * sizeof(uint32_t),
+                quadIndices,
+                3,
+                4,
+                2,
+                renderable.vbo,
+                renderable.vao,
+                renderable.ebo);
 
         return renderable;
     }
@@ -64,8 +83,33 @@ namespace Engine::Rendering::Renderable
         renderable.shaderId = shaderId;
         renderable.primitive = Rendering::Components::Primitive::Quad;
 
-        SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
-                    (float)width, (float)height);
+        std::array<Rendering::Structures::RGBA, 4> colors =
+        {
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+        };
+
+        std::array<Rendering::Structures::Vertex, 4> vertices = CreateVertices(width, height, colors);
+
+        constexpr uint32_t indexCount = 6;
+        uint32_t quadIndices[indexCount] =
+        {
+            0, 1, 3,
+            1, 2, 3
+        };
+
+        GLHelper::VboVaoEboPosColorTex(
+                vertices,
+                indexCount * sizeof(uint32_t),
+                quadIndices,
+                3,
+                4,
+                2,
+                renderable.vbo,
+                renderable.vao,
+                renderable.ebo);
 
         return renderable;
     }
@@ -73,11 +117,38 @@ namespace Engine::Rendering::Renderable
     Rendering::Components::StaticRenderableComponent SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height)
     {
         Rendering::Components::StaticRenderableComponent renderable;
-        SetupVboEbo(renderable.vbo, renderable.vao, renderable.ebo,
-            (float)width, (float)height);
+
+        std::array<Rendering::Structures::RGBA, 4> colors =
+        {
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+                Rendering::Structures::RGBA(126, 126, 126, 255),
+        };
+
+        std::array<Rendering::Structures::Vertex, 4> vertices = CreateVertices(width, height, colors);
+
+        constexpr uint32_t indexCount = 6;
+        uint32_t quadIndices[indexCount] =
+        {
+            0, 1, 3,
+            1, 2, 3
+        };
+
+        GLHelper::VboVaoEboPosColorTex(
+                vertices,
+                indexCount * sizeof(uint32_t),
+                quadIndices,
+                3,
+                4,
+                2,
+                renderable.vbo,
+                renderable.vao,
+                renderable.ebo);
+
         renderable.shaderId = shaderId;
         renderable.instances = transforms.size();
-        
+
         unsigned int buffer;
         glGenBuffers(1, &buffer);
         glBindBuffer(GL_ARRAY_BUFFER, buffer);

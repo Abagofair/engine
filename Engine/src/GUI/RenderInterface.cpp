@@ -74,31 +74,41 @@ namespace Engine::GUI
         SDL_SetRenderDrawBlendMode(mRenderer, SDL_BLENDMODE_NONE);
         SDL_RenderDrawPoint(mRenderer, -1, -1);*/
 
+        int w, h;
+        int miplevel = 0;
+        glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_WIDTH, &w);
+        glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_HEIGHT, &h);
+
         //todo: resize texture
-        /*
-         * for(int  i = 0; i < num_vertices; i++)
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        for(int  i = 0; i < num_vertices; i++)
         {
-            Positions[i] = vertices[i].position;
-            Colors[i] = vertices[i].colour;
-            if (sdl_texture) {
-                TexCoords[i].x = vertices[i].tex_coord.x * texw;
-                TexCoords[i].y = vertices[i].tex_coord.y * texh;
-            }
-            else TexCoords[i] = vertices[i].tex_coord;
+            vertices[i].tex_coord.x = vertices[i].tex_coord.x * w;
+            vertices[i].tex_coord.x = vertices[i].tex_coord.y * h;
         };
-         */
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         auto& shader = _shaderManager.GetShader(Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
-        if (_bufferElements < num_vertices)
+        //if (_bufferElements < num_vertices)
         {
-            std::cout << "_bufferElements was too small (" << _bufferElements << ")" << std::endl;
-            std::cout << "resizing to " << num_vertices << std::endl;
-            GLHelper::ResizeVbo(num_vertices, _vbo);
-            _bufferElements = num_vertices;
+            //std::cout << "_bufferElements was too small (" << _bufferElements << ")" << std::endl;
+            //std::cout << "resizing to " << num_vertices << std::endl;
+            //GLHelper::ResizeVbo(num_vertices, _vbo, vertices);
+            //_bufferElements = num_vertices;
+            GLHelper::CreatePosColorTex(
+                    num_vertices * sizeof(Rml::Vertex),
+                    2,
+                    4,
+                    2,
+                    _vbo,
+                    _vao,
+                    vertices
+                    );
         }
 
-        GLHelper::UpdateVbo<Rml::Vertex>(_vbo, 0, vertices, num_vertices);
+        //GLHelper::UpdateVbo<Rml::Vertex>(_vbo, 0, vertices, num_vertices);
 
         auto tranny = glm::translate(glm::mat4(1.0f),
                                      glm::vec3(translation.x, translation.y, 0.0f));
@@ -128,7 +138,6 @@ namespace Engine::GUI
     // Called by RmlUi when a texture is required by the library.
     bool RenderInterface::LoadTexture(Rml::TextureHandle& texture_handle, Rml::Vector2i& texture_dimensions, const Rml::String& source)
     {
-
         Rml::FileInterface* file_interface = Rml::GetFileInterface();
         Rml::FileHandle file_handle = file_interface->Open(source);
         if (!file_handle)

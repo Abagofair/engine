@@ -81,7 +81,7 @@ namespace Game
 
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
-        d = Engine::Rendering::Renderable::SetupDynamic(shader.ShaderId(), b.width, b.height);
+        d = Engine::Rendering::SetupDynamic(shader.ShaderId(), b.width, b.height);
     }
 
     void TestScene::CreateRightPaddle()
@@ -111,7 +111,7 @@ namespace Game
         
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
-        d1 = Engine::Rendering::Renderable::SetupDynamic(shader.ShaderId(), b1.width, b1.height);
+        d1 = Engine::Rendering::SetupDynamic(shader.ShaderId(), b1.width, b1.height);
     }
 
     void TestScene::CreateBall()
@@ -136,7 +136,7 @@ namespace Game
         s2.transform = glm::translate(trans2, glm::vec3(s2.position, 0.0f));
 
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
-        d2 = Engine::Rendering::Renderable::SetupDynamic(shader.ShaderId(), b2.width, b2.height);
+        d2 = Engine::Rendering::SetupDynamic(shader.ShaderId(), b2.width, b2.height);
     }
 
     void TestScene::CreateBlocks()
@@ -164,7 +164,7 @@ namespace Game
         {
             auto blockEntity = _game.GetRegistry().create();
             auto& dynDebug = _game.GetRegistry().emplace<Engine::Rendering::Components::DebugRenderableComponent>(blockEntity);
-            dynDebug = Engine::Rendering::Renderable::SetupDebug(debugShader.ShaderId(), width, height);
+            dynDebug = Engine::Rendering::SetupDebug(debugShader.ShaderId(), width, height);
 
             auto& staticQuad = _game.GetRegistry().emplace<Engine::Rendering::Components::InstancedQuadComponent>(blockEntity);
             staticQuad.ignore = false;
@@ -196,6 +196,6 @@ namespace Game
             block.blockState = Components::BlockState::Live;
         }
 
-        staticEntity = Engine::Rendering::Renderable::SetupStatic(staticShader.ShaderId(), translations, 5, 50);
+        staticEntity = Engine::Rendering::SetupStatic(staticShader.ShaderId(), translations, 5, 50);
     }
 };

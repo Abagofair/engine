@@ -26,13 +26,15 @@ namespace Engine::Rendering::Components
         uint32_t vao;
         uint32_t ebo;
         uint32_t shaderId;
+        uint32_t textureId;
         Primitive primitive;
         bool ignore;
 
         RenderableComponent() = default;
         RenderableComponent(const RenderableComponent&) = default;
-        RenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, bool ignore)
-            : vbo(vbo), vao(vao), ebo(ebo), shaderId(shaderId), primitive(primitive), ignore(ignore)
+        RenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, bool ignore,
+                            uint32_t textureId)
+            : vbo(vbo), vao(vao), ebo(ebo), shaderId(shaderId), primitive(primitive), ignore(ignore), textureId(textureId)
             {}
     };
 
@@ -42,17 +44,19 @@ namespace Engine::Rendering::Components
 
         StaticRenderableComponent() = default;
         StaticRenderableComponent(const StaticRenderableComponent&) = default;
-        StaticRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, uint32_t instances, bool ignore)
-            : RenderableComponent(vbo, vao, ebo, shaderId, primitive, ignore), instances(instances)
-            {}
+        StaticRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, uint32_t instances, bool ignore,
+                                  uint32_t textureId)
+            : RenderableComponent(vbo, vao, ebo, shaderId, primitive, ignore, textureId), instances(instances)
+                {}
     };
 
     struct DebugRenderableComponent : public RenderableComponent
     {
         DebugRenderableComponent() = default;
         DebugRenderableComponent(const DebugRenderableComponent&) = default;
-        DebugRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, bool ignore)
-        : RenderableComponent(vbo, vao, ebo, shaderId, primitive, ignore)
+        DebugRenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, bool ignore,
+                                 uint32_t textureId)
+            : RenderableComponent(vbo, vao, ebo, shaderId, primitive, ignore, textureId)
                 {}
     };
 };

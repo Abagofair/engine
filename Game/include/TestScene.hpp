@@ -7,6 +7,7 @@
 #include "Engine/include/Global/Components.hpp"
 #include "Engine/include/Collision/CollisionComponents.hpp"
 #include "Engine/include/Rendering/RenderingComponents.hpp"
+#include "Engine/include/Rendering/RenderingStructures.hpp"
 #include "Engine/include/Rendering/Renderable.hpp"
 #include "Engine/include/Rendering/ShaderManager.hpp"
 #include "Engine/include/Physics/PhysicsComponents.hpp"

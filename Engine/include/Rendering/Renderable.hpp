@@ -3,38 +3,19 @@
 #include <cstdint>
 
 #include <vector>
+#include <array>
+#include <iostream>
 
 #include "External/include/glm/glm.hpp"
-#include "Engine/include/Global/glPortableHeaders.hpp"
-#include "Engine/include/Rendering/RenderingComponents.hpp"
 
-namespace Engine::Rendering::Renderable
+#include "glPortableHeaders.hpp"
+#include "RenderingComponents.hpp"
+#include "RenderingStructures.hpp"
+#include "GlHelper.hpp"
+
+namespace Engine::Rendering
 {
-    struct Renderable
-    {
-        uint32_t vbo;
-        uint32_t vao;
-        uint32_t ebo;
-    };
-
-    struct Static
-    {
-        uint32_t vbo;
-        uint32_t vao;
-        uint32_t ebo;
-        uint32_t shaderId;
-        uint32_t instances;
-    };
-
-    struct Dynamic
-    {
-        uint32_t vbo;
-        uint32_t vao;
-        uint32_t ebo;
-        uint32_t shaderId;
-    };
-
-    void SetupVboEbo(uint32_t &vbo, uint32_t &vao, uint32_t &ebo, float width, float height);
+    std::array<Rendering::Structures::Vertex, 4> CreateVertices(uint32_t width, uint32_t height, std::array<Rendering::Structures::RGBA, 4> colors);
     Rendering::Components::RenderableComponent SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height);
     Rendering::Components::DebugRenderableComponent SetupDebug(uint32_t shaderId, uint32_t width, uint32_t height);
     Rendering::Components::StaticRenderableComponent SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height);
