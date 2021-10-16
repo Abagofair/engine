@@ -48,10 +48,10 @@ namespace Engine::Rendering
 
         std::array<Rendering::Structures::RGBA, 4> colors =
          {
-             Rendering::Structures::RGBA(126, 126, 126, 255),
-             Rendering::Structures::RGBA(126, 126, 126, 255),
-             Rendering::Structures::RGBA(126, 126, 126, 255),
-             Rendering::Structures::RGBA(126, 126, 126, 255),
+             Rendering::Structures::RGBA(126, 0, 126, 255),
+             Rendering::Structures::RGBA(126, 0, 126, 255),
+             Rendering::Structures::RGBA(126, 0, 126, 255),
+             Rendering::Structures::RGBA(126, 0, 126, 255),
          };
 
         std::array<Rendering::Structures::Vertex, 4> vertices = CreateVertices(width, height, colors);
@@ -85,10 +85,10 @@ namespace Engine::Rendering
 
         std::array<Rendering::Structures::RGBA, 4> colors =
         {
-                Rendering::Structures::RGBA(126, 126, 126, 255),
-                Rendering::Structures::RGBA(126, 126, 126, 255),
-                Rendering::Structures::RGBA(126, 126, 126, 255),
-                Rendering::Structures::RGBA(126, 126, 126, 255),
+                Rendering::Structures::RGBA(0, 255, 0, 255),
+                Rendering::Structures::RGBA(0, 255, 0, 255),
+                Rendering::Structures::RGBA(0, 255, 0, 255),
+                Rendering::Structures::RGBA(0, 255, 0, 255),
         };
 
         std::array<Rendering::Structures::Vertex, 4> vertices = CreateVertices(width, height, colors);
