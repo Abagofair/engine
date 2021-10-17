@@ -1,0 +1,22 @@
+body {
+	font-family: LatoLatin;
+	font-size: 20px;
+	color: #02475e;
+	background: #fefecc;
+	text-align: center;
+	padding: 2em 1em;
+	border: 5px #ccc;
+	width: 200px;
+	height: 100px;
+	margin: auto;
+	opacity: 0.9;
+}
+
+.ingame-menu {
+    position: absolute;
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: bold;
+}

@@ -1,0 +1,53 @@
+<rml>
+<head>
+<style>
+body {
+	font-family: LatoLatin;
+	font-size: 20px;
+	color: #fff;
+	background: #5877aa;
+	text-align: center;
+	padding: 1em 1em;
+	border: 5px #ccc;
+	width: 7.5%;
+	height: 15%;
+	margin: auto;
+	opacity: 0.9;
+	border-radius: 25px;
+	position: relative;
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.ingame-menu-header {
+    margin-bottom: 5%;
+}
+
+.ingame-menu-button {
+    position: relative;
+    margin-bottom: 2.5%;
+    background: #0d7985;
+    border-radius: 10px;
+    border: 2px #ccc;
+    padding: 0.25rem 1.5rem 0.25rem 1.5rem;
+}
+
+</style>
+	<title>Hello world</title>
+	<link type="text/rcss" href="rml.rcss"/>
+</head>
+    <body>
+        <div>
+            <h1 class="ingame-menu-header">Menu</h1>
+            <div class="ingame-menu-button">
+                <p>Reset</p>
+            </div>
+            <div class="ingame-menu-button">
+                <p>Exit</p>
+            </div>
+        </div>
+    </body>
+</rml>
