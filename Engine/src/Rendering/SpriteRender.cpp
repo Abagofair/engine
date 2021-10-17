@@ -25,7 +25,7 @@ namespace Engine::Rendering
         //include multiple textures at shader initialization to the shader so all we have to do is pass in the textureid
 
         //spriteShader.UseWithOrtho(viewMatrix);
-        //glUseProgram(shaderId);
+        //glUseProgram(shaderHandle);
         auto& dynamicShader = _shaderManager.GetShader(Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
         for (auto entity : dynamicRenderablesView)
@@ -36,9 +36,12 @@ namespace Engine::Rendering
             dynamicShader.Use();
             dynamicShader.SetUniformMat4(transform.transform, "model");
             dynamicShader.SetUniformMat4(viewMatrix, "view");
+
+            glBindTexture(GL_TEXTURE_2D, renderable.textureHandle);
             glBindVertexArray(renderable.vao);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
+            glBindTexture(GL_TEXTURE_2D, 0);
         }
 
         //debug view
@@ -65,7 +68,7 @@ namespace Engine::Rendering
             debugShader.Use();
             debugShader.SetUniformMat4(t, "model");
             debugShader.SetUniformMat4(viewMatrix, "view");
-            
+
             glBindVertexArray(renderable.vao);
             glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);

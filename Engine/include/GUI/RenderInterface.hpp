@@ -7,6 +7,7 @@
 #include <RmlUi/Core.h>
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 #include "External/include/glm/glm.hpp"
 

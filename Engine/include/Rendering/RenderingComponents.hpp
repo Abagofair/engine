@@ -25,16 +25,16 @@ namespace Engine::Rendering::Components
         uint32_t vbo;
         uint32_t vao;
         uint32_t ebo;
-        uint32_t shaderId;
-        uint32_t textureId;
+        uint32_t shaderHandle;
+        uint32_t textureHandle;
         Primitive primitive;
         bool ignore;
 
         RenderableComponent() = default;
         RenderableComponent(const RenderableComponent&) = default;
-        RenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderId, Primitive primitive, bool ignore,
-                            uint32_t textureId)
-            : vbo(vbo), vao(vao), ebo(ebo), shaderId(shaderId), primitive(primitive), ignore(ignore), textureId(textureId)
+        RenderableComponent(uint32_t vbo, uint32_t vao, uint32_t ebo, uint32_t shaderHandle, Primitive primitive, bool ignore,
+                            uint32_t textureHandle)
+            : vbo(vbo), vao(vao), ebo(ebo), shaderHandle(shaderHandle), primitive(primitive), ignore(ignore), textureHandle(textureHandle)
             {}
     };
 

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+#include <cstdint>
 
 #include "External/include/glm/glm.hpp"
 #include "External/include/glm/gtc/type_ptr.hpp"
@@ -27,6 +28,7 @@ namespace Engine::Rendering
         void Use() const;
         void SetUniformMat4(const glm::mat4& transform, const std::string& name);
         void SetUniformBoolArray(const unsigned int* array, int size, const std::string& name);
+        void SetUniformBool(bool value, const std::string& name);
 
     private:
         Shader(const Shader&) = delete;

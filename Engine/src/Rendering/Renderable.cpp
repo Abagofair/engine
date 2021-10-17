@@ -40,18 +40,19 @@ namespace Engine::Rendering
         return vertices;
     }
 
-    Rendering::Components::RenderableComponent SetupDynamic(uint32_t shaderId, uint32_t width, uint32_t height)
+    Rendering::Components::RenderableComponent SetupDynamic(uint32_t textureHandle, uint32_t shaderHandle, uint32_t width, uint32_t height)
     {
         Rendering::Components::RenderableComponent renderable;
-        renderable.shaderId = shaderId;
+        renderable.shaderHandle = shaderHandle;
+        renderable.textureHandle = textureHandle;
         renderable.primitive = Rendering::Components::Primitive::Quad;
 
         std::array<Rendering::Structures::RGBA, 4> colors =
          {
-             Rendering::Structures::RGBA(126, 0, 126, 255),
-             Rendering::Structures::RGBA(126, 0, 126, 255),
-             Rendering::Structures::RGBA(126, 0, 126, 255),
-             Rendering::Structures::RGBA(126, 0, 126, 255),
+             Rendering::Structures::RGBA(255, 255, 255, 0),
+             Rendering::Structures::RGBA(255, 255, 255, 0),
+             Rendering::Structures::RGBA(255, 255, 255, 0),
+             Rendering::Structures::RGBA(255, 255, 255, 0),
          };
 
         std::array<Rendering::Structures::Vertex, 4> vertices = CreateVertices(width, height, colors);
@@ -77,10 +78,10 @@ namespace Engine::Rendering
         return renderable;
     }
 
-    Rendering::Components::DebugRenderableComponent SetupDebug(uint32_t shaderId, uint32_t width, uint32_t height)
+    Rendering::Components::DebugRenderableComponent SetupDebug(uint32_t shaderHandle, uint32_t width, uint32_t height)
     {
         Rendering::Components::DebugRenderableComponent renderable;
-        renderable.shaderId = shaderId;
+        renderable.shaderHandle = shaderHandle;
         renderable.primitive = Rendering::Components::Primitive::Quad;
 
         std::array<Rendering::Structures::RGBA, 4> colors =
@@ -114,7 +115,7 @@ namespace Engine::Rendering
         return renderable;
     }
 
-    Rendering::Components::StaticRenderableComponent SetupStatic(uint32_t shaderId, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height)
+    Rendering::Components::StaticRenderableComponent SetupStatic(uint32_t textureHandle, uint32_t shaderHandle, std::vector<glm::mat4> transforms, uint32_t width, uint32_t height)
     {
         Rendering::Components::StaticRenderableComponent renderable;
 
@@ -146,7 +147,8 @@ namespace Engine::Rendering
                 renderable.vao,
                 renderable.ebo);
 
-        renderable.shaderId = shaderId;
+        renderable.shaderHandle = shaderHandle;
+        renderable.textureHandle = textureHandle;
         renderable.instances = transforms.size();
 
         unsigned int buffer;

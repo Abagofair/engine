@@ -124,4 +124,10 @@ namespace Engine::Rendering
         unsigned int uniformLocation = glGetUniformLocation(*_glShaderProgramId, name.c_str());
         glUniform1uiv(uniformLocation, size, array);
     }
+
+    void Shader::SetUniformBool(bool value, const std::string& name)
+    {
+        unsigned int uniformLocation = glGetUniformLocation(*_glShaderProgramId, name.c_str());
+        glUniform1ui(uniformLocation, value);
+    }
 };

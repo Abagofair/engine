@@ -8,23 +8,28 @@
 #include "RenderingStructures.hpp"
 #include "glPortableHeaders.hpp"
 
+#include <RmlUi/Core.h>
+
 namespace Engine::GLHelper
 {
-    inline void CreatePosColorTex(uint32_t bufferSize,
-                                uint32_t positions,
-                                uint32_t colors,
-                                uint32_t uvs,
-                                uint32_t& vbo,
-                                uint32_t& vao,
-                                void* data)
+    inline void CreateRmlBuffers(
+            uint32_t& vbo,
+            uint32_t& vao,
+            Rml::Vertex* vertices,
+            uint32_t vertexCount)
     {
+        if (vbo > 0)
+            glDeleteBuffers(1, &vbo);
+        if (vao > 0)
+            glDeleteBuffers(1, &vao);
+
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
 
         glBindVertexArray(vao);
 
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, bufferSize, data, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Rml::Vertex) * vertexCount, &vertices[0], GL_DYNAMIC_DRAW);
 
         /* glVertexAttribPointer(
          * INDEX,
@@ -36,17 +41,15 @@ namespace Engine::GLHelper
          * OFFSET FOR EACH ATTRIBUTE RELATIVE TO FIRST COMPONENT
          * *
          */
-        uint32_t componentOffset = ((positions + uvs) * sizeof(float)) + (colors * sizeof(unsigned char));
-
         //positions / vertex
-        glVertexAttribPointer(0, positions, GL_FLOAT, GL_FALSE, componentOffset, (void*)(0));
         glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Rml::Vertex), (void*)(0));
         //color (RGB) / (RGBA) / (BGRA) etc..
-        glVertexAttribPointer(1, colors, GL_UNSIGNED_BYTE, GL_TRUE, componentOffset, (void*)(positions * sizeof(GL_FLOAT)));
         glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Rml::Vertex), (void*) offsetof(Rml::Vertex, colour));
         //uv coordinates
-        glVertexAttribPointer(2, uvs, GL_FLOAT, GL_FALSE, componentOffset, (void*)((positions * sizeof(GL_FLOAT)) + (colors * sizeof(GL_UNSIGNED_BYTE))));
         glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Rml::Vertex), (void*) offsetof(Rml::Vertex, tex_coord));
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
@@ -98,24 +101,6 @@ namespace Engine::GLHelper
         glBindVertexArray(0);
     }
 
-    inline void CreateEmptyPosColorTex(uint32_t bufferSize,
-                                       uint32_t positions,
-                                       uint32_t colors,
-                                       uint32_t uvs,
-                                       uint32_t& vbo,
-                                       uint32_t& vao)
-    {
-        CreatePosColorTex(
-                bufferSize,
-                positions,
-                colors,
-                uvs,
-                vbo,
-                vao,
-                nullptr
-        );
-    }
-
     inline void ResizeVbo(uint32_t newSize, uint32_t vbo, void* data)
     {
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -137,6 +122,7 @@ namespace Engine::GLHelper
         {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
+            
         }
 
         glBindVertexArray(vao);

@@ -5,89 +5,23 @@ namespace Engine::GUI
     RenderInterface::RenderInterface(Windowing::Window* window,
         Rendering::ShaderManager& shaderManager,
         glm::mat4 viewMatrix)
-        : _window(window), _shaderManager(shaderManager), _viewMatrix(viewMatrix), _bufferElements(20)
+        : _window(window), _shaderManager(shaderManager), _viewMatrix(viewMatrix)
     {
-        GLHelper::CreateEmptyPosColorTex(
-                sizeof(Rml::Vertex) * _bufferElements,
-                2,
-                4,
-                2,
-                _vbo,
-                _vao);
     }
 
     void RenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f& translation)
     {
-        /* SDL uses shaders that we need to disable here
-        glUseProgramObjectARB(0);
-        glPushMatrix();
-
-        glTranslatef(translation.x, translation.y, 0);
-
-        Rml::Vector<Rml::Vector2f> Positions(num_vertices);
-        Rml::Vector<Rml::Colourb> Colors(num_vertices);
-        Rml::Vector<Rml::Vector2f> TexCoords(num_vertices);
-        float texw = 0.0f;
-        float texh = 0.0f;
-
-        SDL_Texture* sdl_texture = nullptr;
-        if(texture)
-        {
-            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            sdl_texture = (SDL_Texture *) texture;
-            SDL_GL_BindTexture(sdl_texture, &texw, &texh);
-        }
-
-        for(int  i = 0; i < num_vertices; i++)
-        {
-            Positions[i] = vertices[i].position;
-            Colors[i] = vertices[i].colour;
-            if (sdl_texture) {
-                TexCoords[i].x = vertices[i].tex_coord.x * texw;
-                TexCoords[i].y = vertices[i].tex_coord.y * texh;
-            }
-            else TexCoords[i] = vertices[i].tex_coord;
-        };
-
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
-        glVertexPointer(2, GL_FLOAT, 0, &Positions[0]);
-        glColorPointer(4, GL_UNSIGNED_BYTE, 0, &Colors[0]);
-        glTexCoordPointer(2, GL_FLOAT, 0, &TexCoords[0]);
-
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, indices);
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_COLOR_ARRAY);
-
-        if (sdl_texture) {
-            SDL_GL_UnbindTexture(sdl_texture);
-            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        }
-
-        glColor4f(1.0, 1.0, 1.0, 1.0);
-        glPopMatrix();
-        // Reset blending and draw a fake point just outside the screen to let SDL know that it needs to reset its state in case it wants to render a texture
-        glDisable(GL_BLEND);
-        SDL_SetRenderDrawBlendMode(mRenderer, SDL_BLENDMODE_NONE);
-        SDL_RenderDrawPoint(mRenderer, -1, -1);*/
-
-        int w, h;
-        int miplevel = 0;
-        glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_WIDTH, &w);
-        glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_HEIGHT, &h);
-
-        //todo: resize texture
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-        for(int  i = 0; i < num_vertices; i++)
+        int w, h;
+        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);
+        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        /*for(int  i = 0; i < num_vertices; i++)
         {
             vertices[i].tex_coord.x = vertices[i].tex_coord.x * w;
             vertices[i].tex_coord.x = vertices[i].tex_coord.y * h;
-        };
-        glBindTexture(GL_TEXTURE_2D, 0);
+        };*/
 
         auto& shader = _shaderManager.GetShader(Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
@@ -97,14 +31,13 @@ namespace Engine::GUI
             //std::cout << "resizing to " << num_vertices << std::endl;
             //GLHelper::ResizeVbo(num_vertices, _vbo, vertices);
             //_bufferElements = num_vertices;
-            GLHelper::CreatePosColorTex(
-                    num_vertices * sizeof(Rml::Vertex),
-                    2,
-                    4,
-                    2,
+
+            //todo: don't recreate buffers on each draw
+            GLHelper::CreateRmlBuffers(
                     _vbo,
                     _vao,
-                    vertices
+                    vertices,
+                    num_vertices
                     );
         }
 
@@ -113,10 +46,13 @@ namespace Engine::GUI
         auto tranny = glm::translate(glm::mat4(1.0f),
                                      glm::vec3(translation.x, translation.y, 0.0f));
 
+        bool useColor = (uint32_t) texture > 0;
+
         shader.Use();
         shader.SetUniformMat4(tranny, "model");
         shader.SetUniformMat4(_viewMatrix, "view");
-        GLHelper::DrawVaoWithTexture(_vao, texture, num_vertices, (uint32_t*)indices);
+        shader.SetUniformBool(useColor, "useTexture");
+        GLHelper::DrawVaoWithTexture(_vao, texture, num_indices, (uint32_t*)indices);
     }
 
     // Called by RmlUi when it wants to enable or disable scissoring to clip content.
@@ -196,6 +132,7 @@ namespace Engine::GUI
                                                          32,
                                                          source_dimensions.x*4,
                                                          rmask, gmask, bmask, amask);
+
         uint32_t texture;
         GLHelper::Create2DTexture(
                 texture,
@@ -204,7 +141,7 @@ namespace Engine::GUI
                 surface);
 
         SDL_FreeSurface(surface);
-        texture_handle = (Rml::TextureHandle) texture;
+        texture_handle = static_cast<Rml::TextureHandle>(texture);
 
         return true;
     }

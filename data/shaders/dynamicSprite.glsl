@@ -16,7 +16,6 @@ void main()
     gl_Position = view * model * vec4(aPos.xyz, 1.0);
     color = aColor;
     tex = aTex;
-    //TexCoords = aTexCoords;
 }
 
     #shader fragment
@@ -26,13 +25,18 @@ out vec4 FragColor;
 in vec4 color;
 in vec2 tex;
 
+uniform bool useTexture;
 uniform sampler2D texture1;
-
-//in vec2 TexCoords;
-
-//uniform sampler2D texture_diffuse1;
 
 void main()
 {
-    FragColor = mix(texture(texture1, tex), color, 1.0);
+    if (useTexture)
+    {
+        vec4 sampledTexture = texture(texture1, tex);
+        FragColor = vec4(color.xyz * sampledTexture.xyz, sampledTexture.w);
+    }
+    else
+    {
+        FragColor = color;
+    }
 }

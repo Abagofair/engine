@@ -81,7 +81,9 @@ namespace Game
 
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
-        d = Engine::Rendering::SetupDynamic(shader.ShaderId(), b.width, b.height);
+        auto tex = _game.GetTextureManager().TextureFromImage("paddle.png");
+
+        d = Engine::Rendering::SetupDynamic(tex->textureHandle, shader.ShaderId(), b.width, b.height);
     }
 
     void TestScene::CreateRightPaddle()
@@ -111,7 +113,7 @@ namespace Game
         
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
-        d1 = Engine::Rendering::SetupDynamic(shader.ShaderId(), b1.width, b1.height);
+        d1 = Engine::Rendering::SetupDynamic(0, shader.ShaderId(), b1.width, b1.height);
     }
 
     void TestScene::CreateBall()
@@ -136,7 +138,7 @@ namespace Game
         s2.transform = glm::translate(trans2, glm::vec3(s2.position, 0.0f));
 
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
-        d2 = Engine::Rendering::SetupDynamic(shader.ShaderId(), b2.width, b2.height);
+        d2 = Engine::Rendering::SetupDynamic(0, shader.ShaderId(), b2.width, b2.height);
     }
 
     void TestScene::CreateBlocks()
@@ -196,6 +198,6 @@ namespace Game
             block.blockState = Components::BlockState::Live;
         }
 
-        staticEntity = Engine::Rendering::SetupStatic(staticShader.ShaderId(), translations, 5, 50);
+        staticEntity = Engine::Rendering::SetupStatic(0, staticShader.ShaderId(), translations, 5, 50);
     }
 };

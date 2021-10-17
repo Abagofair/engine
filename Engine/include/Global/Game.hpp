@@ -9,10 +9,13 @@
 #include "Engine/include/Rendering/ShaderManager.hpp"
 #include "Engine/include/Rendering/BaseRender.hpp"
 #include "Engine/include/Rendering/SpriteRender.hpp"
+#include "Engine/include/Rendering/TextureManager.hpp"
 #include "Engine/include/Collision/CollisionSystem.hpp"
 #include "Engine/include/Physics/IntegrationSystem.hpp"
 #include "Engine/include/Input/InputHandler.hpp"
 #include "Engine/include/Input/InputStructures.hpp"
+
+#include "Engine/include/Resources/ResourceHandler.hpp"
 
 namespace Engine::Global::Game
 {
@@ -36,7 +39,8 @@ namespace Engine::Global::Game
             :   _integrationSystem(Physics::IntegrationSystem(_registry)),
                 _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE")),
                 _render(Rendering::SpriteRender(_registry, _shaderManager, width, height)),
-                _collisionSystem(Collision::CollisionSystem<T>(_registry))
+                _collisionSystem(Collision::CollisionSystem<T>(_registry)),
+                _textureManager(_resourceHandler)
         {}
 
         virtual std::vector<entt::entity> FindEntities(T) = 0;
@@ -50,15 +54,19 @@ namespace Engine::Global::Game
         const Physics::IntegrationSystem& GetIntegrationSystem() const { return _integrationSystem; }
         const Collision::CollisionSystem<T>& GetCollisionSystem() const { return _collisionSystem; }
         const Rendering::SpriteRender& GetRenderSystem() const { return _render; }
+        Rendering::TextureManager& GetTextureManager() { return _textureManager; }
 
         entt::registry& GetRegistry() { return _registry; }
     protected:
         entt::registry _registry;
 
+        Resources::ResourceHandler _resourceHandler;
+
         Input::InputHandler _inputHandler;
         Physics::IntegrationSystem _integrationSystem;
         Collision::CollisionSystem<T> _collisionSystem;
         Rendering::ShaderManager _shaderManager;
+        Rendering::TextureManager _textureManager;
 
         Rendering::SpriteRender _render;
         std::unique_ptr<Scene::Scene> _currentScene;
