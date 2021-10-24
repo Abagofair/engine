@@ -18,6 +18,7 @@ add_library(
         src/Windowing/Window.cpp
         src/GUI/SystemInterface.cpp
         src/GUI/RenderInterface.cpp
+        src/GUI/GuiManager.cpp
         src/Rendering/TextureManager.cpp
         src/Resources/ResourceHandler.cpp
 

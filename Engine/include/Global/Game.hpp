@@ -14,7 +14,7 @@
 #include "Engine/include/Physics/IntegrationSystem.hpp"
 #include "Engine/include/Input/InputHandler.hpp"
 #include "Engine/include/Input/InputStructures.hpp"
-
+#include "GuiManager.hpp"
 #include "Engine/include/Resources/ResourceHandler.hpp"
 
 namespace Engine::Global::Game
@@ -40,7 +40,8 @@ namespace Engine::Global::Game
                 _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE")),
                 _render(Rendering::SpriteRender(_registry, _shaderManager, width, height)),
                 _collisionSystem(Collision::CollisionSystem<T>(_registry)),
-                _textureManager(_resourceHandler)
+                _textureManager(_resourceHandler),
+                _guiManager(_window.get(), _shaderManager, _render.viewMatrix)
         {}
 
         virtual std::vector<entt::entity> FindEntities(T) = 0;
@@ -71,6 +72,8 @@ namespace Engine::Global::Game
         Rendering::SpriteRender _render;
         std::unique_ptr<Scene::Scene> _currentScene;
         std::unique_ptr<Engine::Windowing::Window> _window;
+
+        GUI::GuiManager _guiManager;
 
         GameState _state;
     };

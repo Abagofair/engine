@@ -39,9 +39,5 @@ namespace Game
         Paddle _paddles;
         Block _block;
         Ball _ball;
-
-        Engine::GUI::RenderInterface _renderInterface;
-        Engine::GUI::SystemInterface _systemInterface;
-        Rml::Context* _context;
     };
 };

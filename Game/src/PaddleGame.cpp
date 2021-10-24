@@ -6,8 +6,7 @@ namespace Game
             : Game(width, height),
               _paddles(_registry),
               _ball(_registry),
-              _block(_registry),
-              _renderInterface(_window.get(), _shaderManager, GetRenderSystem().viewMatrix)
+              _block(_registry)
     {}
 
     std::vector<entt::entity> PaddleGame::FindEntities(Generated::EntityType entityType)
@@ -28,31 +27,6 @@ namespace Game
 
     void PaddleGame::Initialize()
     {
-        Rml::SetRenderInterface(&_renderInterface);
-        Rml::SetSystemInterface(&_systemInterface);
-        Rml::Initialise();
-
-        // Create a context next.
-        _context = Rml::CreateContext("main", Rml::Vector2i(_window->WindowDimensions().x,
-                                                                         _window->WindowDimensions().y));
-        if (!_context)
-        {
-            std::cout << "Rml::Context failed" << std::endl;
-            Rml::Shutdown();
-        }
-
-        //OpenSans-Light.ttf
-        Rml::LoadFontFace("LatoLatin-Regular.ttf");
-        // Now we are ready to load our document.
-        Rml::ElementDocument* document = _context->LoadDocument("hello_world.rml");
-        if (!document)
-        {
-            std::cout << "Rml::ElementDocument failed" << std::endl;
-            Rml::Shutdown();
-        }
-
-        document->Show();
-
         _shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
         _shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
         _shaderManager.LoadShader("debug.glsl", Engine::Rendering::ShaderManager::DEBUG_SHADER_NAME);
@@ -60,14 +34,14 @@ namespace Game
         _currentScene = std::make_unique<TestScene>(*this);
         _currentScene->Initialize();
 
-        for (auto playerEntity: FindEntities(Generated::EntityType::Paddle))
+        for (auto playerEntity : FindEntities(Generated::EntityType::Paddle))
         {
             _collisionSystem.AddCollisionCallback(playerEntity,
                                                   Generated::EntityType::ViewportContainer,
                                                   std::bind(&Paddle::OnViewportCollision, &_paddles, std::placeholders::_1));
         }
 
-        for (auto ballEntity: FindEntities(Generated::EntityType::Ball))
+        for (auto ballEntity : FindEntities(Generated::EntityType::Ball))
         {
             _collisionSystem.AddCollisionCallback(ballEntity,
                                                   Generated::EntityType::Block,
@@ -81,7 +55,7 @@ namespace Game
                                                   std::bind(&Ball::OnViewportCollision, &_ball, std::placeholders::_1));
         }
 
-        for (auto blockEntity: FindEntities(Generated::EntityType::Block))
+        for (auto blockEntity : FindEntities(Generated::EntityType::Block))
         {
             _collisionSystem.AddCollisionCallback(blockEntity,
                                                   Generated::EntityType::Ball,
@@ -109,6 +83,8 @@ namespace Game
 
     void PaddleGame::Run()
     {
+        _guiManager.LoadInGameMenuDocument();
+
         bool exit = false;
         uint32_t previousTime = SDL_GetTicks();
         Engine::Input::GamepadEvent event;
@@ -130,7 +106,7 @@ namespace Game
             _paddles.Update();
             _ball.Update();
 
-            _context->Update();
+            _guiManager.Update();
 
             _integrationSystem.Integrate(time);
             _collisionSystem.BroadPhase();
@@ -149,7 +125,7 @@ namespace Game
             _render.DrawStaticQuads();
             _render.Draw();
 
-            _context->Render();
+            _guiManager.Draw();
 
             _window->SwapBuffers();
         }

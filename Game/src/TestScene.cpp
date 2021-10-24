@@ -81,9 +81,9 @@ namespace Game
 
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
-        auto tex = _game.GetTextureManager().TextureFromImage("paddle.png");
+        //auto tex = _game.GetTextureManager().TextureFromImage("paddle.png");
 
-        d = Engine::Rendering::SetupDynamic(tex->textureHandle, shader.ShaderId(), b.width, b.height);
+        d = Engine::Rendering::SetupDynamic(0, shader.ShaderId(), b.width, b.height);
     }
 
     void TestScene::CreateRightPaddle()
