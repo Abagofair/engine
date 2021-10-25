@@ -79,6 +79,9 @@ namespace Game
 
         _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonB,
                                      std::bind(&Paddle::DebugAttachBall, &_paddles, std::placeholders::_1));
+
+        _inputContext.OnKeyPressed(Engine::Input::KeyCode::ESC,
+                                   [this](Engine::Input::KeyEvent){ PauseMenu(); });
     }
 
     [[noreturn]] void PaddleGame::Run()
@@ -90,11 +93,10 @@ namespace Game
         Engine::Input::GamepadEvent event;
         _paddles.DebugAttachBall(event);
 
+        _state = Engine::Global::Game::GameState::Running;
+
         while (true)
         {
-            auto dynamicRenderablesView = _registry.view<
-                    Engine::Global::Components::TransformComponent>();
-
             Engine::Global::Time::Time time;
             time.MsElapsedTotal = SDL_GetTicks();
             time.MsElapsedFrame = time.MsElapsedTotal - previousTime;
@@ -102,15 +104,20 @@ namespace Game
             time.SecElapsedFrame = time.MsElapsedFrame / 1000.0f;
 
             _inputContext.Handle();
+
+            auto dynamicRenderablesView = _registry.view<
+                    Engine::Global::Components::TransformComponent>();
+
             _paddles.Update();
             _ball.Update();
-
-            _guiManager.Update();
 
             _integrationSystem.Integrate(time);
             _collisionSystem.BroadPhase();
 
             _currentScene->CheckSceneState();
+
+            if (_state == Engine::Global::Game::GameState::Paused)
+                _guiManager.Update();
 
             for (auto entity: dynamicRenderablesView)
             {
@@ -120,12 +127,14 @@ namespace Game
                 //transform.transform = glm::scale(transform.transform, glm::vec3(10.0f, 60.0f, 0.0f));
             }
 
+            //todo: something more statey
             _window->ClearBuffer(Engine::Global::Utilities::RGBA(0.1f, 0.7f, 0.95f, 1.0f));
 
             _render.DrawStaticQuads();
             _render.Draw();
 
-            _guiManager.Draw();
+            if (_state == Engine::Global::Game::GameState::Paused)
+                _guiManager.Draw();
 
             _window->SwapBuffers();
         }
@@ -134,5 +143,15 @@ namespace Game
     void PaddleGame::SceneIsComplete()
     {
         std::cout << "SCENE IS COMPLETE" << std::endl;
+    }
+
+    void PaddleGame::PauseMenu()
+    {
+        std::cout << "PAUSING" << std::endl;
+
+        if (_state == Engine::Global::Game::GameState::Running)
+            _state = Engine::Global::Game::GameState::Paused;
+        else if (_state == Engine::Global::Game::GameState::Paused)
+            _state = Engine::Global::Game::GameState::Running;
     }
 };

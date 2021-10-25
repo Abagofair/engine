@@ -40,5 +40,7 @@ namespace Game
         Paddle _paddles;
         Block _block;
         Ball _ball;
+
+        void PauseMenu();
     };
 };

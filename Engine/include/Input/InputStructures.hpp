@@ -46,7 +46,8 @@ namespace Engine::Input
         V,
         X,
         Y,
-        Z
+        Z,
+        ESC
     };
 
     enum GamepadCode

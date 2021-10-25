@@ -30,9 +30,15 @@ namespace Engine::Input
                 {
                     break;
                 }
-                case SDL_KEYUP:
+                case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
+                        KeyEvent keyEvent;
+                        keyEvent.keyCode = KeyCode::ESC;
+                        keyEvent.inputEventType = InputEventType::KeyPressed;
+                        keyEvent.priority = 1;
+
+                        _keyboardEventQueue.push(keyEvent);
                     }
                     break;
                 default:

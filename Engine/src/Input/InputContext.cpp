@@ -7,10 +7,20 @@ namespace Engine::Input
         _callbackByGamepadCode[gamePadCode] = std::move(callback);
     }
 
+    void InputContext::OnKeyPressed(KeyCode keyCode, std::function<void(KeyEvent)> callback)
+    {
+        _callbackByKeyCode[keyCode] = std::move(callback);
+    }
+
+    /*void InputContext::OnKeyReleased(KeyCode keyCode, std::function<void(KeyEvent)> callback)
+    {
+        _callbackByKeyCode[keyCode] = std::move(callback);
+    }*/
+
     void InputContext::Handle()
     {
         _inputHandler.FeedEventQueue();
-        DispatchGamepadEvents();
+        DispatchEvents();
     }
 
     void InputContext::DispatchEvents()
