@@ -6,7 +6,7 @@
 #include "External/include/glm/glm.hpp"
 
 #include "Engine/include/Physics/PhysicsComponents.hpp"
-#include "Engine/include/Input/InputHandler.hpp"
+#include "Engine/include/Input/SDLInputHandler.hpp"
 #include "Engine/include/Input/InputStructures.hpp"
 #include "Engine/include/Collision/CollisionSystem.hpp"
 #include "Engine/include/Global/Components.hpp"

@@ -37,8 +37,7 @@ namespace Engine::GUI
                     _vbo,
                     _vao,
                     vertices,
-                    num_vertices
-                    );
+                    num_vertices);
         }
 
         //GLHelper::UpdateVbo<Rml::Vertex>(_vbo, 0, vertices, num_vertices);

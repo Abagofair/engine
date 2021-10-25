@@ -12,7 +12,7 @@
 #include "Engine/include/Rendering/TextureManager.hpp"
 #include "Engine/include/Collision/CollisionSystem.hpp"
 #include "Engine/include/Physics/IntegrationSystem.hpp"
-#include "Engine/include/Input/InputHandler.hpp"
+#include "Engine/include/Input/InputContext.hpp"
 #include "Engine/include/Input/InputStructures.hpp"
 #include "GuiManager.hpp"
 #include "Engine/include/Resources/ResourceHandler.hpp"
@@ -51,7 +51,7 @@ namespace Engine::Global::Game
 
         const Windowing::Window& GetWindow() const { return *_window; }
         const Rendering::ShaderManager& GetShaderManager() const { return _shaderManager; }
-        const Input::InputHandler& GetInputHandler() const { return _inputHandler; }
+        const Input::InputContext& GetInputHandler() const { return _inputContext; }
         const Physics::IntegrationSystem& GetIntegrationSystem() const { return _integrationSystem; }
         const Collision::CollisionSystem<T>& GetCollisionSystem() const { return _collisionSystem; }
         const Rendering::SpriteRender& GetRenderSystem() const { return _render; }
@@ -63,7 +63,7 @@ namespace Engine::Global::Game
 
         Resources::ResourceHandler _resourceHandler;
 
-        Input::InputHandler _inputHandler;
+        Input::InputContext _inputContext;
         Physics::IntegrationSystem _integrationSystem;
         Collision::CollisionSystem<T> _collisionSystem;
         Rendering::ShaderManager _shaderManager;

@@ -127,6 +127,7 @@ namespace Engine::GLHelper
 
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, indices);
+        glBindVertexArray(0);
     }
 
     inline void Create2DTexture(uint32_t& texture, uint32_t width, uint32_t height, SDL_Surface* surface)

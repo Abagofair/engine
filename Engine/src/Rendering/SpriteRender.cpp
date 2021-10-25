@@ -28,24 +28,25 @@ namespace Engine::Rendering
         //glUseProgram(shaderHandle);
         auto& dynamicShader = _shaderManager.GetShader(Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
 
+        dynamicShader.Use();
+
         for (auto entity : dynamicRenderablesView)
         {
             auto renderable = dynamicRenderablesView.get<const Engine::Rendering::Components::RenderableComponent>(entity);
             auto transform = dynamicRenderablesView.get<const Global::Components::TransformComponent>(entity);
 
-            dynamicShader.Use();
             dynamicShader.SetUniformMat4(transform.transform, "model");
             dynamicShader.SetUniformMat4(viewMatrix, "view");
 
             glBindTexture(GL_TEXTURE_2D, renderable.textureHandle);
             glBindVertexArray(renderable.vao);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
         //debug view
-        auto boundingBoxView = _registry.view<
+        /*auto boundingBoxView = _registry.view<
             Collision::Components::BoundingBoxComponent,
             Global::Components::TransformComponent,
             Engine::Rendering::Components::DebugRenderableComponent>();
@@ -72,7 +73,7 @@ namespace Engine::Rendering
             glBindVertexArray(renderable.vao);
             glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
-        }
+        }*/
     }
 
     void SpriteRender::DrawStaticQuads()

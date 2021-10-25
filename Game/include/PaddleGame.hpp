@@ -33,7 +33,8 @@ namespace Game
         std::vector<entt::entity> FindEntities(Generated::EntityType entityType) override;
 
         void Initialize() override;
-        void Run() override;
+
+        [[noreturn]] void Run() override;
         void SceneIsComplete() override;
     private:
         Paddle _paddles;

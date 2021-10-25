@@ -62,26 +62,26 @@ namespace Game
                                                   std::bind(&Block::OnBallCollision, &_block, std::placeholders::_1));
         }
 
-        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftAxis,
+        _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftAxis,
                                      std::bind(&Paddle::MoveLeft, &_paddles, std::placeholders::_1));
 
-        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightAxis,
+        _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightAxis,
                                      std::bind(&Paddle::MoveRight, &_paddles, std::placeholders::_1));
 
-        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftTrigger,
+        _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftTrigger,
                                      std::bind(&Paddle::BrakeLeft, &_paddles, std::placeholders::_1));
 
-        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightTrigger,
+        _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightTrigger,
                                      std::bind(&Paddle::BrakeRight, &_paddles, std::placeholders::_1));
 
-        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonA,
+        _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonA,
                                      std::bind(&Paddle::LaunchBall, &_paddles, std::placeholders::_1));
 
-        _inputHandler.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonB,
+        _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonB,
                                      std::bind(&Paddle::DebugAttachBall, &_paddles, std::placeholders::_1));
     }
 
-    void PaddleGame::Run()
+    [[noreturn]] void PaddleGame::Run()
     {
         _guiManager.LoadInGameMenuDocument();
 
@@ -101,8 +101,7 @@ namespace Game
             previousTime = time.MsElapsedTotal;
             time.SecElapsedFrame = time.MsElapsedFrame / 1000.0f;
 
-            _inputHandler.FeedEventQueue();
-            _inputHandler.DispatchEvents();
+            _inputContext.Handle();
             _paddles.Update();
             _ball.Update();
 
@@ -122,6 +121,7 @@ namespace Game
             }
 
             _window->ClearBuffer(Engine::Global::Utilities::RGBA(0.1f, 0.7f, 0.95f, 1.0f));
+
             _render.DrawStaticQuads();
             _render.Draw();
 

@@ -45,6 +45,7 @@ namespace Engine::GUI
 
     void GuiManager::Update()
     {
+        //_currentDocument->GetElementById("a")->SetPseudoClass("hover", false);
         _context->Update();
     }
 

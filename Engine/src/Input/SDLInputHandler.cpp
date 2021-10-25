@@ -1,23 +1,16 @@
-#include "InputHandler.hpp"
+#include "SDLInputHandler.hpp"
+
+#include <utility>
 
 namespace Engine::Input
 {
-    InputHandler::InputHandler()
-    {
-        _callbackByGamepadCode = std::unordered_map<GamepadCode, std::function<void(GamepadEvent)>>();
-        _gamepadEventQueue = std::priority_queue<GamepadEvent, std::vector<GamepadEvent>, std::greater<GamepadEvent>>();
-
-        _callbackByKeyCode = std::unordered_map<KeyCode, std::function<void(KeyEvent)>>();
-        _keyboardEventQueue = std::priority_queue<KeyEvent, std::vector<KeyEvent>, std::greater<KeyEvent>>();
-    }
-
-    void InputHandler::FeedEventQueue()
+    void SDLInputHandler::FeedEventQueue()
     {
         SDL_Event event;
 
         //todo: should log if this fails
-        _gamepadEventQueue.empty();
-        _keyboardEventQueue.empty();
+        //_gamepadEventQueue.empty();
+        //_keyboardEventQueue.empty();
 
         while (SDL_PollEvent(&event))
         {
@@ -48,7 +41,7 @@ namespace Engine::Input
         }
     }
 
-    void InputHandler::ControllerButtonDown(SDL_Event event)
+    void SDLInputHandler::ControllerButtonDown(SDL_Event event)
     {
         GamepadEvent gamepadEvent{};
 
@@ -65,7 +58,7 @@ namespace Engine::Input
         _gamepadEventQueue.push(gamepadEvent);
     }
 
-    void InputHandler::ControllerAxisMotion(SDL_Event event)
+    void SDLInputHandler::ControllerAxisMotion(SDL_Event event)
     {
         GamepadEvent gamepadEvent{};
 
@@ -110,7 +103,7 @@ namespace Engine::Input
         _gamepadEventQueue.push(gamepadEvent);
     }
 
-    GamepadEvent InputHandler::MapControllerAnalogMovement(GamepadEvent &gamepadEvent) const
+    GamepadEvent SDLInputHandler::MapControllerAnalogMovement(GamepadEvent &gamepadEvent) const
     {
         float magnitude;
         float normalizedMagnitude;
@@ -150,7 +143,7 @@ namespace Engine::Input
         return gamepadEvent;
     }
 
-    GamepadEvent InputHandler::MapControllerTriggerMovement(GamepadEvent &gamepadEvent) const
+    GamepadEvent SDLInputHandler::MapControllerTriggerMovement(GamepadEvent &gamepadEvent) const
     {
         float magnitude = gamepadEvent.gamepadCode == GamepadLeftTrigger
                 ? _currentLeftTriggerValue
@@ -178,14 +171,14 @@ namespace Engine::Input
         return gamepadEvent;
     }
 
-    uint32_t InputHandler::AxisThreshold(GamepadCode gamepadCode) const
+    uint32_t SDLInputHandler::AxisThreshold(GamepadCode gamepadCode) const
     {
         return gamepadCode == GamepadCode::GamepadLeftAxis
                ? LEFT_ANALOG_AXIS_DEADZONE
                : RIGHT_ANALOG_AXIS_DEADZONE;
     }
 
-    glm::vec2 InputHandler::NormalizeCurrentAnalogDirection(GamepadCode gamepadCode, float magnitude) const
+    glm::vec2 SDLInputHandler::NormalizeCurrentAnalogDirection(GamepadCode gamepadCode, float magnitude) const
     {
         if (gamepadCode == GamepadCode::GamepadLeftAxis)
         {
@@ -203,7 +196,7 @@ namespace Engine::Input
                 };
     }
 
-    float InputHandler::MagnitudeOfCurrentAnalog(GamepadCode gamepadCode) const
+    float SDLInputHandler::MagnitudeOfCurrentAnalog(GamepadCode gamepadCode) const
     {
         if (gamepadCode == GamepadCode::GamepadLeftAxis)
         {
@@ -217,45 +210,29 @@ namespace Engine::Input
                 + _currentRightAxisValue.y * _currentRightAxisValue.y);
     }
 
-    void InputHandler::DispatchEvents()
+    bool SDLInputHandler::GetNextGamepadEvent(GamepadEvent& gamepadEvent)
     {
-        DispatchGamepadEvents();
-        DispatchKeyboardEvents();
-    }
-
-    void InputHandler::DispatchGamepadEvents()
-    {
-        while (!_gamepadEventQueue.empty())
+        if (!_gamepadEventQueue.empty())
         {
-            GamepadEvent event = _gamepadEventQueue.top();
-
-            auto callback = _callbackByGamepadCode.find(event.gamepadCode);
-            if (callback != _callbackByGamepadCode.end())
-            {
-                callback->second(event);
-            }
-
+            gamepadEvent = _gamepadEventQueue.top();
             _gamepadEventQueue.pop();
+
+            return true;
         }
+
+        return false;
     }
 
-    void InputHandler::DispatchKeyboardEvents()
+    bool SDLInputHandler::GetNextKeyEvent(KeyEvent& keyEvent)
     {
-        while (!_keyboardEventQueue.empty())
+        if (!_keyboardEventQueue.empty())
         {
-            KeyEvent event = _keyboardEventQueue.top();
-            auto callback = _callbackByKeyCode.find(event.keyCode);
-            if (callback != _callbackByKeyCode.end())
-            {
-                callback->second(event);
-            }
-
+            keyEvent = _keyboardEventQueue.top();
             _keyboardEventQueue.pop();
-        }
-    }
 
-    void InputHandler::OnGamepadEvent(GamepadCode gamePadCode, std::function<void(GamepadEvent)> callback)
-    {
-        _callbackByGamepadCode[gamePadCode] = callback;
+            return true;
+        }
+
+        return false;
     }
 };

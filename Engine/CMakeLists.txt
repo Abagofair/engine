@@ -9,7 +9,8 @@ add_library(
 
         STATIC
 
-        src/Input/InputHandler.cpp
+        src/Input/SDLInputHandler.cpp
+        src/Input/InputContext.cpp
         src/Physics/IntegrationSystem.cpp
         src/Rendering/Renderable.cpp
         src/Rendering/Shader.cpp
