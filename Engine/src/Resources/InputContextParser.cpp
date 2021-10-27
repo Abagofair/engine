@@ -5,40 +5,32 @@ namespace Engine::Resources
     Input::InputContext* InputContextParser::CreateContext(std::string fileName,
                                                            const std::vector<Input::Action<Input::KeyEvent>>& actions)
     {
-        tinyxml2::XMLDocument doc;
-        doc.LoadFile(fileName.c_str());
-
-        if (doc.Error())
-        {
-            std::cout << "Error parsing document: " << fileName << std::endl;
-            std::cout << doc.ErrorStr() << std::endl;
-        }
-
         Input::InputContext* inputContext = new Input::InputContext();
 
-        tinyxml2::XMLElement* root = doc.RootElement();
-        auto playingContext = root->FirstChildElement("Context");
-        auto keyboard = playingContext->FirstChildElement("Keyboard");
-        auto entry = keyboard->FirstChildElement("Entry");
-        auto code = entry->FirstChildElement("Code");
-        auto action = code->NextSiblingElement("Action");
-
-        std::string keyCode = code->GetText();
-        std::string actionValue = action->GetText();
-
-        Input::KeyCode gotKeyCode;
-        if (!TryGetKeyCode(keyCode, gotKeyCode))
+        boost::property_tree::ptree tree;
+        boost::property_tree::read_ini(fileName, tree);
+        for (auto section : tree)
         {
-            std::cout << "couldnt parse keycode" << std::endl;
-        }
+            for (auto codeAction : section.second)
+            {
+                std::string keyCode = codeAction.first.data();
+                std::string actionValue = codeAction.second.data();
 
-        std::function<void(Input::KeyEvent)> fp;
-        if (!TryGetAction(actions, actionValue, fp))
-        {
-            std::cout << "couldnt parse action" << std::endl;
-        }
+                Input::KeyCode gotKeyCode;
+                if (!TryGetKeyCode(keyCode, gotKeyCode))
+                {
+                    std::cout << "couldnt parse keycode" << std::endl;
+                }
 
-        inputContext->OnKeyPressed(gotKeyCode, fp);
+                std::function<void(Input::KeyEvent)> fp;
+                if (!TryGetAction(actions, actionValue, fp))
+                {
+                    std::cout << "couldnt parse action" << std::endl;
+                }
+
+                inputContext->OnKeyPressed(gotKeyCode, fp);
+            }
+        }
 
         return inputContext;
     }

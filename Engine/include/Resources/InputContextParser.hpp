@@ -5,15 +5,13 @@
 #include <vector>
 #include <iostream>
 
-#include "tinyxml2.h"
+#include <boost/property_tree/ini_parser.hpp>
 
 #include "InputContext.hpp"
 #include "InputStructures.hpp"
 
 namespace Engine::Resources
 {
-#define LAMBDA(name) ([this](Engine::Input::KeyEvent){ name(); })
-
     class InputContextParser
     {
     public:

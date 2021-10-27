@@ -32,7 +32,7 @@ namespace Game
             SHITE_INPUT_GAMEPAD_ACTION("PauseMenu", KeyEvent, PauseMenu)
         };
 
-        _inputContext = _keyboardParser.CreateContext("Input.xml", m);
+        _inputContext = _keyboardParser.CreateContext("Input.ini", m);
 
         _shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
         _shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
