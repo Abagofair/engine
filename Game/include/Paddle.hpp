@@ -1,6 +1,9 @@
 #pragma once
 
+#include <functional>
 #include <iostream>
+#include <vector>
+#include <string>
 
 #include "External/include/entt/entt.hpp"
 #include "External/include/glm/glm.hpp"
@@ -23,18 +26,29 @@ namespace Game
 
         void SetPosition(const glm::uvec2& position);
 
+        void Update();
+
+        void OnViewportCollision(Engine::Collision::CollisionInfo collisionInfo);
+
+        [[nodiscard]] const std::vector<Engine::Input::Action<Engine::Input::GamepadEvent>>& GetGamepadActions() const;
+    private:
+        std::vector<Engine::Input::Action<Engine::Input::GamepadEvent>> _actions =
+        {
+            SHITE_INPUT_GAMEPAD_ACTION("BrakeLeft", GamepadEvent, BrakeLeft)
+            SHITE_INPUT_GAMEPAD_ACTION("BrakeRight", GamepadEvent, BrakeRight)
+            SHITE_INPUT_GAMEPAD_ACTION("MoveLeft", GamepadEvent, MoveLeft)
+            SHITE_INPUT_GAMEPAD_ACTION("MoveRight", GamepadEvent, MoveRight)
+            SHITE_INPUT_GAMEPAD_ACTION("LaunchBall", GamepadEvent, LaunchBall)
+            SHITE_INPUT_GAMEPAD_ACTION("DebugAttachBall", GamepadEvent, DebugAttachBall)
+        };
+
         void BrakeLeft(Engine::Input::GamepadEvent gamepadEvent);
         void BrakeRight(Engine::Input::GamepadEvent gamepadEvent);
         void MoveLeft(Engine::Input::GamepadEvent gamepadEvent);
         void MoveRight(Engine::Input::GamepadEvent gamepadEvent);
-
         void LaunchBall(Engine::Input::GamepadEvent gamepadEvent);
         void DebugAttachBall(Engine::Input::GamepadEvent gamepadEvent);
 
-        void Update();
-
-        void OnViewportCollision(Engine::Collision::CollisionInfo collisionInfo);
-    private:
         void UpdatePaddle(
             Engine::Physics::Components::VelocityComponent& velocity, 
             Components::LeftPaddleComponent& paddle);

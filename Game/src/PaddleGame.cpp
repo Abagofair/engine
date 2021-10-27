@@ -62,7 +62,7 @@ namespace Game
                                                   std::bind(&Block::OnBallCollision, &_block, std::placeholders::_1));
         }
 
-        _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftAxis,
+        /*_inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadLeftAxis,
                                      std::bind(&Paddle::MoveLeft, &_paddles, std::placeholders::_1));
 
         _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadRightAxis,
@@ -78,7 +78,7 @@ namespace Game
                                      std::bind(&Paddle::LaunchBall, &_paddles, std::placeholders::_1));
 
         _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonB,
-                                     std::bind(&Paddle::DebugAttachBall, &_paddles, std::placeholders::_1));
+                                     std::bind(&Paddle::DebugAttachBall, &_paddles, std::placeholders::_1));*/
 
         _inputContext.OnKeyPressed(Engine::Input::KeyCode::ESC,
                                    [this](Engine::Input::KeyEvent){ PauseMenu(); });
@@ -91,7 +91,7 @@ namespace Game
         bool exit = false;
         uint32_t previousTime = SDL_GetTicks();
         Engine::Input::GamepadEvent event;
-        _paddles.DebugAttachBall(event);
+        //_paddles.DebugAttachBall(event);
 
         _state = Engine::Global::Game::GameState::Running;
 

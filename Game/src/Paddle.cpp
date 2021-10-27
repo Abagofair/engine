@@ -7,6 +7,11 @@ namespace Game
           _entityType(Game::Generated::EntityType::Paddle)
     {}
 
+    const std::vector<Engine::Input::Action<Engine::Input::GamepadEvent>>& Paddle::GetGamepadActions() const
+    {
+        return _actions;
+    }
+
     void Paddle::SetPosition(const glm::uvec2& position)
     {
         auto playerView = _registry.view<Engine::Global::Components::TransformComponent>();

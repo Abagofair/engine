@@ -11,6 +11,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-image CONFIG REQUIRED)
 find_package(RmlUi CONFIG REQUIRED)
+find_package(tinyxml2 CONFIG REQUIRED)
 
 add_subdirectory(Engine)
 add_subdirectory(External)

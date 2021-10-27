@@ -22,6 +22,7 @@ add_library(
         src/GUI/GuiManager.cpp
         src/Rendering/TextureManager.cpp
         src/Resources/ResourceHandler.cpp
+        src/Resources/InputContextParser.cpp
 
         ${HEADER_LIST})
 
@@ -32,3 +33,4 @@ target_link_libraries(Engine PUBLIC SDL2::SDL2)
 target_link_libraries(Engine PUBLIC SDL2::SDL2_image)
 target_link_libraries(Engine PUBLIC RmlCore RmlDebugger)
 target_link_libraries(Engine PUBLIC External)
+target_link_libraries(Engine PRIVATE tinyxml2::tinyxml2)
