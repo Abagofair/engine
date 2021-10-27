@@ -3,70 +3,38 @@
     <Context name="Playing">
         <Keyboard>
             <Entry>
-                <Code>
-                    ESC
-                </Code>
-                <Action>
-                    Pause
-                </Action>
+                <Code>ESC</Code>
+                <Action>PauseMenu</Action>
             </Entry>
         </Keyboard>
         <Gamepad>
             <Entry>
-                <Code>
-                    LeftAnalog
-                </Code>
-                <Action>
-                    MoveLeftPaddle
-                </Action>
+                <Code>LeftAnalog</Code>
+                <Action>MoveLeftPaddle</Action>
             </Entry>
             <Entry>
-                <Code>
-                    RightAnalog
-                </Code>
-                <Action>
-                    MoveRightPaddle
-                </Action>
+                <Code>RightAnalog</Code>
+                <Action>MoveRightPaddle</Action>
             </Entry>
             <Entry>
-                <Code>
-                    LeftTrigger
-                </Code>
-                <Action>
-                    BrakeLeft
-                </Action>
+                <Code>LeftTrigger</Code>
+                <Action>BrakeLeft</Action>
             </Entry>
             <Entry>
-                <Code>
-                    RightTrigger
-                </Code>
-                <Action>
-                    BrakeRight
-                </Action>
+                <Code>RightTrigger</Code>
+                <Action>BrakeRight</Action>
             </Entry>
             <Entry>
-                <Code>
-                    A
-                </Code>
-                <Action>
-                    LaunchBall
-                </Action>
+                <Code>A</Code>
+                <Action>LaunchBall</Action>
             </Entry>
             <Entry>
-                <Code>
-                    B
-                </Code>
-                <Action>
-                    DebugAttachBall
-                </Action>
+                <Code>B</Code>
+                <Action>DebugAttachBall</Action>
             </Entry>
             <Entry>
-                <Code>
-                    Start
-                </Code>
-                <Action>
-                    Pause
-                </Action>
+                <Code>Start</Code>
+                <Action>Pause</Action>
             </Entry>
         </Gamepad>
     </Context>

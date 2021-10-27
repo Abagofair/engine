@@ -17,6 +17,8 @@
 #include "Engine/include/GUI/RenderInterface.hpp"
 #include "Engine/include/GUI/SystemInterface.hpp"
 
+#include "Engine/include/Resources/InputContextParser.hpp"
+
 #include "Block.hpp"
 #include "Ball.hpp"
 #include "Paddle.hpp"
@@ -37,10 +39,12 @@ namespace Game
         [[noreturn]] void Run() override;
         void SceneIsComplete() override;
     private:
+        Engine::Resources::InputContextParser _keyboardParser;
+
         Paddle _paddles;
         Block _block;
         Ball _ball;
 
-        void PauseMenu();
+        void PauseMenu(Engine::Input::KeyEvent);
     };
 };

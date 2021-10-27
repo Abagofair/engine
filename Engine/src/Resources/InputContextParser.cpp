@@ -11,36 +11,57 @@ namespace Engine::Resources
         if (doc.Error())
         {
             std::cout << "Error parsing document: " << fileName << std::endl;
+            std::cout << doc.ErrorStr() << std::endl;
         }
 
         Input::InputContext* inputContext = new Input::InputContext();
 
         tinyxml2::XMLElement* root = doc.RootElement();
-        auto playingContext = root->NextSiblingElement("Context");
+        auto playingContext = root->FirstChildElement("Context");
         auto keyboard = playingContext->FirstChildElement("Keyboard");
-        auto entry = keyboard->NextSiblingElement("Entry");
+        auto entry = keyboard->FirstChildElement("Entry");
         auto code = entry->FirstChildElement("Code");
-        auto action = entry->FirstChildElement("Action");
+        auto action = code->NextSiblingElement("Action");
 
-        std::string keyCode = code->Value();
-        std::string actionValue = action->Value();
+        std::string keyCode = code->GetText();
+        std::string actionValue = action->GetText();
+
+        Input::KeyCode gotKeyCode;
+        if (!TryGetKeyCode(keyCode, gotKeyCode))
+        {
+            std::cout << "couldnt parse keycode" << std::endl;
+        }
+
+        std::function<void(Input::KeyEvent)> fp;
+        if (!TryGetAction(actions, actionValue, fp))
+        {
+            std::cout << "couldnt parse action" << std::endl;
+        }
+
+        inputContext->OnKeyPressed(gotKeyCode, fp);
 
         return inputContext;
     }
 
-    bool InputContextParser::TryGetKeyCode(std::string value, Input::KeyCode& keyCode)
+    bool InputContextParser::TryGetKeyCode(std::string value,
+                                           Input::KeyCode& keyCode)
     {
         for (int i = 0; i < Input::KeyCodeStrings.size(); ++i)
         {
             auto& str = Input::KeyCodeStrings[i];
             if (value == str)
+            {
+                keyCode = static_cast<Input::KeyCode>(i);
                 return true;
+            }
         }
 
         return false;
     }
 
-    bool InputContextParser::TryGetAction(const std::vector<Input::Action<Input::KeyEvent>>& actions, std::string value, std::function<void(Input::KeyEvent)>& fp)
+    bool InputContextParser::TryGetAction(const std::vector<Input::Action<Input::KeyEvent>>& actions,
+                                          std::string value,
+                                          std::function<void(Input::KeyEvent)>& fp)
     {
         fp = nullptr;
 

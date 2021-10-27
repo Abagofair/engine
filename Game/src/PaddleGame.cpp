@@ -27,6 +27,13 @@ namespace Game
 
     void PaddleGame::Initialize()
     {
+        std::vector<Engine::Input::Action<Engine::Input::KeyEvent>> m =
+        {
+            SHITE_INPUT_GAMEPAD_ACTION("PauseMenu", KeyEvent, PauseMenu)
+        };
+
+        _inputContext = _keyboardParser.CreateContext("Input.xml", m);
+
         _shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
         _shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
         _shaderManager.LoadShader("debug.glsl", Engine::Rendering::ShaderManager::DEBUG_SHADER_NAME);
@@ -79,9 +86,6 @@ namespace Game
 
         _inputContext.OnGamepadEvent(Engine::Input::GamepadCode::GamepadButtonB,
                                      std::bind(&Paddle::DebugAttachBall, &_paddles, std::placeholders::_1));*/
-
-        _inputContext.OnKeyPressed(Engine::Input::KeyCode::ESC,
-                                   [this](Engine::Input::KeyEvent){ PauseMenu(); });
     }
 
     [[noreturn]] void PaddleGame::Run()
@@ -103,13 +107,13 @@ namespace Game
             previousTime = time.MsElapsedTotal;
             time.SecElapsedFrame = time.MsElapsedFrame / 1000.0f;
 
-            _inputContext.Handle();
+            _inputContext->Handle();
 
             auto dynamicRenderablesView = _registry.view<
                     Engine::Global::Components::TransformComponent>();
 
-            _paddles.Update();
-            _ball.Update();
+            //_paddles.Update();
+           // _ball.Update();
 
             _integrationSystem.Integrate(time);
             _collisionSystem.BroadPhase();
@@ -145,7 +149,7 @@ namespace Game
         std::cout << "SCENE IS COMPLETE" << std::endl;
     }
 
-    void PaddleGame::PauseMenu()
+    void PaddleGame::PauseMenu(Engine::Input::KeyEvent)
     {
         std::cout << "PAUSING" << std::endl;
 
