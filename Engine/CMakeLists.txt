@@ -25,7 +25,7 @@ add_library(
         src/Resources/ResourceHandler.cpp
         src/Input/InputContextParser.cpp
 
-        ${HEADER_LIST})
+        ${HEADER_LIST} include/Global/Utilities/Logger.hpp)
 
 target_include_directories(Engine PUBLIC ${engine_SOURCE_DIR})
 target_include_directories(Engine PUBLIC ${HEADER_LIST})

@@ -55,8 +55,8 @@ namespace Engine::Input
         }
     }
 
-    Input::ContextType InputContext::ActiveContextType()
+    bool InputContext::ActiveContextType(Input::ContextType &contextType)
     {
-        return _inputHandler.GetFirstActiveInputSource();
+        return _inputHandler.GetFirstActiveInputSource(contextType);
     }
 };

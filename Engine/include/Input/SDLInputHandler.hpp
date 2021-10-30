@@ -24,7 +24,7 @@ namespace Engine::Input
         bool GetNextGamepadEvent(GamepadEvent& gamepadEvent);
         bool GetNextKeyEvent(KeyEvent& keyEvent);
 
-        Input::ContextType GetFirstActiveInputSource();
+        bool GetFirstActiveInputSource(Input::ContextType& contextType);
     private:
         std::priority_queue<GamepadEvent, std::vector<GamepadEvent>, std::greater<GamepadEvent>> _gamepadEventQueue;
         std::priority_queue<KeyEvent, std::vector<KeyEvent>, std::greater<KeyEvent>> _keyboardEventQueue;

@@ -249,7 +249,7 @@ namespace Engine::Input
         return false;
     }
 
-    Input::ContextType SDLInputHandler::GetFirstActiveInputSource()
+    bool SDLInputHandler::GetFirstActiveInputSource(Input::ContextType& contextType)
     {
         bool isKeyboardQueueNonEmpty = !_keyboardEventQueue.empty();
         bool isGamepadQueueNonEmpty = !_gamepadEventQueue.empty();
@@ -262,15 +262,28 @@ namespace Engine::Input
             if (key.timestamp >= gamepad.timestamp)
             {
                 EmptyGamepadQueue();
-                return Input::ContextType::Keyboard;
+                contextType = Input::ContextType::Keyboard;
+                return true;
             }
 
             EmptyKeyboardQueue();
-            return Input::ContextType::Gamepad;
+            contextType = Input::ContextType::Gamepad;
+            return true;
         }
 
-        if (isKeyboardQueueNonEmpty) return Input::ContextType::Keyboard;
-        return Input::ContextType::Gamepad;
+        if (isKeyboardQueueNonEmpty)
+        {
+            contextType = Input::ContextType::Keyboard;
+            return true;
+        }
+        
+        if (isGamepadQueueNonEmpty)
+        {
+            contextType = Input::ContextType::Gamepad;
+            return true;
+        }
+
+        return false;
     }
 
     void SDLInputHandler::EmptyGamepadQueue()

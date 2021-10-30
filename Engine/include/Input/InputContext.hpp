@@ -15,7 +15,7 @@ namespace Engine::Input
         void HandleKeyboard();
         void HandleGamepad();
 
-        Input::ContextType ActiveContextType();
+        bool ActiveContextType(Input::ContextType &contextType);
 
         //Subscribe functions
         void OnKeyPressed(KeyCode keyCode, std::function<void(KeyEvent)> callback);

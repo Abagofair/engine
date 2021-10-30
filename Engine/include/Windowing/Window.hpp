@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 
 #include <SDL.h>
@@ -11,6 +11,8 @@
 
 #include "Engine/include/Global/Utilities/RGBA.hpp"
 
+#include "Logger.hpp"
+
 namespace Engine::Windowing
 {
     class Window
@@ -19,7 +21,8 @@ namespace Engine::Windowing
         Window(
             unsigned short width,
             unsigned short height,
-            std::string title
+            std::string title,
+            const Global::Utilities::Logger &logger
         );
         Window() = delete;
         Window(Window& window) = delete;
@@ -28,9 +31,11 @@ namespace Engine::Windowing
         void ClearBuffer(Global::Utilities::RGBA rgba);
         void SwapBuffers();
         void CenterMouseInWindow();
-        glm::uvec2 WindowDimensions() const;
+        [[nodiscard]] glm::uvec2 WindowDimensions() const;
 
     private:
+        const Global::Utilities::Logger &_logger;
+
         unsigned short _width;
         unsigned short _height;
         float _aspectRatio;

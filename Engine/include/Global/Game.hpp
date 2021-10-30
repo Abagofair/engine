@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <cstdint>
 
 #include "External/include/entt/entt.hpp"
@@ -16,6 +17,8 @@
 #include "Engine/include/Input/InputStructures.hpp"
 #include "GuiManager.hpp"
 #include "Engine/include/Resources/ResourceHandler.hpp"
+
+#include "Logger.hpp"
 
 namespace Engine::Global::Game
 {
@@ -36,12 +39,14 @@ namespace Engine::Global::Game
             uint32_t width,
             uint32_t height
         )
-            :   _integrationSystem(Physics::IntegrationSystem(_registry)),
-                _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE")),
+            :   _logger(std::cout),
+                _integrationSystem(Physics::IntegrationSystem(_registry)),
+                _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE", _logger)),
                 _render(Rendering::SpriteRender(_registry, _shaderManager, width, height)),
                 _collisionSystem(Collision::CollisionSystem<T>(_registry)),
                 _textureManager(_resourceHandler),
-                _guiManager(_window.get(), _shaderManager, _render.viewMatrix)
+                _guiManager(_window.get(), _shaderManager, _render.viewMatrix),
+                _inputManager(_logger)
         {}
 
         virtual std::vector<entt::entity> FindEntities(T) = 0;
@@ -60,6 +65,7 @@ namespace Engine::Global::Game
         entt::registry& GetRegistry() { return _registry; }
     protected:
         entt::registry _registry;
+        Utilities::Logger _logger;
 
         Resources::ResourceHandler _resourceHandler;
 

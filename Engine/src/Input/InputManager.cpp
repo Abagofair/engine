@@ -2,10 +2,16 @@
 
 namespace Engine::Input
 {
+    InputManager::InputManager(const Global::Utilities::Logger &logger)
+        : _logger(logger)
+    {}
+
     void InputManager::InitializeActionsFromDisk(
             const std::vector<Engine::Input::Action<Engine::Input::GamepadEvent>> &gamepadActions,
             const std::vector<Engine::Input::Action<Engine::Input::KeyEvent>> &keyboardActions)
     {
+        _logger.WriteInfo("Initialized actions from disk", "");
+
         _keyboardContext = nullptr;
         _gamepadContext = nullptr;
 
@@ -15,41 +21,45 @@ namespace Engine::Input
                 _contextParser.CreateKeyboardContext("data/Input.ini", keyboardActions));
 
         _currentContext = _keyboardContext.get();
+        SetContextType(Input::ContextType::Keyboard);
     }
 
     void InputManager::HandleInput(Global::Time::Time time)
     {
-        auto contextType = _currentContext->ActiveContextType();
-        if (contextType != _currentContextType)
+        Input::ContextType contextType;
+        bool hasEvents = _currentContext->ActiveContextType(contextType);
+        if (hasEvents && contextType != _currentContextType)
         {
-            if (contextType == Input::ContextType::Gamepad &&
-                CheckForGamepad())
-            {
-                SetContextType(Input::ContextType::Gamepad);
-            }
-            else
-            {
-                SetContextType(Input::ContextType::Keyboard);
-            }
+            std::string c = contextType == ContextType::Gamepad ? "Gamepad" : "Keyboard";
+            _logger.WriteWarning("% to %", "Switching context type", c);
+            SetContextType(contextType);
         }
-        else if (_currentContextType == contextType &&
-                 _elapsedTimeSinceLastCheck >= _whenToCheckForNewInputSources)
+        else if (_elapsedTimeSinceLastCheck >= _whenToCheckForNewInputSources)
         {
             if (CheckForGamepad())
+            {
+                _logger.WriteWarning("Connecting gamepad..", "");
                 SetContextType(Input::ContextType::Gamepad);
+            }
 
             _elapsedTimeSinceLastCheck = 0.0f;
         }
         _elapsedTimeSinceLastCheck += time.SecElapsedFrame;
 
         if (_currentContextType == ContextType::Gamepad)
+        {
             _currentContext->HandleGamepad();
+        }
         else if (_currentContextType == ContextType::Keyboard)
+        {
             _currentContext->HandleKeyboard();
+        }
     }
 
     void InputManager::SetContextType(Input::ContextType contextType)
     {
+        _currentContextType = contextType;
+
         switch (contextType)
         {
             case Input::ContextType::Keyboard:
@@ -61,8 +71,6 @@ namespace Engine::Input
             default:
                 throw std::exception("Invalid input context");
         }
-
-        _currentContextType = contextType;
     }
 
     bool InputManager::CheckForGamepad()

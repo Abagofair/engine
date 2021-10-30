@@ -27,6 +27,8 @@ namespace Game
 
     void PaddleGame::Initialize()
     {
+        _logger.WriteInfo("Initializing game..", "");
+
         std::vector<Engine::Input::Action<Engine::Input::KeyEvent>> m =
         {
             SHITE_INPUT_GAMEPAD_ACTION("PauseMenu", KeyEvent, PauseMenu)
