@@ -32,7 +32,7 @@ namespace Game
             SHITE_INPUT_GAMEPAD_ACTION("PauseMenu", KeyEvent, PauseMenu)
         };
 
-        _inputContext = _keyboardParser.CreateContext("Input.ini", m);
+        _inputManager.InitializeActionsFromDisk(_paddles.GetGamepadActions(), m);
 
         _shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
         _shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
@@ -94,8 +94,6 @@ namespace Game
 
         bool exit = false;
         uint32_t previousTime = SDL_GetTicks();
-        Engine::Input::GamepadEvent event;
-        //_paddles.DebugAttachBall(event);
 
         _state = Engine::Global::Game::GameState::Running;
 
@@ -107,13 +105,13 @@ namespace Game
             previousTime = time.MsElapsedTotal;
             time.SecElapsedFrame = time.MsElapsedFrame / 1000.0f;
 
-            _inputContext->Handle();
+            _inputManager.HandleInput(time);
 
             auto dynamicRenderablesView = _registry.view<
                     Engine::Global::Components::TransformComponent>();
 
-            //_paddles.Update();
-           // _ball.Update();
+            _paddles.Update();
+            _ball.Update();
 
             _integrationSystem.Integrate(time);
             _collisionSystem.BroadPhase();

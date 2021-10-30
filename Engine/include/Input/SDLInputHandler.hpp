@@ -23,6 +23,8 @@ namespace Engine::Input
 
         bool GetNextGamepadEvent(GamepadEvent& gamepadEvent);
         bool GetNextKeyEvent(KeyEvent& keyEvent);
+
+        Input::ContextType GetFirstActiveInputSource();
     private:
         std::priority_queue<GamepadEvent, std::vector<GamepadEvent>, std::greater<GamepadEvent>> _gamepadEventQueue;
         std::priority_queue<KeyEvent, std::vector<KeyEvent>, std::greater<KeyEvent>> _keyboardEventQueue;
@@ -37,9 +39,12 @@ namespace Engine::Input
 
         GamepadEvent MapControllerAnalogMovement(GamepadEvent& gamepadEvent) const;
         GamepadEvent MapControllerTriggerMovement(GamepadEvent& gamepadEvent) const;
-        float MagnitudeOfCurrentAnalog(GamepadCode gamepadCode) const;
-        glm::vec2 NormalizeCurrentAnalogDirection(GamepadCode gamepadCode, float magnitude) const;
-        uint32_t AxisThreshold(GamepadCode gamepadCode) const;
+        float MagnitudeOfCurrentAnalog(KeyCode gamepadCode) const;
+        glm::vec2 NormalizeCurrentAnalogDirection(KeyCode gamepadCode, float magnitude) const;
+        uint32_t AxisThreshold(KeyCode gamepadCode) const;
+
+        void EmptyKeyboardQueue();
+        void EmptyGamepadQueue();
 
         //todo: Could be handled in SDL input wrapper
         void ControllerAxisMotion(SDL_Event event);

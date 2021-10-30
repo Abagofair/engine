@@ -12,7 +12,7 @@
 #include "Engine/include/Rendering/TextureManager.hpp"
 #include "Engine/include/Collision/CollisionSystem.hpp"
 #include "Engine/include/Physics/IntegrationSystem.hpp"
-#include "Engine/include/Input/InputContext.hpp"
+#include "Engine/include/Input/InputManager.hpp"
 #include "Engine/include/Input/InputStructures.hpp"
 #include "GuiManager.hpp"
 #include "Engine/include/Resources/ResourceHandler.hpp"
@@ -63,7 +63,7 @@ namespace Engine::Global::Game
 
         Resources::ResourceHandler _resourceHandler;
 
-        Input::InputContext* _inputContext;
+        Input::InputManager _inputManager;
         Physics::IntegrationSystem _integrationSystem;
         Collision::CollisionSystem<T> _collisionSystem;
         Rendering::ShaderManager _shaderManager;

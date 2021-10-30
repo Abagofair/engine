@@ -139,6 +139,12 @@ namespace Game
 
         auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
         d2 = Engine::Rendering::SetupDynamic(0, shader.ShaderId(), b2.width, b2.height);
+
+        auto leftPaddleView = _game.GetRegistry().view<
+                Components::LeftPaddleComponent>();
+
+        auto& p = leftPaddleView.get<Components::LeftPaddleComponent>(leftPaddleView.front());
+        p.attached = entity3;
     }
 
     void TestScene::CreateBlocks()

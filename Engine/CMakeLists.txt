@@ -11,6 +11,7 @@ add_library(
 
         src/Input/SDLInputHandler.cpp
         src/Input/InputContext.cpp
+        src/Input/InputManager.cpp
         src/Physics/IntegrationSystem.cpp
         src/Rendering/Renderable.cpp
         src/Rendering/Shader.cpp
@@ -22,7 +23,7 @@ add_library(
         src/GUI/GuiManager.cpp
         src/Rendering/TextureManager.cpp
         src/Resources/ResourceHandler.cpp
-        src/Resources/InputContextParser.cpp
+        src/Input/InputContextParser.cpp
 
         ${HEADER_LIST})
 

@@ -1,7 +1,5 @@
 #include "SDLInputHandler.hpp"
 
-#include <utility>
-
 namespace Engine::Input
 {
     void SDLInputHandler::FeedEventQueue()
@@ -37,6 +35,7 @@ namespace Engine::Input
                         keyEvent.keyCode = KeyCode::ESC;
                         keyEvent.inputEventType = InputEventType::KeyPressed;
                         keyEvent.priority = 1;
+                        keyEvent.timestamp = event.key.timestamp;
 
                         _keyboardEventQueue.push(keyEvent);
                     }
@@ -54,12 +53,18 @@ namespace Engine::Input
         gamepadEvent.inputEventType = InputEventType::GamePadButtonDown;
         if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadButtonA;
+            gamepadEvent.gamepadCode = KeyCode::GamepadA;
         }
         else if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadButtonB;
+            gamepadEvent.gamepadCode = KeyCode::GamepadB;
         }
+        else if (event.cbutton.button == SDL_CONTROLLER_BUTTON_START)
+        {
+            gamepadEvent.gamepadCode = KeyCode::GamePadStart;
+        }
+
+        gamepadEvent.timestamp = event.caxis.timestamp;
 
         _gamepadEventQueue.push(gamepadEvent);
     }
@@ -71,40 +76,42 @@ namespace Engine::Input
         auto axis = static_cast<SDL_GameControllerAxis>(event.caxis.axis);
         if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
+            gamepadEvent.gamepadCode = KeyCode::LeftAnalog;
             _currentLeftAxisValue.x = event.caxis.value;
             MapControllerAnalogMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftAxis;
+            gamepadEvent.gamepadCode = KeyCode::LeftAnalog;
             _currentLeftAxisValue.y = event.caxis.value;
             MapControllerAnalogMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
+            gamepadEvent.gamepadCode = KeyCode::RightAnalog;
             _currentRightAxisValue.x = event.caxis.value;
             MapControllerAnalogMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadRightAxis;
+            gamepadEvent.gamepadCode = KeyCode::RightAnalog;
             _currentRightAxisValue.y = event.caxis.value;
             MapControllerAnalogMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERLEFT)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadLeftTrigger;
+            gamepadEvent.gamepadCode = KeyCode::LeftTrigger;
             _currentLeftTriggerValue = event.caxis.value;
             MapControllerTriggerMovement(gamepadEvent);
         }
         else if (axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERRIGHT)
         {
-            gamepadEvent.gamepadCode = GamepadCode::GamepadRightTrigger;
+            gamepadEvent.gamepadCode = KeyCode::RightTrigger;
             _currentRightTriggerValue = event.caxis.value;
             MapControllerTriggerMovement(gamepadEvent);
         }
+
+        gamepadEvent.timestamp = event.caxis.timestamp;
 
         _gamepadEventQueue.push(gamepadEvent);
     }
@@ -151,7 +158,7 @@ namespace Engine::Input
 
     GamepadEvent SDLInputHandler::MapControllerTriggerMovement(GamepadEvent &gamepadEvent) const
     {
-        float magnitude = gamepadEvent.gamepadCode == GamepadLeftTrigger
+        float magnitude = gamepadEvent.gamepadCode == KeyCode::LeftTrigger
                 ? _currentLeftTriggerValue
                 : _currentRightTriggerValue;
 
@@ -169,7 +176,7 @@ namespace Engine::Input
             normalizedMagnitude = 0.0f;
         }
 
-        if (gamepadEvent.gamepadCode == GamepadLeftTrigger)
+        if (gamepadEvent.gamepadCode == KeyCode::LeftTrigger)
             gamepadEvent.normalizedLeftTriggerMagnitude = normalizedMagnitude;
         else
             gamepadEvent.normalizedRightTriggerMagnitude = normalizedMagnitude;
@@ -177,16 +184,16 @@ namespace Engine::Input
         return gamepadEvent;
     }
 
-    uint32_t SDLInputHandler::AxisThreshold(GamepadCode gamepadCode) const
+    uint32_t SDLInputHandler::AxisThreshold(KeyCode gamepadCode) const
     {
-        return gamepadCode == GamepadCode::GamepadLeftAxis
+        return gamepadCode == KeyCode::LeftAnalog
                ? LEFT_ANALOG_AXIS_DEADZONE
                : RIGHT_ANALOG_AXIS_DEADZONE;
     }
 
-    glm::vec2 SDLInputHandler::NormalizeCurrentAnalogDirection(GamepadCode gamepadCode, float magnitude) const
+    glm::vec2 SDLInputHandler::NormalizeCurrentAnalogDirection(KeyCode gamepadCode, float magnitude) const
     {
-        if (gamepadCode == GamepadCode::GamepadLeftAxis)
+        if (gamepadCode == KeyCode::LeftAnalog)
         {
             return
                     {
@@ -202,9 +209,9 @@ namespace Engine::Input
                 };
     }
 
-    float SDLInputHandler::MagnitudeOfCurrentAnalog(GamepadCode gamepadCode) const
+    float SDLInputHandler::MagnitudeOfCurrentAnalog(KeyCode gamepadCode) const
     {
-        if (gamepadCode == GamepadCode::GamepadLeftAxis)
+        if (gamepadCode == KeyCode::LeftAnalog)
         {
             return sqrt(
                     _currentLeftAxisValue.x * _currentLeftAxisValue.x
@@ -240,5 +247,41 @@ namespace Engine::Input
         }
 
         return false;
+    }
+
+    Input::ContextType SDLInputHandler::GetFirstActiveInputSource()
+    {
+        bool isKeyboardQueueNonEmpty = !_keyboardEventQueue.empty();
+        bool isGamepadQueueNonEmpty = !_gamepadEventQueue.empty();
+
+        if (isKeyboardQueueNonEmpty && isGamepadQueueNonEmpty)
+        {
+            auto key = _keyboardEventQueue.top();
+            auto gamepad = _gamepadEventQueue.top();
+
+            if (key.timestamp >= gamepad.timestamp)
+            {
+                EmptyGamepadQueue();
+                return Input::ContextType::Keyboard;
+            }
+
+            EmptyKeyboardQueue();
+            return Input::ContextType::Gamepad;
+        }
+
+        if (isKeyboardQueueNonEmpty) return Input::ContextType::Keyboard;
+        return Input::ContextType::Gamepad;
+    }
+
+    void SDLInputHandler::EmptyGamepadQueue()
+    {
+        std::priority_queue<GamepadEvent, std::vector<GamepadEvent>, std::greater<GamepadEvent>> empty;
+        std::swap(_gamepadEventQueue, empty);
+    }
+
+    void SDLInputHandler::EmptyKeyboardQueue()
+    {
+        std::priority_queue<KeyEvent, std::vector<KeyEvent>, std::greater<KeyEvent>> empty;
+        std::swap(_keyboardEventQueue, empty);
     }
 };

@@ -2,7 +2,7 @@
 
 namespace Engine::Input
 {
-    void InputContext::OnGamepadEvent(Input::GamepadCode gamePadCode, std::function<void(Input::GamepadEvent)> callback)
+    void InputContext::OnGamepadEvent(Input::KeyCode gamePadCode, std::function<void(Input::GamepadEvent)> callback)
     {
         _callbackByGamepadCode[gamePadCode] = std::move(callback);
     }
@@ -12,21 +12,21 @@ namespace Engine::Input
         _callbackByKeyCode[keyCode] = std::move(callback);
     }
 
-    /*void InputContext::OnKeyReleased(KeyCode keyCode, std::function<void(KeyEvent)> callback)
+    void InputContext::OnKeyReleased(KeyCode keyCode, std::function<void(KeyEvent)> callback)
     {
         _callbackByKeyCode[keyCode] = std::move(callback);
-    }*/
-
-    void InputContext::Handle()
-    {
-        _inputHandler.FeedEventQueue();
-        DispatchEvents();
     }
 
-    void InputContext::DispatchEvents()
+    void InputContext::HandleKeyboard()
     {
-        DispatchGamepadEvents();
+        _inputHandler.FeedEventQueue();
         DispatchKeyboardEvents();
+    }
+
+    void InputContext::HandleGamepad()
+    {
+        _inputHandler.FeedEventQueue();
+        DispatchGamepadEvents();
     }
 
     void InputContext::DispatchGamepadEvents()
@@ -53,5 +53,10 @@ namespace Engine::Input
                 callback->second(keyEvent);
             }
         }
+    }
+
+    Input::ContextType InputContext::ActiveContextType()
+    {
+        return _inputHandler.GetFirstActiveInputSource();
     }
 };

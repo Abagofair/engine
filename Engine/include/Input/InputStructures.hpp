@@ -46,7 +46,14 @@ SHITE_INPUT_KEYCODES_ARRAY(ARRAY_NAME, CODES)
                       X,
                       Y,
                       Z,
-                      ESC)
+                      ESC,
+                      LeftAnalog,
+                      RightAnalog,
+                      GamepadA,
+                      GamepadB,
+                      GamePadStart,
+                      LeftTrigger,
+                      RightTrigger)
 
     enum InputEventType
     {
@@ -106,6 +113,7 @@ SHITE_INPUT_KEYCODES_ARRAY(ARRAY_NAME, CODES)
     {
         uint32_t priority;
         InputEventType inputEventType;
+        uint32_t timestamp;
 
         friend bool operator> (const InputEvent& l, const InputEvent& r)
         {
@@ -115,7 +123,7 @@ SHITE_INPUT_KEYCODES_ARRAY(ARRAY_NAME, CODES)
 
     struct GamepadEvent : public InputEvent
     {
-        GamepadCode gamepadCode;
+        KeyCode gamepadCode;
         glm::vec2 normalizedAnalogDirection;
         float normalizedAnalogMagnitude;
         float normalizedLeftTriggerMagnitude;
@@ -132,6 +140,12 @@ SHITE_INPUT_KEYCODES_ARRAY(ARRAY_NAME, CODES)
     {
         std::string functionName;
         std::function<void(T)> functionPointer;
+    };
+
+    enum class ContextType
+    {
+        Gamepad,
+        Keyboard
     };
 
 #define SHITE_INPUT_LAMBDA(EVENT, FUNC) [this](Engine::Input::EVENT e) { FUNC(e); }

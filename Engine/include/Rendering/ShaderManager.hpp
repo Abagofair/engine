@@ -21,7 +21,7 @@ namespace Engine::Rendering
         static inline std::string const STATIC_SHADER_NAME = "static";
         static inline std::string const DEBUG_SHADER_NAME = "debug";
 
-    //TODO: Handle deletion
+    //TODO: HandleEvents deletion
     private:
         std::unordered_map<std::string, Shader*> _shadersById;
     };
