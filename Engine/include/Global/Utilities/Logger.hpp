@@ -27,7 +27,6 @@ namespace Engine::Global::Utilities
             printTime();
             printFormat(format, value, Fargs...);
             _sink << std::endl;
-            _sink << std::endl;
         }
 
         template<typename T, typename... Targs>

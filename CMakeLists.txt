@@ -21,8 +21,6 @@ add_subdirectory(apps)
 #file(GLOB SOURCES "src/*/**.cpp" "src/*/**.c")
 #file(GLOB INCLUDE "include/*/**.hpp" "include/*/**.h")
 
-#include_directories(${INCLUDE})
-
 #add_executable(engine_to_cmake ${SOURCES})
 
 #target_include_directories(engine_to_cmake PRIVATE ${INCLUDE})
