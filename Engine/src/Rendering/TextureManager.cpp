@@ -1,4 +1,4 @@
-#include "TextureManager.hpp"
+#include "Rendering/TextureManager.hpp"
 
 namespace Engine::Rendering
 {

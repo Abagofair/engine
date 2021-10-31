@@ -3,18 +3,18 @@
 #include <cstdint>
 #include <vector>
 
-#include "External/include/glm/glm.hpp"
-#include "External/include/entt/entt.hpp"
+#include "glm/glm.hpp"
+#include "entt/entt.hpp"
 
-#include "Engine/include/Global/glPortableHeaders.hpp"
+#include "Global/glPortableHeaders.hpp"
 
-#include "Engine/include/Rendering/ShaderManager.hpp"
+#include "Rendering/ShaderManager.hpp"
 
-#include "Engine/include/Global/Components.hpp"
-#include "Engine/include/Collision/CollisionComponents.hpp"
-#include "Engine/include/Rendering/BaseRender.hpp"
-#include "Engine/include/Rendering/Renderable.hpp"
-#include "Engine/include/Rendering/RenderingComponents.hpp"
+#include "Global/Components.hpp"
+#include "Collision/CollisionComponents.hpp"
+#include "Rendering/BaseRender.hpp"
+#include "Rendering/Renderable.hpp"
+#include "Rendering/RenderingComponents.hpp"
 
 namespace Engine::Rendering
 {

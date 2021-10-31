@@ -3,8 +3,8 @@
 #include <functional>
 #include <unordered_map>
 
-#include "InputStructures.hpp"
-#include "SDLInputHandler.hpp"
+#include "Input/InputStructures.hpp"
+#include "Input/SDLInputHandler.hpp"
 
 namespace Engine::Input
 {

@@ -6,11 +6,11 @@
 #include <iostream>
 #include <SDL.h>
 
-#include "InputContext.hpp"
-#include "InputContextParser.hpp"
-#include "Time.hpp"
+#include "Input/InputContext.hpp"
+#include "Input/InputContextParser.hpp"
 
-#include "Logger.hpp"
+#include "Global/Time/Time.hpp"
+#include "Global/Utilities/Logger.hpp"
 
 namespace Engine::Input
 {

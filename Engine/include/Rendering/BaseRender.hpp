@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "External/include/entt/entt.hpp"
+#include "entt/entt.hpp"
 
 namespace Engine::Rendering
 {

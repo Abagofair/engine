@@ -6,12 +6,11 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "External/include/glad/gl.h"
-#include "External/include/glm/glm.hpp"
+#include "glad/gl.h"
+#include "glm/glm.hpp"
 
-#include "Engine/include/Global/Utilities/RGBA.hpp"
-
-#include "Logger.hpp"
+#include "Global/Utilities/RGBA.hpp"
+#include "Global/Utilities/Logger.hpp"
 
 namespace Engine::Windowing
 {

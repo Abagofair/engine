@@ -4,9 +4,9 @@
 
 #include <unordered_map>
 
-#include "ResourceHandler.hpp"
-#include "RenderingStructures.hpp"
-#include "GlHelper.hpp"
+#include "Resources/ResourceHandler.hpp"
+#include "Rendering/RenderingStructures.hpp"
+#include "GLHelpers/GlHelper.hpp"
 
 namespace Engine::Rendering
 {

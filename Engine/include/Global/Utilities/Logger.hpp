@@ -1,6 +1,6 @@
 #pragma once
 
-#include "External/include/date/date.h"
+#include "date/date.h"
 
 #include <ostream>
 #include <string>
@@ -9,7 +9,7 @@
 #include <chrono>
 #include <ctime>
 
-#include "External/include/rang/rang.hpp"
+#include "rang/rang.hpp"
 
 namespace Engine::Global::Utilities
 {
@@ -26,6 +26,7 @@ namespace Engine::Global::Utilities
             _sink << rang::bgB::green << rang::fg::black << Info << rang::fg::reset << rang::bg::reset << " ";
             printTime();
             printFormat(format, value, Fargs...);
+            _sink << std::endl;
             _sink << std::endl;
         }
 

@@ -7,8 +7,8 @@
 
 #include <boost/property_tree/ini_parser.hpp>
 
-#include "InputContext.hpp"
-#include "InputStructures.hpp"
+#include "Input/InputContext.hpp"
+#include "Input/InputStructures.hpp"
 
 namespace Engine::Input
 {

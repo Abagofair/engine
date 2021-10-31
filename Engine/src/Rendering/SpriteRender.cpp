@@ -1,4 +1,4 @@
-#include "SpriteRender.hpp"
+#include "Rendering/SpriteRender.hpp"
 
 namespace Engine::Rendering
 {

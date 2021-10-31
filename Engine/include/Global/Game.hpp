@@ -3,22 +3,22 @@
 #include <iostream>
 #include <cstdint>
 
-#include "External/include/entt/entt.hpp"
+#include "entt/entt.hpp"
 
-#include "Engine/include/Scene/Scene.hpp"
-#include "Engine/include/Windowing/Window.hpp"
-#include "Engine/include/Rendering/ShaderManager.hpp"
-#include "Engine/include/Rendering/BaseRender.hpp"
-#include "Engine/include/Rendering/SpriteRender.hpp"
-#include "Engine/include/Rendering/TextureManager.hpp"
-#include "Engine/include/Collision/CollisionSystem.hpp"
-#include "Engine/include/Physics/IntegrationSystem.hpp"
-#include "Engine/include/Input/InputManager.hpp"
-#include "Engine/include/Input/InputStructures.hpp"
-#include "GuiManager.hpp"
-#include "Engine/include/Resources/ResourceHandler.hpp"
+#include "Scene/Scene.hpp"
+#include "Windowing/Window.hpp"
+#include "Rendering/ShaderManager.hpp"
+#include "Rendering/BaseRender.hpp"
+#include "Rendering/SpriteRender.hpp"
+#include "Rendering/TextureManager.hpp"
+#include "Collision/CollisionSystem.hpp"
+#include "Physics/IntegrationSystem.hpp"
+#include "Input/InputManager.hpp"
+#include "Input/InputStructures.hpp"
+#include "GUI/GuiManager.hpp"
+#include "Resources/ResourceHandler.hpp"
 
-#include "Logger.hpp"
+#include "Global/Utilities/Logger.hpp"
 
 namespace Engine::Global::Game
 {

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <SDL_image.h>
 
-#include "RenderingStructures.hpp"
-#include "glPortableHeaders.hpp"
+#include "Rendering/RenderingStructures.hpp"
+#include "Global/glPortableHeaders.hpp"
 
 #include <RmlUi/Core.h>
 

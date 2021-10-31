@@ -6,12 +6,12 @@
 #include <array>
 #include <iostream>
 
-#include "External/include/glm/glm.hpp"
+#include "glm/glm.hpp"
 
-#include "glPortableHeaders.hpp"
-#include "RenderingComponents.hpp"
-#include "RenderingStructures.hpp"
-#include "GlHelper.hpp"
+#include "Global/glPortableHeaders.hpp"
+#include "Rendering/RenderingComponents.hpp"
+#include "Rendering/RenderingStructures.hpp"
+#include "GLHelpers/GlHelper.hpp"
 
 namespace Engine::Rendering
 {

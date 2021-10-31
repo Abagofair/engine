@@ -4,11 +4,11 @@
 #include <RmlUi/Core/Input.h>
 #include <RmlUi/Debugger/Debugger.h>
 
-#include "External/include/glm/glm.hpp"
+#include "glm/glm.hpp"
 
-#include "RenderInterface.hpp"
-#include "SystemInterface.hpp"
-#include "Window.hpp"
+#include "GUI/RenderInterface.hpp"
+#include "GUI/SystemInterface.hpp"
+#include "Windowing/Window.hpp"
 
 namespace Engine::GUI
 {

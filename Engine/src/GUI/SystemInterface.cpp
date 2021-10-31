@@ -1,4 +1,4 @@
-#include "SystemInterface.hpp"
+#include "GUI/SystemInterface.hpp"
 
 namespace Engine::GUI
 {

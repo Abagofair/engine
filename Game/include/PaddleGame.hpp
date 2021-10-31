@@ -10,14 +10,13 @@
 #include <RmlUi/Core/Input.h>
 #include <RmlUi/Debugger/Debugger.h>
 
-#include "External/include/entt/entt.hpp"
+#include "entt/entt.hpp"
 
-#include "Engine/include/Global/Game.hpp"
-#include "Engine/include/Global/Components.hpp"
-#include "Engine/include/GUI/RenderInterface.hpp"
-#include "Engine/include/GUI/SystemInterface.hpp"
-
-#include "Engine/include/Input/InputContextParser.hpp"
+#include "Global/Game.hpp"
+#include "Global/Components.hpp"
+#include "GUI/RenderInterface.hpp"
+#include "GUI/SystemInterface.hpp"
+#include "Input/InputContextParser.hpp"
 
 #include "Block.hpp"
 #include "Ball.hpp"

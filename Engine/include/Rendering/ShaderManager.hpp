@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <exception>
 
-#include "Engine/include/Rendering/Shader.hpp"
+#include "Rendering/Shader.hpp"
 
 namespace Engine::Rendering
 {

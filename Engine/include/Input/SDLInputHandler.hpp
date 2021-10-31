@@ -11,7 +11,7 @@
 
 #include <SDL.h>
 
-#include "Engine/include/Input/InputStructures.hpp"
+#include "InputStructures.hpp"
 
 namespace Engine::Input
 {

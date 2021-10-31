@@ -1,6 +1,6 @@
 #pragma once
 
-#include "External/include/glm/vec4.hpp"
+#include "glm/vec4.hpp"
 
 namespace Engine::Global::Utilities
 {

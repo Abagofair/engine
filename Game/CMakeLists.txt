@@ -1,8 +1,4 @@
-file(   GLOB_RECURSE
-        HEADER_LIST
-        LIST_DIRECTORIES true
-        CONFIGURE_DEPENDS
-        "${engine_SOURCE_DIR}/Game/include/*.hpp")
+include_directories(${engine_SOURCE_DIR}/Game/include)
 
 add_library(
         Game
@@ -15,10 +11,16 @@ add_library(
         src/PaddleGame.cpp
         src/TestScene.cpp
 
-        ${HEADER_LIST})
+        include/Generated/EntityType.hpp
+        include/Ball.hpp
+        include/Block.hpp
+        include/GameComponents.hpp
+        include/Paddle.hpp
+        include/PaddleGame.hpp
+        include/TestScene.hpp
+)
 
-target_include_directories(Game PUBLIC "${engine_SOURCE_DIR}")
-target_include_directories(Game PUBLIC ${HEADER_LIST})
+target_include_directories(Game PUBLIC ${engine_SOURCE_DIR}/Game/include)
 
 target_link_libraries(Game PUBLIC External)
 target_link_libraries(Game PUBLIC Engine)

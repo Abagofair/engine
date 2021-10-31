@@ -2,13 +2,13 @@
 
 #include <iostream>
 
-#include "External/include/entt/entt.hpp"
-#include "External/include/glm/glm.hpp"
+#include "entt/entt.hpp"
+#include "glm/glm.hpp"
 
-#include "Engine/include/Global/Components.hpp"
-#include "Engine/include/Collision/CollisionSystem.hpp"
-#include "Engine/include/Physics/PhysicsComponents.hpp"
-#include "Engine/include/Rendering/RenderingComponents.hpp"
+#include "Global/Components.hpp"
+#include "Collision/CollisionSystem.hpp"
+#include "Physics/PhysicsComponents.hpp"
+#include "Rendering/RenderingComponents.hpp"
 
 #include "GameComponents.hpp"
 #include "Generated/EntityType.hpp"

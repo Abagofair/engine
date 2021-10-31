@@ -1,4 +1,4 @@
-#include "RenderInterface.hpp"
+#include "GUI/RenderInterface.hpp"
 
 namespace Engine::GUI
 {

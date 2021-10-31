@@ -1,17 +1,17 @@
 #pragma once
 
-#include "External/include//glm/glm.hpp"
-#include "External/include/glm/gtc/matrix_transform.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
-#include "Engine/include/Scene/Scene.hpp"
-#include "Engine/include/Global/Components.hpp"
-#include "Engine/include/Collision/CollisionComponents.hpp"
-#include "Engine/include/Rendering/RenderingComponents.hpp"
-#include "Engine/include/Rendering/RenderingStructures.hpp"
-#include "Engine/include/Rendering/Renderable.hpp"
-#include "Engine/include/Rendering/ShaderManager.hpp"
-#include "Engine/include/Physics/PhysicsComponents.hpp"
-#include "Engine/include/Global/Game.hpp"
+#include "Scene/Scene.hpp"
+#include "Global/Components.hpp"
+#include "Collision/CollisionComponents.hpp"
+#include "Rendering/RenderingComponents.hpp"
+#include "Rendering/RenderingStructures.hpp"
+#include "Rendering/Renderable.hpp"
+#include "Rendering/ShaderManager.hpp"
+#include "Physics/PhysicsComponents.hpp"
+#include "Global/Game.hpp"
 
 #include "Generated/EntityType.hpp"
 #include "GameComponents.hpp"

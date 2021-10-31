@@ -1,6 +1,6 @@
 #pragma once
 
-#include "External/include/entt/entt.hpp"
+#include "entt/entt.hpp"
 
 namespace Engine::Scene
 {

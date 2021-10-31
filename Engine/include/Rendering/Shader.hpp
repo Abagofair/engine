@@ -7,10 +7,10 @@
 #include <filesystem>
 #include <cstdint>
 
-#include "External/include/glm/glm.hpp"
-#include "External/include/glm/gtc/type_ptr.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
-#include "Engine/include/Global/glPortableHeaders.hpp"
+#include "Global/glPortableHeaders.hpp"
 
 namespace Engine::Rendering
 {

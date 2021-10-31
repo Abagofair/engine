@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#include "External/include/entt/entt.hpp"
+#include "entt/entt.hpp"
 
-#include "Engine/include/Global/Time/Time.hpp"
-#include "Engine/include/Global/Components.hpp"
+#include "Global/Time/Time.hpp"
+#include "Global/Components.hpp"
 
-#include "Engine/include/Physics/PhysicsComponents.hpp"
+#include "Physics/PhysicsComponents.hpp"
 
 namespace Engine::Physics
 {

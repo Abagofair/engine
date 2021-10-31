@@ -3,7 +3,7 @@
 #include <array>
 #include <cstdint>
 
-#include "External/include/glm/glm.hpp"
+#include "glm/glm.hpp"
 
 namespace Engine::Rendering::Structures
 {

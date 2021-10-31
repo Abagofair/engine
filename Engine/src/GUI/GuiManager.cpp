@@ -1,4 +1,4 @@
-#include "GuiManager.hpp"
+#include "GUI/GuiManager.hpp"
 
 namespace Engine::GUI
 {

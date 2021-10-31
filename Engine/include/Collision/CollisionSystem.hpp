@@ -2,12 +2,12 @@
 
 #include <unordered_map>
 
-#include "External/include/entt/entt.hpp"
-#include "External/include/glm/glm.hpp"
+#include "entt/entt.hpp"
+#include "glm/glm.hpp"
 
-#include "Engine/include/Global/Components.hpp"
-#include "Engine/include/Physics/PhysicsComponents.hpp"
-#include "Engine/include/Collision/CollisionComponents.hpp"
+#include "Global/Components.hpp"
+#include "Physics/PhysicsComponents.hpp"
+#include "Collision/CollisionComponents.hpp"
 
 #include <iostream>
 

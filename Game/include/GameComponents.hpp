@@ -1,7 +1,7 @@
 #pragma once
 
-#include "External/include/entt/entt.hpp"
-#include "External/include/glm/glm.hpp"
+#include "entt/entt.hpp"
+#include "glm/glm.hpp"
 
 namespace Game::Components
 {

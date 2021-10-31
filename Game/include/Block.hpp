@@ -1,10 +1,10 @@
 #pragma once
 
-#include "External/include/entt/entt.hpp"
+#include "entt/entt.hpp"
 
-#include "Engine/include/Collision/CollisionSystem.hpp"
-#include "Engine/include/Rendering/RenderingComponents.hpp"
-#include "Engine/include/Global/Components.hpp"
+#include "Collision/CollisionSystem.hpp"
+#include "Rendering/RenderingComponents.hpp"
+#include "Global/Components.hpp"
 
 #include "Generated/EntityType.hpp"
 #include "GameComponents.hpp"

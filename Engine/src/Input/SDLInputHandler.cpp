@@ -1,4 +1,4 @@
-#include "SDLInputHandler.hpp"
+#include "Input/SDLInputHandler.hpp"
 
 namespace Engine::Input
 {

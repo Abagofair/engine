@@ -1,4 +1,4 @@
-#include "../include/PaddleGame.hpp"
+#include "PaddleGame.hpp"
 
 namespace Game
 {

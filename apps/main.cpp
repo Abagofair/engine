@@ -1,6 +1,5 @@
 //Using SDL and standard IO
 #include <PaddleGame.hpp>
-#include "Logger.hpp"
 
 int main(int argc, char* args[])
 {

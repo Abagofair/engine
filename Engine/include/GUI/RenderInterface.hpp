@@ -9,12 +9,12 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "External/include/glm/glm.hpp"
+#include "glm/glm.hpp"
 
-#include "GlHelper.hpp"
-#include "Window.hpp"
-#include "glPortableHeaders.hpp"
-#include "ShaderManager.hpp"
+#include "GLHelpers/GlHelper.hpp"
+#include "Windowing/Window.hpp"
+#include "Global/glPortableHeaders.hpp"
+#include "Rendering/ShaderManager.hpp"
 
 namespace Engine::GUI
 {

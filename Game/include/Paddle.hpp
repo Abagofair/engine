@@ -5,14 +5,14 @@
 #include <vector>
 #include <string>
 
-#include "External/include/entt/entt.hpp"
-#include "External/include/glm/glm.hpp"
+#include "entt/entt.hpp"
+#include "glm/glm.hpp"
 
-#include "Engine/include/Physics/PhysicsComponents.hpp"
-#include "Engine/include/Input/SDLInputHandler.hpp"
-#include "Engine/include/Input/InputStructures.hpp"
-#include "Engine/include/Collision/CollisionSystem.hpp"
-#include "Engine/include/Global/Components.hpp"
+#include "Physics/PhysicsComponents.hpp"
+#include "Input/SDLInputHandler.hpp"
+#include "Input/InputStructures.hpp"
+#include "Collision/CollisionSystem.hpp"
+#include "Global/Components.hpp"
 
 #include "GameComponents.hpp"
 #include "Generated/EntityType.hpp"

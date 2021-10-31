@@ -8,7 +8,7 @@
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/preprocessor/variadic/to_seq.hpp>
 
-#include "External/include/glm/glm.hpp"
+#include "glm/glm.hpp"
 
 namespace Engine::Input
 {

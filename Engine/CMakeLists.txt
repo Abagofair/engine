@@ -1,8 +1,5 @@
-file(   GLOB_RECURSE
-        HEADER_LIST
-        LIST_DIRECTORIES true
-        CONFIGURE_DEPENDS
-        "${engine_SOURCE_DIR}/Engine/include/*.hpp")
+include_directories(${engine_SOURCE_DIR}/Engine/include)
+include_directories(${engine_SOURCE_DIR}/External/include)
 
 add_library(
         Engine
@@ -12,23 +9,68 @@ add_library(
         src/Input/SDLInputHandler.cpp
         src/Input/InputContext.cpp
         src/Input/InputManager.cpp
+        src/Input/InputContextParser.cpp
+
         src/Physics/IntegrationSystem.cpp
+
         src/Rendering/Renderable.cpp
         src/Rendering/Shader.cpp
         src/Rendering/ShaderManager.cpp
         src/Rendering/SpriteRender.cpp
+
         src/Windowing/Window.cpp
+
         src/GUI/SystemInterface.cpp
         src/GUI/RenderInterface.cpp
         src/GUI/GuiManager.cpp
+
         src/Rendering/TextureManager.cpp
+
         src/Resources/ResourceHandler.cpp
-        src/Input/InputContextParser.cpp
 
-        ${HEADER_LIST} include/Global/Utilities/Logger.hpp)
+        include/Collision/CollisionComponents.hpp
+        include/Collision/CollisionSystem.hpp
 
-target_include_directories(Engine PUBLIC ${engine_SOURCE_DIR})
-target_include_directories(Engine PUBLIC ${HEADER_LIST})
+        include/GLHelpers/GlHelper.hpp
+
+        include/Global/Time/Time.hpp
+        include/Global/Utilities/Logger.hpp
+        include/Global/Utilities/RGBA.hpp
+        include/Global/Components.hpp
+        include/Global/Game.hpp
+        include/Global/glPortableHeaders.hpp
+
+        include/GUI/GuiManager.hpp
+        include/GUI/RenderInterface.hpp
+        include/GUI/SystemInterface.hpp
+
+        include/Input/InputContext.hpp
+        include/Input/InputContextParser.hpp
+        include/Input/InputManager.hpp
+        include/Input/InputStructures.hpp
+        include/Input/SDLInputHandler.hpp
+
+        include/Physics/IntegrationSystem.hpp
+        include/Physics/PhysicsComponents.hpp
+
+        include/Rendering/BaseRender.hpp
+        include/Rendering/Renderable.hpp
+        include/Rendering/RenderingComponents.hpp
+        include/Rendering/RenderingStructures.hpp
+        include/Rendering/Shader.hpp
+        include/Rendering/ShaderManager.hpp
+        include/Rendering/SpriteRender.hpp
+        include/Rendering/TextureManager.hpp
+
+        include/Resources/ResourceHandler.hpp
+
+        include/Scene/Scene.hpp
+
+        include/Windowing/Window.hpp)
+
+#target_include_directories(Engine PUBLIC ${engine_SOURCE_DIR}/Engine/src)
+target_include_directories(Engine PUBLIC ${engine_SOURCE_DIR}/Engine/include)
+target_include_directories(Engine PUBLIC ${engine_SOURCE_DIR}/External/include)
 
 target_link_libraries(Engine PUBLIC SDL2::SDL2)
 target_link_libraries(Engine PUBLIC SDL2::SDL2_image)
