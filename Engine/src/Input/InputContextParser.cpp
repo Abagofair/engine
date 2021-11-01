@@ -3,9 +3,10 @@
 namespace Engine::Input
 {
     Input::InputContext *InputContextParser::CreateGamepadContext(const std::string &fileName,
-                                                                  const std::vector<Input::Action<Input::GamepadEvent>> &actions)
+                                                                  const std::vector<Input::Action<Input::GamepadEvent>> &actions,
+                                                                  Input::SDLInputHandler &inputHandler)
     {
-        Input::InputContext *inputContext = new Input::InputContext();
+        Input::InputContext *inputContext = new Input::InputContext(inputHandler);
         auto fp = std::bind(&Input::InputContext::OnGamepadEvent, inputContext, std::placeholders::_1,
                             std::placeholders::_2);
 
@@ -14,9 +15,10 @@ namespace Engine::Input
     }
 
     Input::InputContext *InputContextParser::CreateKeyboardContext(const std::string &fileName,
-                                                                   const std::vector<Input::Action<Input::KeyEvent>> &actions)
+                                                                   const std::vector<Input::Action<Input::KeyEvent>> &actions,
+                                                                   Input::SDLInputHandler &inputHandler)
     {
-        Input::InputContext *inputContext = new Input::InputContext();
+        Input::InputContext *inputContext = new Input::InputContext(inputHandler);
         auto fp = std::bind(&Input::InputContext::OnKeyPressed, inputContext, std::placeholders::_1,
                             std::placeholders::_2);
         CreateContext<Input::KeyEvent>(fileName, "Keyboard", actions, *inputContext, fp);

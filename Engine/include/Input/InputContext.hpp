@@ -11,7 +11,9 @@ namespace Engine::Input
     class InputContext
     {
     public:
+        explicit InputContext(Input::SDLInputHandler& inputHandler);
 
+        void FeedEventQueues();
         void HandleKeyboard();
         void HandleGamepad();
 
@@ -31,7 +33,7 @@ namespace Engine::Input
 
         void OnGamepadEvent(KeyCode gamePadCode, std::function<void(Input::GamepadEvent)> callback);
     private:
-        Input::SDLInputHandler _inputHandler;
+        Input::SDLInputHandler& _inputHandler;
 
         std::unordered_map<KeyCode, std::function<void(Input::GamepadEvent)>> _callbackByGamepadCode;
         std::unordered_map<KeyCode, std::function<void(Input::KeyEvent)>> _callbackByKeyCode;

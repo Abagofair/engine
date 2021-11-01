@@ -2,13 +2,16 @@
 
 namespace Engine::Input
 {
-    void SDLInputHandler::FeedEventQueue()
+    void SDLInputHandler::FeedEventQueues()
     {
         SDL_Event event;
 
         //todo: should log if this fails
         //_gamepadEventQueue.empty();
         //_keyboardEventQueue.empty();
+
+        EmptyGamepadQueue();
+        EmptyKeyboardQueue();
 
         while (SDL_PollEvent(&event))
         {
@@ -159,8 +162,8 @@ namespace Engine::Input
     GamepadEvent SDLInputHandler::MapControllerTriggerMovement(GamepadEvent &gamepadEvent) const
     {
         float magnitude = gamepadEvent.gamepadCode == KeyCode::LeftTrigger
-                ? _currentLeftTriggerValue
-                : _currentRightTriggerValue;
+                          ? _currentLeftTriggerValue
+                          : _currentRightTriggerValue;
 
         float normalizedMagnitude = 0.0f;
 
@@ -223,7 +226,7 @@ namespace Engine::Input
                 + _currentRightAxisValue.y * _currentRightAxisValue.y);
     }
 
-    bool SDLInputHandler::GetNextGamepadEvent(GamepadEvent& gamepadEvent)
+    bool SDLInputHandler::GetNextGamepadEvent(GamepadEvent &gamepadEvent)
     {
         if (!_gamepadEventQueue.empty())
         {
@@ -236,7 +239,7 @@ namespace Engine::Input
         return false;
     }
 
-    bool SDLInputHandler::GetNextKeyEvent(KeyEvent& keyEvent)
+    bool SDLInputHandler::GetNextKeyEvent(KeyEvent &keyEvent)
     {
         if (!_keyboardEventQueue.empty())
         {
@@ -249,7 +252,7 @@ namespace Engine::Input
         return false;
     }
 
-    bool SDLInputHandler::GetFirstActiveInputSource(Input::ContextType& contextType)
+    bool SDLInputHandler::GetFirstActiveInputSource(Input::ContextType &contextType)
     {
         bool isKeyboardQueueNonEmpty = !_keyboardEventQueue.empty();
         bool isGamepadQueueNonEmpty = !_gamepadEventQueue.empty();
@@ -259,14 +262,14 @@ namespace Engine::Input
             auto key = _keyboardEventQueue.top();
             auto gamepad = _gamepadEventQueue.top();
 
-            if (key.timestamp >= gamepad.timestamp)
+            if (key.timestamp <= gamepad.timestamp)
             {
-                EmptyGamepadQueue();
+                //EmptyGamepadQueue();
                 contextType = Input::ContextType::Keyboard;
                 return true;
             }
 
-            EmptyKeyboardQueue();
+            //EmptyKeyboardQueue();
             contextType = Input::ContextType::Gamepad;
             return true;
         }
@@ -276,7 +279,7 @@ namespace Engine::Input
             contextType = Input::ContextType::Keyboard;
             return true;
         }
-        
+
         if (isGamepadQueueNonEmpty)
         {
             contextType = Input::ContextType::Gamepad;

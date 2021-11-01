@@ -28,10 +28,11 @@ namespace Engine::Input
         //seconds
         Input::ContextType _currentContextType;
         static constexpr float _whenToCheckForNewInputSources = 1.0f;
-        float _elapsedTimeSinceLastCheck;
+        float _elapsedTimeSinceLastCheck{};
 
+        Input::SDLInputHandler _inputHandler;
         Input::InputContextParser _contextParser;
-        Input::InputContext* _currentContext;
+        Input::InputContext* _currentContext{};
 
         std::unique_ptr<Input::InputContext> _keyboardContext;
         std::unique_ptr<Input::InputContext> _gamepadContext;

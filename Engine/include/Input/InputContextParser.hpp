@@ -17,10 +17,12 @@ namespace Engine::Input
     public:
 
         Input::InputContext *CreateGamepadContext(const std::string &fileName,
-                                                  const std::vector<Input::Action<Input::GamepadEvent>> &actions);
+                                                  const std::vector<Input::Action<Input::GamepadEvent>> &actions,
+                                                  Input::SDLInputHandler &inputHandler);
 
         Input::InputContext *CreateKeyboardContext(const std::string &fileName,
-                                                   const std::vector<Input::Action<Input::KeyEvent>> &actions);
+                                                   const std::vector<Input::Action<Input::KeyEvent>> &actions,
+                                                   Input::SDLInputHandler &inputHandler);
 
     private:
         template<typename T>

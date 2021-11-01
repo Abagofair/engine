@@ -2,6 +2,10 @@
 
 namespace Engine::Input
 {
+    InputContext::InputContext(Input::SDLInputHandler& inputHandler)
+        : _inputHandler(inputHandler)
+    {}
+
     void InputContext::OnGamepadEvent(Input::KeyCode gamePadCode, std::function<void(Input::GamepadEvent)> callback)
     {
         _callbackByGamepadCode[gamePadCode] = std::move(callback);
@@ -17,15 +21,18 @@ namespace Engine::Input
         _callbackByKeyCode[keyCode] = std::move(callback);
     }
 
+    void InputContext::FeedEventQueues()
+    {
+        _inputHandler.FeedEventQueues();
+    }
+
     void InputContext::HandleKeyboard()
     {
-        _inputHandler.FeedEventQueue();
         DispatchKeyboardEvents();
     }
 
     void InputContext::HandleGamepad()
     {
-        _inputHandler.FeedEventQueue();
         DispatchGamepadEvents();
     }
 

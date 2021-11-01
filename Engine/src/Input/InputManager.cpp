@@ -16,9 +16,9 @@ namespace Engine::Input
         _gamepadContext = nullptr;
 
         _gamepadContext = std::unique_ptr<Input::InputContext>(
-                _contextParser.CreateGamepadContext("data/Input.ini", gamepadActions));
+                _contextParser.CreateGamepadContext("data/Input.ini", gamepadActions, _inputHandler));
         _keyboardContext = std::unique_ptr<Input::InputContext>(
-                _contextParser.CreateKeyboardContext("data/Input.ini", keyboardActions));
+                _contextParser.CreateKeyboardContext("data/Input.ini", keyboardActions, _inputHandler));
 
         _currentContext = _keyboardContext.get();
         SetContextType(Input::ContextType::Keyboard);
@@ -26,6 +26,14 @@ namespace Engine::Input
 
     void InputManager::HandleInput(Global::Time::Time time)
     {
+        if (_currentContext == nullptr)
+        {
+            _logger.WriteWarning("_currentContext is currently null", "");
+            return;
+        }
+
+        _currentContext->FeedEventQueues();
+
         Input::ContextType contextType;
         bool hasEvents = _currentContext->ActiveContextType(contextType);
         if (hasEvents && contextType != _currentContextType)
@@ -76,7 +84,7 @@ namespace Engine::Input
     bool InputManager::CheckForGamepad()
     {
         //todo: support more than 1 controller
-        if (_controller != nullptr) return true;
+        if (_controller != nullptr) return false;
 
         for (int i = 0; i < SDL_NumJoysticks(); ++i)
         {

@@ -19,7 +19,7 @@ namespace Engine::Input
     {
     public:
 
-        void FeedEventQueue();
+        void FeedEventQueues();
 
         bool GetNextGamepadEvent(GamepadEvent& gamepadEvent);
         bool GetNextKeyEvent(KeyEvent& keyEvent);
