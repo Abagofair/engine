@@ -15,8 +15,6 @@
 #include "GUI/GuiManager.hpp"
 #include "Resources/ResourceHandler.hpp"
 
-#include "Global/Utilities/Logger.hpp"
-
 namespace Engine::Global::Game
 {
     enum GameState
@@ -36,11 +34,10 @@ namespace Engine::Global::Game
             uint32_t width,
             uint32_t height
         )
-            :   _logger(std::cout),
-                _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE", _logger)),
+            :   _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE")),
                 _collisionSystem(Collision::CollisionSystem<T>(_registry)),
                 _guiManager(_window.get()),
-                _inputManager(_logger)
+                _inputManager()
         {}
 
         virtual std::vector<entt::entity> FindEntities(T) = 0;
@@ -56,7 +53,6 @@ namespace Engine::Global::Game
         Scene::Scene *GetScene() { return _currentScene.get(); }
     protected:
         entt::registry _registry;
-        Utilities::Logger _logger;
 
         Input::InputManager _inputManager;
         Collision::CollisionSystem<T> _collisionSystem;

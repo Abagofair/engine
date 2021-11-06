@@ -20,9 +20,7 @@ namespace Engine::Windowing
         Window(
             unsigned short width,
             unsigned short height,
-            std::string title,
-            const Global::Utilities::Logger &logger
-        );
+            std::string title);
         Window() = delete;
         Window(Window& window) = delete;
         ~Window();
@@ -33,8 +31,6 @@ namespace Engine::Windowing
         [[nodiscard]] glm::uvec2 WindowDimensions() const;
 
     private:
-        const Global::Utilities::Logger &_logger;
-
         unsigned short _width;
         unsigned short _height;
         float _aspectRatio;

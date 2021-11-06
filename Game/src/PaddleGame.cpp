@@ -27,7 +27,7 @@ namespace Game
 
     void PaddleGame::Initialize()
     {
-        _logger.WriteInfo("Initializing game..", "");
+        Engine::Global::Utilities::Logger::WriteInfo("Initializing game..", "");
 
         std::vector<Engine::Input::Action<Engine::Input::KeyEvent>> m =
         {

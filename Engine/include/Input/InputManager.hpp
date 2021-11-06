@@ -17,14 +17,10 @@ namespace Engine::Input
     class InputManager
     {
     public:
-        InputManager(const Global::Utilities::Logger& logger);
-
         void HandleInput(Global::Time::Time time);
         void InitializeActionsFromDisk(const std::vector<Engine::Input::Action<Engine::Input::GamepadEvent>>& gamepadActions,
                                        const std::vector<Engine::Input::Action<Engine::Input::KeyEvent>>& keyboardActions);
     private:
-        const Global::Utilities::Logger& _logger;
-
         //seconds
         Input::ContextType _currentContextType;
         static constexpr float _whenToCheckForNewInputSources = 1.0f;

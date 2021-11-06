@@ -2,15 +2,11 @@
 
 namespace Engine::Input
 {
-    InputManager::InputManager(const Global::Utilities::Logger &logger)
-        : _logger(logger)
-    {}
-
     void InputManager::InitializeActionsFromDisk(
             const std::vector<Engine::Input::Action<Engine::Input::GamepadEvent>> &gamepadActions,
             const std::vector<Engine::Input::Action<Engine::Input::KeyEvent>> &keyboardActions)
     {
-        _logger.WriteInfo("Initialized actions from disk", "");
+        Global::Utilities::Logger::WriteInfo("Initialized actions from disk", "");
 
         _keyboardContext = nullptr;
         _gamepadContext = nullptr;
@@ -28,7 +24,7 @@ namespace Engine::Input
     {
         if (_currentContext == nullptr)
         {
-            _logger.WriteWarning("_currentContext is currently null", "");
+            Global::Utilities::Logger::WriteWarning("_currentContext is currently null", "");
             return;
         }
 
@@ -39,14 +35,14 @@ namespace Engine::Input
         if (hasEvents && contextType != _currentContextType)
         {
             std::string c = contextType == ContextType::Gamepad ? "Gamepad" : "Keyboard";
-            _logger.WriteWarning("% to %", "Switching context type", c);
+            Global::Utilities::Logger::WriteWarning("% to %", "Switching context type", c);
             SetContextType(contextType);
         }
         else if (_elapsedTimeSinceLastCheck >= _whenToCheckForNewInputSources)
         {
             if (CheckForGamepad())
             {
-                _logger.WriteWarning("Connecting gamepad..", "");
+                Global::Utilities::Logger::WriteWarning("Connecting gamepad..", "");
                 SetContextType(Input::ContextType::Gamepad);
             }
 

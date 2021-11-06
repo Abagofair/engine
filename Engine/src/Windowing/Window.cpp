@@ -5,12 +5,11 @@ namespace Engine::Windowing
     Window::Window(
         unsigned short width,
         unsigned short height,
-        std::string title,
-        const Global::Utilities::Logger &logger)
-            : _width(width), _height(height), _logger(logger)
+        std::string title)
+            : _width(width), _height(height)
     {
-        _logger.WriteInfo("Initializing window..", "");
-        _logger.WriteInfo("Width: %, Height: %", width, height);
+        Global::Utilities::Logger::WriteInfo("Initializing window..", "");
+        Global::Utilities::Logger::WriteInfo("Width: %, Height: %", width, height);
 
         //https://bcmpinc.wordpress.com/2015/08/18/creating-an-opengl-4-5-context-using-sdl2-and-glad/
         SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
@@ -49,16 +48,16 @@ namespace Engine::Windowing
         // Check OpenGL properties
         //printf("OpenGL loaded\n");
 
-        _logger.WriteInfo("OpenGL loaded", "");
+        Global::Utilities::Logger::WriteInfo("OpenGL loaded", "");
 
         gladLoaderLoadGL();
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        _logger.WriteInfo("Vendor:   %", glGetString(GL_VENDOR));
-        _logger.WriteInfo("Renderer: %", glGetString(GL_RENDERER));
-        _logger.WriteInfo("Version:  %", glGetString(GL_VERSION));
+        Global::Utilities::Logger::WriteInfo("Vendor:   %", glGetString(GL_VENDOR));
+        Global::Utilities::Logger::WriteInfo("Renderer: %", glGetString(GL_RENDERER));
+        Global::Utilities::Logger::WriteInfo("Version:  %", glGetString(GL_VERSION));
     }
 
     Window::~Window()
