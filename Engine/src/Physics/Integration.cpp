@@ -1,17 +1,12 @@
-#include "Physics/IntegrationSystem.hpp"
+#include "Physics/Integration.hpp"
 
 namespace Engine::Physics
 {
-    IntegrationSystem::IntegrationSystem(
-        entt::registry& registry
-    ) : _registry(registry)
-    {}
-
-    void IntegrationSystem::Integrate(Global::Time::Time time)
+    void Integrate(entt::registry &registry, Global::Time::Time time)
     {
-        auto integrateableView = _registry.view<
-            Physics::Components::VelocityComponent,
-            Global::Components::TransformComponent>();
+        auto integrateableView = registry.view<
+                Physics::Components::VelocityComponent,
+                Global::Components::TransformComponent>();
 
         for (auto entity : integrateableView)
         {
@@ -24,7 +19,7 @@ namespace Engine::Physics
             if (copy.y != 0.0f)
             {
                 sprite.position += integratedVelocity;
-                
+
                 sprite.recalculateTransform = true;
             }
             else

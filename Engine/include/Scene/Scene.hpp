@@ -1,16 +1,17 @@
 #pragma once
 
-#include "entt/entt.hpp"
+#include "Camera/Camera2D.hpp"
 
 namespace Engine::Scene
 {
-    class Scene
+    struct Scene
     {
-    public:
         Scene() = default;
         virtual ~Scene() = default;
 
         virtual void Initialize() = 0;
         virtual void CheckSceneState() = 0;
+
+        Camera::Camera2D *camera = nullptr;
     };
 };

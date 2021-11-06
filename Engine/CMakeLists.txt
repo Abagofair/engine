@@ -11,20 +11,17 @@ add_library(
         src/Input/InputManager.cpp
         src/Input/InputContextParser.cpp
 
-        src/Physics/IntegrationSystem.cpp
+        src/Physics/Integration.cpp
 
         src/Rendering/Renderable.cpp
         src/Rendering/Shader.cpp
-        src/Rendering/ShaderManager.cpp
-        src/Rendering/SpriteRender.cpp
+        src/Rendering/SpriteRendering.cpp
 
         src/Windowing/Window.cpp
 
         src/GUI/SystemInterface.cpp
         src/GUI/RenderInterface.cpp
         src/GUI/GuiManager.cpp
-
-        src/Rendering/TextureManager.cpp
 
         src/Resources/ResourceHandler.cpp
 
@@ -50,23 +47,22 @@ add_library(
         include/Input/InputStructures.hpp
         include/Input/SDLInputHandler.hpp
 
-        include/Physics/IntegrationSystem.hpp
+        include/Physics/Integration.hpp
         include/Physics/PhysicsComponents.hpp
 
-        include/Rendering/BaseRender.hpp
         include/Rendering/Renderable.hpp
         include/Rendering/RenderingComponents.hpp
         include/Rendering/RenderingStructures.hpp
         include/Rendering/Shader.hpp
-        include/Rendering/ShaderManager.hpp
-        include/Rendering/SpriteRender.hpp
-        include/Rendering/TextureManager.hpp
+        include/Rendering/SpriteRendering.hpp
 
         include/Resources/ResourceHandler.hpp
 
         include/Scene/Scene.hpp
 
-        include/Windowing/Window.hpp)
+        include/Windowing/Window.hpp
+
+        include/Camera/Camera2D.hpp)
 
 #target_include_directories(Engine PUBLIC ${engine_SOURCE_DIR}/Engine/src)
 target_include_directories(Engine PUBLIC ${engine_SOURCE_DIR}/Engine/include)

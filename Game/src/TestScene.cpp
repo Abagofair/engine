@@ -79,7 +79,7 @@ namespace Game
         s.transform = glm::translate(glm::mat4(1.0f), glm::vec3(s.position, 0.0f));
         s.transform = glm::scale(s.transform, glm::vec3(10.0f, 60.0f, 0.0f));
 
-        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
+        auto& shader  = Engine::Resources::GetShader(Engine::Resources::DYNAMIC_SHADER_NAME);
 
         //auto tex = _game.GetTextureManager().TextureFromImage("paddle.png");
 
@@ -111,7 +111,7 @@ namespace Game
         
         s1.transform = glm::translate(trans1, glm::vec3(s1.position, 0.0f));
         
-        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
+        auto& shader  = Engine::Resources::GetShader(Engine::Resources::DYNAMIC_SHADER_NAME);
 
         d1 = Engine::Rendering::SetupDynamic(0, shader.ShaderId(), b1.width, b1.height);
     }
@@ -137,7 +137,7 @@ namespace Game
         glm::mat4 trans2 = glm::mat4(1.0f);
         s2.transform = glm::translate(trans2, glm::vec3(s2.position, 0.0f));
 
-        auto& shader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
+        auto& shader  = Engine::Resources::GetShader(Engine::Resources::DYNAMIC_SHADER_NAME);
         d2 = Engine::Rendering::SetupDynamic(0, shader.ShaderId(), b2.width, b2.height);
 
         auto leftPaddleView = _game.GetRegistry().view<
@@ -149,8 +149,8 @@ namespace Game
 
     void TestScene::CreateBlocks()
     {
-        auto& staticShader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
-        auto& debugShader  = _game.GetShaderManager().GetShader(Engine::Rendering::ShaderManager::DEBUG_SHADER_NAME);
+        auto& staticShader  = Engine::Resources::GetShader(Engine::Resources::STATIC_SHADER_NAME);
+        auto& debugShader  = Engine::Resources::GetShader(Engine::Resources::DEBUG_SHADER_NAME);
 
         int width = 5;
         int height = 50;

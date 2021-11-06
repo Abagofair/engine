@@ -9,9 +9,10 @@
 #include "Rendering/RenderingComponents.hpp"
 #include "Rendering/RenderingStructures.hpp"
 #include "Rendering/Renderable.hpp"
-#include "Rendering/ShaderManager.hpp"
 #include "Physics/PhysicsComponents.hpp"
 #include "Global/Game.hpp"
+
+#include "Resources/ResourceHandler.hpp"
 
 #include "Generated/EntityType.hpp"
 #include "GameComponents.hpp"
@@ -21,8 +22,7 @@ namespace Game
     class TestScene : public Engine::Scene::Scene
     {
     public:
-        TestScene(
-            Engine::Global::Game::Game<Game::Generated::EntityType>& game);
+        TestScene(Engine::Global::Game::Game<Game::Generated::EntityType>& game);
 
         ~TestScene() override = default;
 

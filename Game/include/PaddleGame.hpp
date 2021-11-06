@@ -12,6 +12,8 @@
 
 #include "entt/entt.hpp"
 
+#include "Resources/ResourceHandler.hpp"
+
 #include "Global/Game.hpp"
 #include "Global/Components.hpp"
 #include "GUI/RenderInterface.hpp"

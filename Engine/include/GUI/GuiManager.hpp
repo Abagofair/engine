@@ -15,13 +15,11 @@ namespace Engine::GUI
     class GuiManager
     {
     public:
-        GuiManager(Windowing::Window* window,
-                   Rendering::ShaderManager& shaderManager,
-                   glm::mat4 viewMatrix);
+        GuiManager(Windowing::Window* window);
 
         void LoadInGameMenuDocument();
         void Update();
-        void Draw();
+        void Draw(const glm::mat4 &viewMatrix);
 
     private:
         GUI::RenderInterface _renderInterface;
@@ -30,6 +28,6 @@ namespace Engine::GUI
         Rml::Context* _context;
         Rml::ElementDocument* _currentDocument;
 
-        Rml::ElementDocument* LoadDocument(std::string documentName);
+        Rml::ElementDocument* LoadDocument(const std::string& documentName);
     };
 };

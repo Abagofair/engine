@@ -14,16 +14,16 @@
 #include "GLHelpers/GlHelper.hpp"
 #include "Windowing/Window.hpp"
 #include "Global/glPortableHeaders.hpp"
-#include "Rendering/ShaderManager.hpp"
+#include "Resources/ResourceHandler.hpp"
 
 namespace Engine::GUI
 {
     class RenderInterface : public Rml::RenderInterface
     {
     public:
-        RenderInterface(Windowing::Window* window,
-                        Rendering::ShaderManager& shaderManager,
-                        glm::mat4 viewMatrix);
+        RenderInterface(Windowing::Window* window);
+
+        void SetViewMatrix(glm::mat4 viewMatrix);
 
         /// Called by RmlUi when it wants to render geometry that it does not wish to optimise.
         void RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f& translation) override;
@@ -42,7 +42,6 @@ namespace Engine::GUI
 
     private:
         Windowing::Window* _window;
-        Rendering::ShaderManager& _shaderManager;
 
         glm::mat4 _viewMatrix;
 

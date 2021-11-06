@@ -7,12 +7,9 @@
 
 #include "Scene/Scene.hpp"
 #include "Windowing/Window.hpp"
-#include "Rendering/ShaderManager.hpp"
-#include "Rendering/BaseRender.hpp"
-#include "Rendering/SpriteRender.hpp"
-#include "Rendering/TextureManager.hpp"
+#include "Rendering/SpriteRendering.hpp"
 #include "Collision/CollisionSystem.hpp"
-#include "Physics/IntegrationSystem.hpp"
+#include "Physics/Integration.hpp"
 #include "Input/InputManager.hpp"
 #include "Input/InputStructures.hpp"
 #include "GUI/GuiManager.hpp"
@@ -40,12 +37,9 @@ namespace Engine::Global::Game
             uint32_t height
         )
             :   _logger(std::cout),
-                _integrationSystem(Physics::IntegrationSystem(_registry)),
                 _window(std::make_unique<Engine::Windowing::Window>(width, height, "SHITE", _logger)),
-                _render(Rendering::SpriteRender(_registry, _shaderManager, width, height)),
                 _collisionSystem(Collision::CollisionSystem<T>(_registry)),
-                _textureManager(_resourceHandler),
-                _guiManager(_window.get(), _shaderManager, _render.viewMatrix),
+                _guiManager(_window.get()),
                 _inputManager(_logger)
         {}
 
@@ -54,28 +48,19 @@ namespace Engine::Global::Game
         virtual void Run() = 0;
         virtual void SceneIsComplete() = 0;
 
-        const Windowing::Window& GetWindow() const { return *_window; }
-        const Rendering::ShaderManager& GetShaderManager() const { return _shaderManager; }
-        //const Input::InputContext& GetInputHandler() const { return _inputContext; }
-        const Physics::IntegrationSystem& GetIntegrationSystem() const { return _integrationSystem; }
-        const Collision::CollisionSystem<T>& GetCollisionSystem() const { return _collisionSystem; }
-        const Rendering::SpriteRender& GetRenderSystem() const { return _render; }
-        Rendering::TextureManager& GetTextureManager() { return _textureManager; }
+        Windowing::Window& GetWindow() { return *_window; }
+        Input::InputManager& GetInputManager() { return _inputManager; }
+        Collision::CollisionSystem<T>& GetCollisionSystem() { return _collisionSystem; }
 
         entt::registry& GetRegistry() { return _registry; }
+        Scene::Scene *GetScene() { return _currentScene.get(); }
     protected:
         entt::registry _registry;
         Utilities::Logger _logger;
 
-        Resources::ResourceHandler _resourceHandler;
-
         Input::InputManager _inputManager;
-        Physics::IntegrationSystem _integrationSystem;
         Collision::CollisionSystem<T> _collisionSystem;
-        Rendering::ShaderManager _shaderManager;
-        Rendering::TextureManager _textureManager;
 
-        Rendering::SpriteRender _render;
         std::unique_ptr<Scene::Scene> _currentScene;
         std::unique_ptr<Engine::Windowing::Window> _window;
 

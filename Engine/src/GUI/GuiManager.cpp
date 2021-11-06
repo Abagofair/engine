@@ -2,10 +2,8 @@
 
 namespace Engine::GUI
 {
-    GuiManager::GuiManager(Engine::Windowing::Window* window,
-                           Rendering::ShaderManager& shaderManager,
-                           glm::mat4 viewMatrix)
-        : _renderInterface(window, shaderManager, viewMatrix)
+    GuiManager::GuiManager(Engine::Windowing::Window* window)
+        : _renderInterface(window)
     {
         Rml::SetRenderInterface(&_renderInterface);
         Rml::SetSystemInterface(&_systemInterface);
@@ -24,7 +22,7 @@ namespace Engine::GUI
         Rml::LoadFontFace("LatoLatin-Regular.ttf");
     }
 
-    Rml::ElementDocument* GuiManager::LoadDocument(std::string documentName)
+    Rml::ElementDocument* GuiManager::LoadDocument(const std::string& documentName)
     {
         Rml::ElementDocument* document = _context->LoadDocument(documentName);
         if (!document)
@@ -49,8 +47,9 @@ namespace Engine::GUI
         _context->Update();
     }
 
-    void GuiManager::Draw()
+    void GuiManager::Draw(const glm::mat4 &viewMatrix)
     {
+        _renderInterface.SetViewMatrix(viewMatrix);
         _context->Render();
     }
 };

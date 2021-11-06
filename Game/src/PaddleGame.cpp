@@ -36,9 +36,9 @@ namespace Game
 
         _inputManager.InitializeActionsFromDisk(_paddles.GetGamepadActions(), m);
 
-        _shaderManager.LoadShader("dynamicSprite.glsl", Engine::Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
-        _shaderManager.LoadShader("staticSprite.glsl", Engine::Rendering::ShaderManager::STATIC_SHADER_NAME);
-        _shaderManager.LoadShader("debug.glsl", Engine::Rendering::ShaderManager::DEBUG_SHADER_NAME);
+        Engine::Resources::LoadShader("dynamicSprite.glsl", Engine::Resources::DYNAMIC_SHADER_NAME);
+        Engine::Resources::LoadShader("staticSprite.glsl", Engine::Resources::STATIC_SHADER_NAME);
+        Engine::Resources::LoadShader("debug.glsl", Engine::Resources::DEBUG_SHADER_NAME);
 
         _currentScene = std::make_unique<TestScene>(*this);
         _currentScene->Initialize();
@@ -115,13 +115,13 @@ namespace Game
             _paddles.Update();
             _ball.Update();
 
-            _integrationSystem.Integrate(time);
+            //_integrationSystem.Integrate(time);
             _collisionSystem.BroadPhase();
 
             _currentScene->CheckSceneState();
 
-            if (_state == Engine::Global::Game::GameState::Paused)
-                _guiManager.Update();
+            /*if (_state == Engine::Global::Game::GameState::Paused)
+                _guiManager.Update();*/
 
             for (auto entity: dynamicRenderablesView)
             {
@@ -133,12 +133,11 @@ namespace Game
 
             //todo: something more statey
             _window->ClearBuffer(Engine::Global::Utilities::RGBA(0.1f, 0.7f, 0.95f, 1.0f));
+            //_render.DrawStaticQuads();
+            //_render.Draw();
 
-            _render.DrawStaticQuads();
-            _render.Draw();
-
-            if (_state == Engine::Global::Game::GameState::Paused)
-                _guiManager.Draw();
+            /*if (_state == Engine::Global::Game::GameState::Paused)
+                _guiManager.Draw();*/
 
             _window->SwapBuffers();
         }

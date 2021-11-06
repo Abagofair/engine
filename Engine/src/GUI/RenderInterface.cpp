@@ -2,12 +2,9 @@
 
 namespace Engine::GUI
 {
-    RenderInterface::RenderInterface(Windowing::Window* window,
-        Rendering::ShaderManager& shaderManager,
-        glm::mat4 viewMatrix)
-        : _window(window), _shaderManager(shaderManager), _viewMatrix(viewMatrix)
-    {
-    }
+    RenderInterface::RenderInterface(Windowing::Window* window)
+        : _window(window)
+    {}
 
     void RenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f& translation)
     {
@@ -23,7 +20,7 @@ namespace Engine::GUI
             vertices[i].tex_coord.x = vertices[i].tex_coord.y * h;
         };*/
 
-        auto& shader = _shaderManager.GetShader(Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
+        auto& shader = Engine::Resources::GetShader(Engine::Resources::DYNAMIC_SHADER_NAME);
 
         //if (_bufferElements < num_vertices)
         {
@@ -149,5 +146,10 @@ namespace Engine::GUI
     void RenderInterface::ReleaseTexture(Rml::TextureHandle texture_handle)
     {
         glDeleteTextures(1, (uint32_t*)texture_handle);
+    }
+
+    void RenderInterface::SetViewMatrix(glm::mat4 viewMatrix)
+    {
+        _viewMatrix = viewMatrix;
     }
 };

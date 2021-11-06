@@ -1,32 +1,18 @@
-#include "Rendering/SpriteRender.hpp"
+#include "Rendering/SpriteRendering.hpp"
 
 namespace Engine::Rendering
 {
-    SpriteRender::SpriteRender(
-        entt::registry& registry,
-        ShaderManager& shaderManager,
-        unsigned int width,
-        unsigned int height) 
-        : BaseRender(registry, width, height), _shaderManager(shaderManager)
+    void Rendering::DrawDynamics(const entt::registry &registry, glm::mat4 viewMatrix)
     {
-        viewMatrix = glm::ortho<float>(0.0f, (float)width, (float)height, 0.0f, 0.0f, 1.0f);
-    }
-
-
-    //Do copy constructor
-    //Do move constructor / operator
-
-    void SpriteRender::Draw()
-    {
-        auto dynamicRenderablesView = _registry.view<
-            const Engine::Rendering::Components::RenderableComponent,
-            const Global::Components::TransformComponent>();
+        auto dynamicRenderablesView = registry.view<
+                const Engine::Rendering::Components::RenderableComponent,
+                const Global::Components::TransformComponent>();
 
         //include multiple textures at shader initialization to the shader so all we have to do is pass in the textureid
 
         //spriteShader.UseWithOrtho(viewMatrix);
         //glUseProgram(shaderHandle);
-        auto& dynamicShader = _shaderManager.GetShader(Rendering::ShaderManager::DYNAMIC_SHADER_NAME);
+        auto& dynamicShader = Resources::GetShader(Resources::DYNAMIC_SHADER_NAME);
 
         dynamicShader.Use();
 
@@ -76,13 +62,13 @@ namespace Engine::Rendering
         }*/
     }
 
-    void SpriteRender::DrawStaticQuads()
+    void Rendering::DrawStatics(const entt::registry &registry, glm::mat4 viewMatrix)
     {
-        auto staticRenderablesView = _registry.view<
-            const Engine::Rendering::Components::StaticRenderableComponent>();
+        auto staticRenderablesView = registry.view<
+                const Engine::Rendering::Components::StaticRenderableComponent>();
 
-        auto instancedQuadView = _registry.view<
-            const Rendering::Components::InstancedQuadComponent>();
+        auto instancedQuadView = registry.view<
+                const Rendering::Components::InstancedQuadComponent>();
 
         std::vector<unsigned int> ignoredInstances = std::vector<unsigned int>(instancedQuadView.size());
         int count = instancedQuadView.size() - 1;
@@ -100,7 +86,7 @@ namespace Engine::Rendering
             count -= 1;
         }
 
-        auto& shader = _shaderManager.GetShader(Rendering::ShaderManager::STATIC_SHADER_NAME);
+        auto& shader = Resources::GetShader(Resources::STATIC_SHADER_NAME);
         //todo: loop?
         for (auto entity : staticRenderablesView)
         {
