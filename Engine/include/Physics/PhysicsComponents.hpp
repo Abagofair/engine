@@ -8,8 +8,8 @@ namespace Engine::Physics::Components
 
         VelocityComponent() = default;
         VelocityComponent(const VelocityComponent&) = default;
-        VelocityComponent(const glm::vec2& transform)
-            : velocity(transform)
+        VelocityComponent(const glm::vec2& velocity)
+            : velocity(velocity)
             {}
     };
 };

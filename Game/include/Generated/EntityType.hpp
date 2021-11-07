@@ -10,6 +10,7 @@ namespace Game::Generated
         RightPaddle,
         Block,
         Ball,
-        ViewportContainer
+        ViewportContainer,
+        Camera
     };
 };

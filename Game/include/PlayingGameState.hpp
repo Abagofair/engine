@@ -13,6 +13,11 @@
 #include "Collision/CollisionSystem.hpp"
 #include "Rendering/SpriteRendering.hpp"
 
+#include "Paddle.hpp"
+#include "Ball.hpp"
+#include "Block.hpp"
+#include "TestScene.hpp"
+
 namespace Game
 {
     class PlayingGameState : public GameState
@@ -28,9 +33,14 @@ namespace Game
         void Draw() override;
 
     private:
-        std::unique_ptr<Engine::Scene::Scene> _scene;
+        Game::Paddle _paddleSystem;
+        Game::Ball _ballSystem;
+        Game::Block _blockSystem;
 
         Engine::Input::InputManager& _inputManager;
         Engine::Collision::CollisionSystem<Game::Generated::EntityType>& _collisionSystem;
+
+        void PauseMenu(Engine::Input::KeyEvent);
+        void SceneIsComplete();
     };
 };

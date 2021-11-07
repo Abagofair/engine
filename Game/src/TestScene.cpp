@@ -10,6 +10,7 @@ namespace Game
 
     void TestScene::Initialize()
     {
+        CreateCamera();
         CreateViewportBoundingBox();
         CreateLeftPaddle();
         CreateRightPaddle();
@@ -33,6 +34,18 @@ namespace Game
         //all blocks are dead here
         //signal game that the scene goal has been reached
         _game.SceneIsComplete();
+    }
+
+    void TestScene::CreateCamera()
+    {
+        auto cameraEntity = _game.GetRegistry().create();
+        auto& cameraBase = _game.GetRegistry().emplace<Engine::Global::Components::BaseComponent<Game::Generated::EntityType>>(cameraEntity);
+        cameraBase.entityType = Game::Generated::EntityType::Camera;
+
+        auto dimensions = _game.GetWindow().WindowDimensions();
+        auto& cameraComponent = _game.GetRegistry().emplace<Engine::Camera::Camera2D>(cameraEntity, dimensions.x, dimensions.y);
+
+        camera = &cameraComponent;
     }
 
     void TestScene::CreateViewportBoundingBox()

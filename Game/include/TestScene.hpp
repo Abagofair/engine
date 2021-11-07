@@ -31,6 +31,7 @@ namespace Game
     private:
         Engine::Global::Game::Game<Game::Generated::EntityType>& _game;
 
+        void CreateCamera();
         void CreateViewportBoundingBox();
         void CreateLeftPaddle();
         void CreateRightPaddle();

@@ -12,7 +12,7 @@ namespace Game
     {
     public:
         explicit GameState(Engine::Global::Game::Game<Game::Generated::EntityType> &game);
-        ~GameState() = default;
+        virtual ~GameState() = default;
 
         virtual void Entering() = 0;
         virtual void Leaving() = 0;

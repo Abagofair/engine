@@ -26,6 +26,9 @@
 #include "Generated/EntityType.hpp"
 #include "TestScene.hpp"
 
+#include "GameState.hpp"
+#include "PlayingGameState.hpp"
+
 namespace Game
 {
     class PaddleGame : public Engine::Global::Game::Game<Game::Generated::EntityType>
@@ -39,10 +42,13 @@ namespace Game
 
         [[noreturn]] void Run() override;
         void SceneIsComplete() override;
+
     private:
         Paddle _paddles;
         Block _block;
         Ball _ball;
+
+        std::unique_ptr<GameState> _currentState;
 
         void PauseMenu(Engine::Input::KeyEvent);
     };

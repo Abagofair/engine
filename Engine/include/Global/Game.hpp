@@ -45,12 +45,14 @@ namespace Engine::Global::Game
         virtual void Run() = 0;
         virtual void SceneIsComplete() = 0;
 
+
         Windowing::Window& GetWindow() { return *_window; }
         Input::InputManager& GetInputManager() { return _inputManager; }
         Collision::CollisionSystem<T>& GetCollisionSystem() { return _collisionSystem; }
 
         entt::registry& GetRegistry() { return _registry; }
         Scene::Scene *GetScene() { return _currentScene.get(); }
+        void SetCurrentScene(std::unique_ptr<Scene::Scene> scene) { _currentScene = std::move(scene); }
     protected:
         entt::registry _registry;
 
@@ -61,7 +63,5 @@ namespace Engine::Global::Game
         std::unique_ptr<Engine::Windowing::Window> _window;
 
         GUI::GuiManager _guiManager;
-
-        GameState _state;
     };
 };
